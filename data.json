@@ -1,0 +1,76 @@
+[
+    {
+        "node_id": 0,
+        "next_node_id": -1,
+        "dependencies": [
+            1
+        ],
+        "agent": {
+            "name": "Software Developer",
+            "skills_available": [
+                "Debug Code"
+            ],
+            "skill": {
+                "name": "Debug Code",
+                "inputs": [
+                    {
+                        "param_name": "Source Code",
+                        "param_type": "SkillOutputParamType.STRING",
+                        "param_content": "a = a/0;"
+                    },
+                    {
+                        "param_name": "Error Message",
+                        "param_type": "SkillOutputParamType.STRING",
+                        "param_content": "ZeroDivisionError: division by zero."
+                    },
+                    {
+                        "param_name": "Design Doc",
+                        "param_type": "SkillOutputParamType.STRING",
+                        "param_content": "Write a division by 0 error code..."
+                    }
+                ],
+                "output": {
+                    "param_name": "Debug Result",
+                    "param_type": "SkillOutputParamType.STRING",
+                    "param_content": "The bug is caused by..."
+                }
+            }
+        }
+    },
+    {
+        "node_id": 1,
+        "next_node_id": 0,
+        "dependencies": [],
+        "agent": {
+            "name": "Software Developer",
+            "skills_available": [
+                "Debug Code"
+            ],
+            "skill": {
+                "name": "Write Code",
+                "inputs": [
+                    {
+                        "param_name": "Source Code",
+                        "param_type": "SkillOutputParamType.STRING",
+                        "param_content": "a = a/0;"
+                    },
+                    {
+                        "param_name": "Error Message",
+                        "param_type": "SkillOutputParamType.STRING",
+                        "param_content": "ZeroDivisionError: division by zero."
+                    },
+                    {
+                        "param_name": "Design Doc",
+                        "param_type": "SkillOutputParamType.STRING",
+                        "param_content": "Write a division by 0 error code..."
+                    }
+                ],
+                "output": {
+                    "param_name": "Code Result",
+                    "param_type": "SkillOutputParamType.STRING",
+                    "param_content": "a = a/0;"
+                }
+            }
+        }
+    }
+]
