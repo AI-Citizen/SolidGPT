@@ -18,7 +18,7 @@ def load_from_json(filename="data.json"):
 def generate_save_data_from_nodes(nodes: list[WorkNode]):
     save_data = []
     for node in nodes:
-        node_data = {"node_id": node.node_id, "next_node_id": node.next_node_id}
+        node_data = {"node_id": node.node_id, "next_node_ids": node.next_node_ids}
         node_data["dependencies"] = node.dependencies
         agent = node.agent
         agent_data = {"name": agent.name, "skills_available": agent.skills_available}
