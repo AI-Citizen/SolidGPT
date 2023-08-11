@@ -4,7 +4,7 @@ from solidgpt.workskill.workskill import *
 
 class DebugCode(WorkSkill):
 
-    def __init__(self, inputs_config: dict = None, output_config = None):
+    def __init__(self, inputs_config: list = None, output_config=None):
         super().__init__()
         self.name = SKILL_NAME_DEBUG_CODE
         self.input_source_code = SkillInput(

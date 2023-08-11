@@ -10,10 +10,34 @@ class SkillOutputParamType(Enum):
     FILE = 5
 
 
+STRING_TO_SKILL_OUTPUT_PARAM_TYPE_DICT: dict[str, SkillOutputParamType] = {
+    "STRING": SkillOutputParamType.STRING,
+    "XLSX": SkillOutputParamType.XLSX,
+    "DOC": SkillOutputParamType.DOC,
+    "MD": SkillOutputParamType.MD,
+    "FILE": SkillOutputParamType.FILE,
+}
+
+
 class SkillInputLoadingMethod(Enum):
     LOAD_FROM_LAST_OUTPUT = 1
     LOAD_FROM_OUTPUT_ID = 2
     DO_NOT_LOAD = 3
+
+
+STRING_TO_SKILL_INPUT_LOADING_METHOD_DICT: dict[str, SkillInputLoadingMethod] = {
+    "LOAD_FROM_LAST_OUTPUT": SkillInputLoadingMethod.LOAD_FROM_LAST_OUTPUT,
+    "LOAD_FROM_OUTPUT_ID": SkillInputLoadingMethod.LOAD_FROM_OUTPUT_ID,
+    "DO_NOT_LOAD": SkillInputLoadingMethod.DO_NOT_LOAD,
+}
+
+
+def string_to_skill_output_param_type(s: str):
+    return STRING_TO_SKILL_OUTPUT_PARAM_TYPE_DICT.get(s, SkillOutputParamType.STRING)
+
+
+def string_to_skill_input_loading_method(s: str):
+    return STRING_TO_SKILL_INPUT_LOADING_METHOD_DICT.get(s, SkillInputLoadingMethod.DO_NOT_LOAD)
 
 
 class SkillInput:
@@ -23,7 +47,7 @@ class SkillInput:
     param_content: str = ""
     optional: bool = False
     loading_method: SkillInputLoadingMethod = SkillInputLoadingMethod.DO_NOT_LOAD
-    load_from_output_id: int = 0
+    load_from_output_id: int = -1
     loaded: bool = False
 
     def __init__(self,
@@ -33,7 +57,7 @@ class SkillInput:
                  param_content: str,
                  optional: bool = False,
                  loading_method: SkillInputLoadingMethod = SkillInputLoadingMethod.DO_NOT_LOAD,
-                 load_from_output_id: int = 0,
+                 load_from_output_id: int = -1,
                  ):
         # Initialization
         self.param_name = param_name
@@ -43,7 +67,16 @@ class SkillInput:
         self.loading_method = loading_method
         self.load_from_output_id = load_from_output_id
         self.config = config
+        self.load_from_config()
         return
+
+    def load_from_config(self):
+        if self.config is None:
+            return
+        self.param_type = string_to_skill_output_param_type(self.config["param_type"])
+        self.param_content = self.config["param_content"]
+        self.loading_method = string_to_skill_input_loading_method(self.config["param_content"])
+        self.load_from_output_id = self.config["load_from_output_id"]
 
     def is_loaded(self):
         if self.optional or self.loading_method == SkillInputLoadingMethod.DO_NOT_LOAD:
@@ -64,8 +97,16 @@ class SkillOutput:
 
     def __init__(self, config, param_name, param_type, param_content, id):
         # Initialization
-        self.config = config
         self.param_name = param_name
         self.param_type = param_type
         self.param_content = param_content
         self.id = id
+        self.config = config
+        self.load_from_config()
+
+    def load_from_config(self):
+        if self.config is None:
+            return
+        self.param_type = string_to_skill_output_param_type(self.config["param_type"])
+        self.param_content = self.config["param_content"]
+        self.id = self.config["id"]
