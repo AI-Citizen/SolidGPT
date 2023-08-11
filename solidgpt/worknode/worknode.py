@@ -5,16 +5,19 @@ class WorkNode:
     node_id: int = 0
     agent: WorkAgent = None
     # todo: probably need to change to next_node_ids
-    next_node_id: int = -1
+    # todo: need to check self id is not in next node ids
+    next_node_ids: list[int] = []
     dependencies: list[int] = []
     orchestration = None
 
-    def __init__(self, node_id: int, work_agent: WorkAgent, next_node_id: int = -1):
+    def __init__(self, node_id: int, work_agent: WorkAgent, next_node_ids):
         # Initialization
+        if next_node_ids is None:
+            next_node_ids = []
         self.node_id = node_id
         self.agent = work_agent
         self.agent.node = self
-        self.next_node_id = next_node_id
+        self.next_node_ids = next_node_ids
         self.dependencies = []
         self.orchestration = None
         return
@@ -40,8 +43,9 @@ class WorkNode:
 
     def finish_execution(self):
         """inform dependent"""
-        if self.next_node_id >= 0:
-            self.orchestration.node_map[self.next_node_id].dependencies.remove(self.node_id)
-            self.orchestration.node_map[self.next_node_id].execute()
+        for next_node_id in self.next_node_ids:
+            if next_node_id >= 0:
+                self.orchestration.node_map[next_node_id].dependencies.remove(self.node_id)
+                self.orchestration.node_map[next_node_id].execute()
 
         # todo: need to also check if current output are used by other nodes an input

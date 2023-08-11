@@ -18,8 +18,9 @@ class Orchestration:
             self.node_map[node.node_id] = node
 
         for node in self.nodes:
-            if node.next_node_id >= 0:
-                self.node_map[node.next_node_id].dependencies.append(node.node_id)
+            for next_node_id in node.next_node_ids:
+                if next_node_id >= 0:
+                    self.node_map[next_node_id].dependencies.append(node.node_id)
         return
 
     def execute(self):
@@ -38,7 +39,7 @@ class Orchestration:
             return sde
 
         def create_default_debug_node():
-            node = WorkNode(0, create_default_debug_agent())
+            node = WorkNode(0, create_default_debug_agent(), [])
             return node
 
         def create_default_code_skill():
@@ -50,12 +51,12 @@ class Orchestration:
             return sde
 
         def create_default_code_node():
-            node = WorkNode(1, create_default_code_agent())
+            node = WorkNode(1, create_default_code_agent(), [])
             return node
 
         debug_node = create_default_debug_node()
         code_node = create_default_code_node()
-        code_node.next_node_id = debug_node.node_id
+        code_node.next_node_ids.append(debug_node.node_id)
 
         self.nodes.append(debug_node)
         self.nodes.append(code_node)

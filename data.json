@@ -22,11 +22,6 @@
                         "param_name": "Error Message",
                         "param_type": "SkillOutputParamType.STRING",
                         "param_content": "ZeroDivisionError: division by zero."
-                    },
-                    {
-                        "param_name": "Design Doc",
-                        "param_type": "SkillOutputParamType.STRING",
-                        "param_content": "Write a division by 0 error code..."
                     }
                 ],
                 "output": {
@@ -49,16 +44,6 @@
             "skill": {
                 "name": "Write Code",
                 "inputs": [
-                    {
-                        "param_name": "Source Code",
-                        "param_type": "SkillOutputParamType.STRING",
-                        "param_content": "a = a/0;"
-                    },
-                    {
-                        "param_name": "Error Message",
-                        "param_type": "SkillOutputParamType.STRING",
-                        "param_content": "ZeroDivisionError: division by zero."
-                    },
                     {
                         "param_name": "Design Doc",
                         "param_type": "SkillOutputParamType.STRING",
