@@ -9,7 +9,10 @@ class WorkAgent:
     node = None
 
     def __init__(self):
+        self.name = ""
+        self.skills_available = []
         self.node = None
+        # self.skill = WorkSkill()
         return
 
     def execute(self):

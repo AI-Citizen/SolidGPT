@@ -58,11 +58,19 @@ class Orchestration:
         code_node = create_default_code_node()
         code_node.next_node_ids.append(debug_node.node_id)
 
+        self.nodes.clear()
         self.nodes.append(debug_node)
         self.nodes.append(code_node)
         self.init_node_dependencies()
 
-    def generate_save_data(self):
+    def save_data(self, filename: str = "data.json"):
         save_data = generate_save_data_from_nodes(self.nodes)
-        save_to_json(save_data)
+        save_to_json(save_data, filename)
+        return
+
+    def load_data(self, filename: str = "data.json"):
+        loaded_data = load_from_json(filename)
+        self.nodes.clear()
+        self.nodes = load_save_data_to_nodes(loaded_data)
+        self.init_node_dependencies()
         return

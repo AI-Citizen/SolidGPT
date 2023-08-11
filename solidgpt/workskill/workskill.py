@@ -13,7 +13,7 @@ class WorkSkill:
         self.agent = None
         self.name = ""
         self.inputs = []
-        self.output = SkillOutput(None, "output param", SkillOutputParamType.STRING, "", -1)
+        # self.output = SkillOutput(None, "output param", SkillOutputParamType.STRING, "", -1)
         self.action = ""
         return
 
