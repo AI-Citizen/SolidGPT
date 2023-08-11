@@ -1,12 +1,12 @@
 from solidgpt.workskill.skillio import *
-from solidgpt.workskill.workskill import WorkSkill
+from solidgpt.workskill.workskill import *
 
 
 class DebugCode(WorkSkill):
 
     def __init__(self, inputs_config: dict = None, output_config = None):
         super().__init__()
-        self.name = "Debug Code"
+        self.name = SKILL_NAME_DEBUG_CODE
         self.input_source_code = SkillInput(
             None if inputs_config is None else inputs_config[0],
             "Source Code",

@@ -1,4 +1,5 @@
 from solidgpt.workskill.workskill import *
+from solidgpt.constants import *
 
 
 class WorkAgent:
@@ -14,5 +15,3 @@ class WorkAgent:
     def execute(self):
         print("Agent " + str(self.name) + " executing...")
         self.skill.execute()
-
-

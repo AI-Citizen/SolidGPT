@@ -1,4 +1,5 @@
 from solidgpt.workskill.skillio import *
+from solidgpt.constants import *
 
 
 class WorkSkill:

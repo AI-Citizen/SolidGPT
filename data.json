@@ -8,7 +8,8 @@
         "agent": {
             "name": "Software Developer",
             "skills_available": [
-                "Debug Code"
+                "Debug Code",
+                "Write Code"
             ],
             "skill": {
                 "name": "Debug Code",
@@ -41,7 +42,8 @@
         "agent": {
             "name": "Software Developer",
             "skills_available": [
-                "Debug Code"
+                "Debug Code",
+                "Write Code"
             ],
             "skill": {
                 "name": "Write Code",
