@@ -13,20 +13,20 @@
         "skill": "Debug Code",
         "inputs": [
             {
-                "param_name": "Source Code",
                 "param_type": "SkillIOParamType.StringContent",
                 "param_content": "",
                 "loading_method": "SkillInputLoadingMethod.LOAD_FROM_OUTPUT_ID",
                 "load_from_output_id": 0,
+                "param_name": "Source Code",
                 "param_category": "SkillIOParamCategory.SourceCode",
                 "optional": "False"
             },
             {
-                "param_name": "Error Message",
                 "param_type": "SkillIOParamType.StringContent",
                 "param_content": "",
-                "loading_method": "SkillInputLoadingMethod.LOAD_MANUALLY_FROM_STRING",
+                "loading_method": "SkillInputLoadingMethod.LOAD_FROM_STRING",
                 "load_from_output_id": -1,
+                "param_name": "Error Message",
                 "param_category": "SkillIOParamCategory.PlainText",
                 "optional": "True"
             }
@@ -53,11 +53,11 @@
         "skill": "Write Code",
         "inputs": [
             {
-                "param_name": "Design Doc",
                 "param_type": "SkillIOParamType.StringContent",
                 "param_content": "",
-                "loading_method": "SkillInputLoadingMethod.LOAD_MANUALLY_FROM_STRING",
+                "loading_method": "SkillInputLoadingMethod.LOAD_FROM_STRING",
                 "load_from_output_id": -1,
+                "param_name": "Design Doc",
                 "param_category": "SkillIOParamCategory.ProductRequirementsDocument",
                 "optional": "False"
             }

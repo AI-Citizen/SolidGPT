@@ -24,14 +24,12 @@ STRING_TO_SKILL_OUTPUT_PARAM_TYPE_DICT: dict[str, SkillIOParamType] = {
 
 class SkillInputLoadingMethod(Enum):
     LOAD_FROM_OUTPUT_ID = 1
-    LOAD_MANUALLY_FROM_STRING = 2
-    LOAD_MANUALLY_FROM_PATH = 3
+    LOAD_FROM_STRING = 2
 
 
 STRING_TO_SKILL_INPUT_LOADING_METHOD_DICT: dict[str, SkillInputLoadingMethod] = {
     str(SkillInputLoadingMethod.LOAD_FROM_OUTPUT_ID): SkillInputLoadingMethod.LOAD_FROM_OUTPUT_ID,
-    str(SkillInputLoadingMethod.LOAD_MANUALLY_FROM_STRING): SkillInputLoadingMethod.LOAD_MANUALLY_FROM_STRING,
-    str(SkillInputLoadingMethod.LOAD_MANUALLY_FROM_PATH): SkillInputLoadingMethod.LOAD_MANUALLY_FROM_PATH,
+    str(SkillInputLoadingMethod.LOAD_FROM_STRING): SkillInputLoadingMethod.LOAD_FROM_STRING,
 }
 
 
@@ -40,7 +38,7 @@ def string_to_skill_output_param_type(s: str):
 
 
 def string_to_skill_input_loading_method(s: str):
-    return STRING_TO_SKILL_INPUT_LOADING_METHOD_DICT.get(s, SkillInputLoadingMethod.LOAD_MANUALLY_FROM_STRING)
+    return STRING_TO_SKILL_INPUT_LOADING_METHOD_DICT.get(s, SkillInputLoadingMethod.LOAD_FROM_STRING)
 
 
 class SkillInput:
@@ -50,7 +48,7 @@ class SkillInput:
     param_category: SkillIOParamCategory = SkillIOParamCategory.BusinessRequirementsDocument
     param_content: str = ""
     optional: bool = False
-    loading_method: SkillInputLoadingMethod = SkillInputLoadingMethod.LOAD_MANUALLY_FROM_STRING
+    loading_method: SkillInputLoadingMethod = SkillInputLoadingMethod.LOAD_FROM_STRING
     load_from_output_id: int = -1
     loaded: bool = False
 
@@ -65,7 +63,7 @@ class SkillInput:
         self.optional = optional
         self.param_type = SkillIOParamType.StringContent
         self.param_content = ""
-        self.loading_method = SkillInputLoadingMethod.LOAD_MANUALLY_FROM_STRING
+        self.loading_method = SkillInputLoadingMethod.LOAD_FROM_STRING
         self.load_from_output_id = -1
         return
 
@@ -80,8 +78,8 @@ class SkillInput:
 
     def is_loaded(self):
         if self.optional \
-                or self.loading_method == SkillInputLoadingMethod.LOAD_MANUALLY_FROM_STRING \
-                or self.loading_method == SkillInputLoadingMethod.LOAD_MANUALLY_FROM_PATH:
+                or self.loading_method == SkillInputLoadingMethod.LOAD_FROM_STRING \
+                or self.loading_method == SkillInputLoadingMethod.LOAD_FROM_STRING:
             return True
         if self.loading_method == SkillInputLoadingMethod.LOAD_FROM_OUTPUT_ID and self.loaded:
             return True

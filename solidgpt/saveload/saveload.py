@@ -50,13 +50,13 @@ def generate_save_data_from_nodes(nodes: list[WorkNode], generate_debug_info: bo
 
         for i in skill.inputs:
             temp_input = {
-                "param_name": i.param_name,
                 "param_type": str(i.param_type),
                 "param_content": i.param_content,
                 "loading_method": str(i.loading_method),
                 "load_from_output_id": i.load_from_output_id,
             }
             if generate_debug_info:
+                temp_input["param_name"] = i.param_name
                 temp_input["param_category"] = str(i.param_category)
                 temp_input["optional"] = str(i.optional)
 
