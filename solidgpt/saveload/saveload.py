@@ -27,16 +27,27 @@ def load_from_json(filename="data.json"):
     return loaded_data
 
 
-def generate_save_data_from_nodes(nodes: list[WorkNode]):
+def generate_save_data_from_nodes(nodes: list[WorkNode], generate_debug_info: bool = False):
     save_data = []
     for node in nodes:
-        node_data = {"node_id": node.node_id, "next_node_ids": node.next_node_ids}
-        node_data["dependencies"] = node.dependencies
+        node_data = {
+            "node_id": node.node_id,
+        }
+
+        if generate_debug_info:
+            node_data["next_node_ids"] = list(node.next_node_ids)
+            node_data["output_id_dependencies"] = list(node.output_id_dependencies)
+
         agent = node.agent
-        agent_data = {"name": agent.name, "skills_available": agent.skills_available}
+        node_data["agent"] = agent.name
+        if generate_debug_info:
+            node_data["skills_available"] = agent.skills_available
 
         skill = agent.skill
-        skill_data = {"name": skill.name, "inputs": []}
+        node_data["skill"] = skill.name
+        node_data["inputs"] = []
+        node_data["outputs"] = []
+
         for i in skill.inputs:
             temp_input = {
                 "param_name": i.param_name,
@@ -45,17 +56,24 @@ def generate_save_data_from_nodes(nodes: list[WorkNode]):
                 "loading_method": str(i.loading_method),
                 "load_from_output_id": i.load_from_output_id,
             }
-            skill_data["inputs"].append(temp_input)
+            if generate_debug_info:
+                temp_input["param_category"] = str(i.param_category)
+                temp_input["optional"] = str(i.optional)
 
-        output_data = {
-            "param_name": skill.output.param_name,
-            "param_type": str(skill.output.param_type),
-            "param_content": skill.output.param_content,
-            "id": skill.output.id,
-        }
-        skill_data["output"] = output_data
-        agent_data["skill"] = skill_data
-        node_data["agent"] = agent_data
+            node_data["inputs"].append(temp_input)
+
+        for o in skill.outputs:
+            temp_output = {
+                "id": o.id,
+            }
+
+            if generate_debug_info:
+                temp_output["param_category"] = str(o.param_category)
+                temp_output["param_type"] = str(o.param_type)
+                temp_output["id"] = o.id
+
+            node_data["outputs"].append(temp_output)
+
         save_data.append(node_data)
     return save_data
 
@@ -63,12 +81,13 @@ def generate_save_data_from_nodes(nodes: list[WorkNode]):
 def load_save_data_to_nodes(loaded_data):
     nodes: list[WorkNode] = []
     for node_data in loaded_data:
-        agent_data = node_data["agent"]
-        skill_data = agent_data["skill"]
-        inputs_data = skill_data["inputs"]
-        output_data = skill_data["output"]
-        skill = SKILL_NAME_TO_CONSTRUCTOR.get(skill_data["name"])(inputs_data, output_data)
-        agent = AGENT_NAME_TO_CONSTRUCTOR.get(agent_data["name"])(skill)
-        node = WorkNode(node_data["node_id"], agent, node_data["next_node_ids"])
+        agent_name = node_data["agent"]
+        skill_name = node_data["skill"]
+        inputs_data = node_data["inputs"]
+        outputs_data = node_data["outputs"]
+        skill: WorkSkill = SKILL_NAME_TO_CONSTRUCTOR.get(skill_name)()
+        skill.init_config(inputs_data, outputs_data)
+        agent = AGENT_NAME_TO_CONSTRUCTOR.get(agent_name)(skill)
+        node = WorkNode(node_data["node_id"], agent)
         nodes.append(node)
     return nodes

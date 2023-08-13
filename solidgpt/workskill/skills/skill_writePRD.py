@@ -4,25 +4,22 @@ from solidgpt.workskill.workskill import *
 
 class WriteCode(WorkSkill):
 
-    def __init__(self, inputs_config: dict = None, output_config = None):
+    def __init__(self):
         super().__init__()
-        self.name = SKILL_NAME_WRITE_CODE
+        self.name = SKILL_NAME_WRITE_PRODUCT_REQUIREMENTS_DOCUMENTATION
         self.input_design_doc = SkillInput(
-            None if inputs_config is None else inputs_config[0],
-            "Design Doc",
-            SkillOutputParamType.STRING,
-            "Write a division by 0 error code...",
+            "Feature Information",
+            SkillIOParamCategory.PlainText,
         )
-        self.inputs.append(self.input_design_doc)
-        self.output = SkillOutput(
-            output_config,
-            "Code Result",
-            SkillOutputParamType.STRING,
-            "a = a/0;",
-            -1,
+        self.add_input(self.input_design_doc)
+        self.output_prd = SkillOutput(
+            "Product Requirements Documentation",
+            SkillIOParamType.StringContent,
+            SkillIOParamCategory.ProductRequirementsDocument
         )
 
     def execute(self):
-        print("Printing code result here...")
+        print("Printing PRD result here...")
         super().execute()
+        self.output_prd.param_content = "Feature requirement is..."
         return
