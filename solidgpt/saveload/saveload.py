@@ -1,4 +1,7 @@
 import json
+import logging
+import os
+from definitions import ROOT_DIR
 from solidgpt.worknode.worknode import *
 from solidgpt.imports import *
 
@@ -91,3 +94,14 @@ def load_save_data_to_nodes(loaded_data):
         node = WorkNode(node_data["node_id"], agent)
         nodes.append(node)
     return nodes
+
+
+def save_to_md(filename, content: str, path = "") -> str:
+    path = os.path.join(ROOT_DIR, path)
+    full_path = os.path.join(path, filename)
+    with open(full_path, "w") as md_file:
+        md_file.write(content)
+    logging.info(f"Information saved to {full_path}")
+    return full_path
+
+save_to_md("test.md", "test content")

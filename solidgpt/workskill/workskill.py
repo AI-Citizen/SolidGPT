@@ -40,5 +40,6 @@ class WorkSkill:
 
     def execute(self):
         print("Agent finishes " + str(self.name) + " task...")
-        self.agent.node.finish_execution()
+        if self.agent: 
+            self.agent.node.finish_execution()
         return

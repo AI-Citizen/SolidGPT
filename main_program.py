@@ -1,3 +1,4 @@
+from solidgpt.manager.initializer import Initializer
 from solidgpt.orchestration.orchestration import *
 
 # generate save data
@@ -10,6 +11,9 @@ from solidgpt.orchestration.orchestration import *
 app = Orchestration()
 app.create_default_scenario(1)
 app.execute()
+
+# Initialize all of the singleton managers and register modules
+initializer = Initializer()
 
 # generate save data
 # app = Orchestration()

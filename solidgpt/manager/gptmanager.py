@@ -2,6 +2,15 @@ import openai
 from solidgpt.configuration.configreader import ConfigReader
 
 class GPTManager:
+
+    _instance = None
+
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super(GPTManager, cls).__new__(cls)
+            # You can initialize the instance attributes here
+        return cls._instance
+    
     def __init__(self, if_show_reply = False):
         # read api key from config file
         openai.api_key = ConfigReader().get_property("openai_api_key")
