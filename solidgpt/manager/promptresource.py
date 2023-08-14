@@ -1,6 +1,6 @@
 
-PRODUCT_MANAGER_PRD_OUTPUT_TEMPLATE = f'''Base on the information help me generate PRD follow this format. 
-Here is the output template and explain each sections mean. Always output with this template
+PRODUCT_MANAGER_PRD_OUTPUT_TEMPLATE = f'''Base on the information help me generate Markdown PRD follow this format. 
+Here is the output template and explain each sections mean. Always output with this template in Markdown format.
 
 Overview
 [what is the problem you are trying to solve?]
@@ -21,7 +21,7 @@ Scope/Out-of-Scope
 
 User Stories
 [Based on each of the provided sub-features and key features, 
-Break down the features into user stories as much detail as possible. Try to write a user story for each sub-feature.
+Break down the features into user stories as much as possible. Try to write a user story for each sub-feature.
 Add more user stories based on similar products or your professional insight.]
 | Story                                                                                       | Value(L,M,H) | Cost/Complexity(L,M,H) | Priority |
 |---------------------------------------------------------------------------------------------|--------------|------------------------|----------|
@@ -50,9 +50,10 @@ We will often build a vision for phases of launch, along with stories/features a
 |--------------------|-------------------------------|-------------------------------------------|
 | Quarter/Month/Date | [Feature x, y,z]              | example: Successful pilot with 20 customer|
 '''
+
 PRODUCT_MANAGER_PRD_ROLE_ASSUMPTION = f'''Assume you are product manager, 
-you will help me write a formal PRD and output in MarkDown and please use the markdown table if necessary to make things clear.
-We have a Webapp, these are basic information'''
+you will help me write a formal PRD and output in Markdown and please use the markdown table if necessary to make things clear.
+Add more user stories based on similar products or your professional insight. These are the basic information'''
 
 PRODUCT_MANAGER_BRAINSTORM_OUTPUT_TEMPLATE = ''' 
 Given the provided information, let's expand on the key features for product to create a more comprehensive product offering.
@@ -65,7 +66,9 @@ Key Features:
 {Feature 1}
 {Feature 2}
 {Feature 3}
-... [Continue this structure for as many features as needed]
+{Feature 4}
+[Continue this structure for as many features as needed]
+{Feature n}
 Timeline:
 {Start Date}: {Description of what happens on this date or what gets released/begins.}
 {Another Important Date}: {Description of what happens on this date or what gets released/updated.}
@@ -74,8 +77,9 @@ With these added details, the product should offer a more comprehensive solution
 '''
 
 PRODUCT_MANAGER_BRAINSTORM_ROLE_ASSUMPTION = f'''Assume you are product manager, Assuming you are a product manager, 
-based on the information I provide, 
-help me incorporate more detailed key features from similar products. Break Key Features down into sub-features.'''
+based on the information I provide, do following things:
+1. Breakdown each key feature into more detailed key features.
+2. Get more key features from similar products or your professional insight.'''
 
 def build_gpt_prompt(role_assumption: str, output_format: str):
     return f"{role_assumption}\n\n{output_format}"

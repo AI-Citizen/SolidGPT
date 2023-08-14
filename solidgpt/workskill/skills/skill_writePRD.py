@@ -29,12 +29,11 @@ class ProductBasicInfo:
 
 class WritePRD(WorkSkill):
 
-    def __init__(self, input_product_information: ProductBasicInfo, inputs_config: dict = None, output_config = None):
+    def __init__(self, input_product_information: ProductBasicInfo):
         super().__init__()
         self.gpt_manager = GPTManager._instance
         self.name = SKILL_NAME_WRITE_PRODUCT_REQUIREMENTS_DOCUMENTATION
         self.input_product_key_info = SkillInput(
-            None if inputs_config is None else inputs_config[0],
             "Design Doc",
             SkillIOParamCategory.SourceCode,
             input_product_information.display_info(),
@@ -45,13 +44,11 @@ class WritePRD(WorkSkill):
         brain_storm_product_info = self._run_product_brainstorm_model()
         prd = self._run_write_brd_model(brain_storm_product_info)
         super().execute()
-        path = save_to_md("PRDDocument", prd)
+        save_to_md("PRDDocument", prd)
         self.output = SkillOutput(
-            None,
             "Code Result",
-            SkillIOParamCategory.FILE,
-            path,
-            -1,
+            SkillIOParamType.File,
+            SkillIOParamCategory.ProductRequirementsDocument,
         )
         return
     
@@ -72,10 +69,11 @@ class WritePRD(WorkSkill):
             model="gpt-3.5-turbo",
             prompt=prompt,
             gpt_model_label="product_brainstorm",
-            temperature=0.1,
+            temperature=0.01,
         )
-        model.chat_with_model(self.input_product_key_info.param_content)
-        return model.chat_with_model("Make all of the sub feature as the key features and regenerates the product information.")
+        brainstorm = model.chat_with_model(self.input_product_key_info.param_content)
+        logging.info("Brainstorm result: %s", brainstorm)
+        return brainstorm
 
 # Test code will remove later
 project_ai_says = ProductBasicInfo(

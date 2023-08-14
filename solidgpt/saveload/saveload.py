@@ -103,5 +103,3 @@ def save_to_md(filename, content: str, path = "") -> str:
         md_file.write(content)
     logging.info(f"Information saved to {full_path}")
     return full_path
-
-save_to_md("test.md", "test content")

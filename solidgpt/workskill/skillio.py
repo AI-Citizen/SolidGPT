@@ -55,6 +55,7 @@ class SkillInput:
     def __init__(self,
                  param_name: str,
                  param_category: SkillIOParamCategory,
+                 param_content: str,
                  optional: bool = False,
                  ):
         # Initialization
@@ -62,7 +63,7 @@ class SkillInput:
         self.param_category = param_category
         self.optional = optional
         self.param_type = SkillIOParamType.StringContent
-        self.param_content = ""
+        self.param_content = param_content
         self.loading_method = SkillInputLoadingMethod.LOAD_FROM_STRING
         self.load_from_output_id = -1
         return

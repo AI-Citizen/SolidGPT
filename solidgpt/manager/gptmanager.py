@@ -22,8 +22,8 @@ class GPTManager:
         self.gpt_models_container[gpt_model_label] = gpt_model
         return gpt_model
     
-    def create_and_chat_with_model(self, model, prompt, gpt_model_label, input_message):
-        gpt_model = self.create_model(model, prompt, gpt_model_label)
+    def create_and_chat_with_model(self, model, prompt, gpt_model_label, input_message, temperature = 0.1):
+        gpt_model = self.create_model(model, prompt, gpt_model_label, temperature)
         return gpt_model.chat_with_model(input_message)
 
     def get_gpt_model(self, gpt_model_label):
