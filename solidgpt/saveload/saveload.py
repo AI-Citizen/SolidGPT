@@ -4,30 +4,19 @@ import os
 from definitions import ROOT_DIR
 from solidgpt.worknode.worknode import *
 from solidgpt.imports import *
+from solidgpt.util.util import *
 
 
 SKILL_NAME_TO_CONSTRUCTOR: dict = {
     SKILL_NAME_DEBUG_CODE: DebugCode,
     SKILL_NAME_WRITE_CODE: WriteCode,
+    SKILL_NAME_WRITE_PRODUCT_REQUIREMENTS_DOCUMENTATION: WritePRD,
 }
 
 
 AGENT_NAME_TO_CONSTRUCTOR: dict = {
     AGENT_NAME_SOFTWARE_DEVELOPER: AgentSoftwareDeveloper,
 }
-
-
-def save_to_json(data, filename="data.json"):
-    # Save data to a JSON file
-    with open(filename, "w") as json_file:
-        json.dump(data, json_file, indent=4)
-
-
-def load_from_json(filename="data.json"):
-    # Load data from a JSON file
-    with open(filename, "r") as json_file:
-        loaded_data = json.load(json_file)
-    return loaded_data
 
 
 def generate_save_data_from_nodes(nodes: list[WorkNode], generate_debug_info: bool = False):
@@ -53,8 +42,8 @@ def generate_save_data_from_nodes(nodes: list[WorkNode], generate_debug_info: bo
 
         for i in skill.inputs:
             temp_input = {
-                "param_type": str(i.param_type),
-                "param_content": i.param_content,
+                # "param_type": str(i.param_type),
+                "param_path": i.param_path,
                 "loading_method": str(i.loading_method),
                 "load_from_output_id": i.load_from_output_id,
             }
@@ -72,7 +61,7 @@ def generate_save_data_from_nodes(nodes: list[WorkNode], generate_debug_info: bo
 
             if generate_debug_info:
                 temp_output["param_category"] = str(o.param_category)
-                temp_output["param_type"] = str(o.param_type)
+                # temp_output["param_type"] = str(o.param_type)
                 temp_output["id"] = o.id
 
             node_data["outputs"].append(temp_output)
@@ -94,12 +83,3 @@ def load_save_data_to_nodes(loaded_data):
         node = WorkNode(node_data["node_id"], agent)
         nodes.append(node)
     return nodes
-
-
-def save_to_md(filename, content: str, path = "") -> str:
-    path = os.path.join(ROOT_DIR, path)
-    full_path = os.path.join(path, filename)
-    with open(full_path, "w") as md_file:
-        md_file.write(content)
-    logging.info(f"Information saved to {full_path}")
-    return full_path

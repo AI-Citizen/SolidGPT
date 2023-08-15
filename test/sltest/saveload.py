@@ -17,8 +17,8 @@ def compare_json_files(file1_path, file2_path):
 
 for i in range(2):
     print("Testing scenario %d..." % i)
-    FILE_1_PATH = "./tempdata/data1.json"
-    FILE_2_PATH = "./tempdata/data2.json"
+    FILE_1_PATH = "tempdata/data1.json"
+    FILE_2_PATH = "tempdata/data2.json"
 
     print("Testing without debug info...")
     """Create Orchestration"""
@@ -43,8 +43,8 @@ for i in range(2):
     print("Test Pass")
     print("Testing with debug info...")
 
-    FILE_1_PATH = "./tempdata/data1_debug.json"
-    FILE_2_PATH = "./tempdata/data2_debug.json"
+    FILE_1_PATH = "tempdata/data1_debug.json"
+    FILE_2_PATH = "tempdata/data2_debug.json"
 
     """Create 3rd Orchestration"""
     app = Orchestration()

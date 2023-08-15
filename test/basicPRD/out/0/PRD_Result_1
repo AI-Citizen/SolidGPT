@@ -1,0 +1,82 @@
+# AI Says PRD
+
+## Overview
+AI Says is an AI-powered chatbot that provides stock analysis and trading strategies for Chinese retail investors. The chatbot utilizes AI algorithms to analyze financial reports, key stock indicators, and market trends to offer personalized recommendations and trading strategies. The goal is to empower Chinese retail investors by providing them with accurate and actionable insights to make informed investment decisions.
+
+## Target Customers
+The primary target customers for AI Says are retail investors from China. These investors may have limited knowledge and experience in stock analysis and trading strategies. AI Says aims to bridge this knowledge gap and provide a user-friendly platform for investors to access AI-driven stock analysis and trading strategies.
+
+## Business Objective Opportunity
+The business objective of AI Says is to empower Chinese retail investors by providing AI-driven stock analysis and trading strategies. The opportunity lies in the growing demand for AI-powered investment tools in the Chinese market. By offering a comprehensive and user-friendly platform, AI Says aims to capture a significant market share and establish itself as a trusted and reliable source of investment insights.
+
+The success of AI Says will be measured by metrics such as user engagement, user satisfaction, and the number of successful trades made by users based on the provided recommendations. Additionally, customer complaints and negative feedback will be monitored to identify areas for improvement and address any downsides.
+
+## Scope/Out-of-Scope
+The scope of AI Says includes the following features:
+- AI analysis of stocks' financial reports
+- AI analysis of key stock indicators
+- AI assistance in strategy implementation and backtesting
+- User-friendly chat interface
+- Comprehensive stock database
+
+The out-of-scope items for AI Says include:
+- Providing real-time stock prices and trading capabilities
+- Offering financial advice or personalized investment recommendations
+- Providing access to international stock markets
+
+AI Says will be considered "done" when it successfully provides accurate and timely stock analysis, offers a user-friendly chat interface, and assists users in implementing and backtesting trading strategies.
+
+## User Stories
+| Story                                                                                       | Value(L,M,H) | Cost/Complexity(L,M,H) | Priority |
+|---------------------------------------------------------------------------------------------|--------------|------------------------|----------|
+| As a retail investor, I want to receive AI-driven stock analysis based on financial reports, so that I can make informed investment decisions.                             | M            | H                      | 1        |
+| As a retail investor, I need AI analysis of key stock indicators like ROE and P/E, in order to assess a company's profitability and valuation.                   | L            | M                      | 2        |
+| As a retail investor, I wish to receive trading strategies and backtesting capabilities from AI, ensuring I can implement and evaluate different investment approaches.                             | H            | L                      | 3        |
+| As a retail investor, I want to interact with the AI through a user-friendly chat interface, so that I can easily ask questions and receive real-time responses.                             | M            | M                      | 4        |
+| As a retail investor, I would like access to a comprehensive stock database, including detailed company profiles and historical stock prices, to conduct thorough analysis.                             | H            | H                      | 5        |
+| As a retail investor, I want to receive personalized recommendations based on my preferences and investment goals, ensuring the AI caters to my specific needs.                             | M            | M                      | 6        |
+
+## Additional Requirements and Feature Details
+The key features of AI Says are as follows:
+
+### AI Analysis of Stocks' Financial Reports
+- Analyzes financial statements, balance sheets, and income statements to provide insights on a company's financial health.
+- Identifies trends, patterns, and anomalies in financial data to help investors make informed decisions.
+- Provides recommendations based on financial analysis.
+
+### AI Analysis of Key Stock Indicators
+- Evaluates key financial ratios such as Return on Equity (ROE) and Price-to-Earnings (P/E) ratio to assess a company's profitability and valuation.
+- Compares these indicators with industry benchmarks to identify potential investment opportunities.
+- Generates reports and visualizations to present the analysis in an easy-to-understand format.
+
+### AI Assistance in Strategy Implementation and Backtesting
+- Provides trading strategies based on technical analysis, market trends, and historical data.
+- Helps investors implement trading strategies by providing real-time alerts and notifications.
+- Offers backtesting capabilities to evaluate the performance of trading strategies using historical data.
+
+### User-Friendly Chat Interface
+- Allows users to interact with the AI through a chat interface, making it easy to ask questions and receive real-time responses.
+- Supports natural language processing to understand user queries and provide relevant information.
+- Offers personalized recommendations based on user preferences and investment goals.
+
+### Comprehensive Stock Database
+- Includes a vast database of Chinese stocks, covering a wide range of industries and market segments.
+- Regularly updates stock data to ensure accurate and up-to-date information for analysis.
+- Provides detailed company profiles, historical stock prices, and other relevant data for comprehensive analysis.
+
+## Features Release Table
+| Features                           | Description   | Accept Criteria | Priority |
+|------------------------------------|---------------|-----------------|----------|
+| AI Analysis of Stocks' Financial Reports   | AI analyzes financial reports to provide insights on a company's financial health. | Financial analysis accurately identifies trends and anomalies. | High |
+| AI Analysis of Key Stock Indicators   | AI evaluates key stock indicators to assess a company's profitability and valuation. | Analysis is based on accurate data and provides actionable insights. | High |
+| AI Assistance in Strategy Implementation and Backtesting   | AI provides trading strategies and backtesting capabilities. | Strategies are based on accurate analysis and backtesting results are reliable. | High |
+| User-Friendly Chat Interface   | AI interacts with users through a chat interface. | Chat interface is intuitive and provides real-time responses. | Medium |
+| Comprehensive Stock Database   | AI has access to a comprehensive stock database. | Database includes a wide range of Chinese stocks with accurate and up-to-date information. | Medium |
+
+## Launch Milestones & Phases
+| Timing             | Features/User Stories         | Key Objectives                            |
+|--------------------|-------------------------------|-------------------------------------------|
+| 08.2023 | Development phase begins | AI model training and database setup |
+| 09.2023 | Alpha release | AI analysis of 300 Chinese stocks based on financial reports and key indicators |
+| 12.2023 | Beta release | AI analysis of 5000 Chinese stocks, trading strategies, and backtesting capabilities |
+| 2024 Q1 | Official release | Comprehensive set of features, including advanced trading strategies, personalized recommendations, and a user-friendly chat interface |

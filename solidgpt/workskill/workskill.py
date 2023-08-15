@@ -39,7 +39,25 @@ class WorkSkill:
         return
 
     def execute(self):
+        self.begin_execution()
+        self.execution_impl()
+        self.finish_execution()
+
+    def execution_impl(self):
+        pass
+
+    def begin_execution(self):
+        self.read_input()
+        pass
+
+    def finish_execution(self):
         print("Agent finishes " + str(self.name) + " task...")
         if self.agent: 
             self.agent.node.finish_execution()
         return
+
+    def read_input(self):
+        pass
+
+    def get_input_path(self, skill_input: SkillInput):
+        return self.agent.node.orchestration.get_input_path(skill_input)

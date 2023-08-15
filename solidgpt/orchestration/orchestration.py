@@ -1,6 +1,10 @@
 """everything in orchestration can be considered as global"""
 from solidgpt.saveload.saveload import *
 from solidgpt.imports import *
+import os
+
+# Path to the folder you want to create
+output_folder_path = "out"
 
 
 class Orchestration:
@@ -16,7 +20,16 @@ class Orchestration:
         self.node_map = {}
         self.output_map = {}
         self.output_id_to_node_map = {}
+        if not os.path.exists(output_folder_path):
+            # Create the output folder
+            os.makedirs(output_folder_path)
+            print(f"Folder '{output_folder_path}' created.")
+        else:
+            print(f"Folder '{output_folder_path}' already exists. You may want to delete it first.")
         return
+
+    def add_node(self, node: WorkNode):
+        self.nodes.append(node)
 
     def init_node_dependencies(self):
 
@@ -32,8 +45,20 @@ class Orchestration:
             # add node to node map
             self.node_map[node.node_id] = node
 
+            # create directory for node
+            node_folder_path = output_folder_path + "/" + str(node.node_id)
+            if not os.path.exists(node_folder_path):
+                # Create the output folder
+                os.makedirs(node_folder_path)
+                print(f"Folder '{node_folder_path}' created.")
+            else:
+                print(f"Folder '{node_folder_path}' already exists. You may want to delete it first.")
+
             # add output to output map
             for o in node.agent.skill.outputs:
+                # initialize output paths
+                o.param_path = node_folder_path + "/" + (o.param_name + " " + str(o.id)).replace(" ", "_")
+                # output can be consumed by inputs of other nodes
                 if o.id >= 0:
                     self.output_map[o.id] = o
                     self.output_id_to_node_map[o.id] = node
@@ -159,3 +184,10 @@ class Orchestration:
         self.nodes = load_save_data_to_nodes(loaded_data)
         self.init_node_dependencies()
         return
+
+    def get_input_path(self, skill_input: SkillInput):
+        if skill_input.loading_method == SkillInputLoadingMethod.LOAD_FROM_STRING:
+            return skill_input.param_path
+        elif skill_input.loading_method == SkillInputLoadingMethod.LOAD_FROM_OUTPUT_ID:
+            return self.output_map[skill_input.load_from_output_id].param_path
+        return ""

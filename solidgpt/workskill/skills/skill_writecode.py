@@ -14,13 +14,11 @@ class WriteCode(WorkSkill):
         self.add_input(self.input_design_doc)
         self.output_source_code = SkillOutput(
             "Code Result",
-            SkillIOParamType.StringContent,
             SkillIOParamCategory.SourceCode,
         )
         self.add_output(self.output_source_code)
 
-    def execute(self):
+    def execution_impl(self):
         print("Printing code result here...")
-        super().execute()
-        self.output_source_code.param_content = "a = a + 1;"
+        self.output_source_code.param_path = "a = a + 1;"
         return

@@ -1,9 +1,11 @@
 import logging
 from solidgpt.manager.gptmanager import GPTManager
 from solidgpt.manager.promptresource import PRODUCT_MANAGER_BRAINSTORM_OUTPUT_TEMPLATE, PRODUCT_MANAGER_BRAINSTORM_ROLE_ASSUMPTION, PRODUCT_MANAGER_PRD_OUTPUT_TEMPLATE, PRODUCT_MANAGER_PRD_ROLE_ASSUMPTION, build_gpt_prompt
-from solidgpt.saveload.saveload import save_to_md
+from solidgpt.saveload.saveload import *
+from solidgpt.util.util import *
 from solidgpt.workskill.skillio import *
 from solidgpt.workskill.workskill import *
+
 
 class ProductBasicInfo:
     def __init__(self, product_name, short_description, target_audience, business_goal, key_features, project_timeline):
@@ -27,29 +29,43 @@ class ProductBasicInfo:
         )
         return full_info
 
+
 class WritePRD(WorkSkill):
 
-    def __init__(self, input_product_information: ProductBasicInfo):
+    def __init__(self):
         super().__init__()
         self.gpt_manager = GPTManager._instance
         self.name = SKILL_NAME_WRITE_PRODUCT_REQUIREMENTS_DOCUMENTATION
         self.input_product_key_info = SkillInput(
             "Design Doc",
             SkillIOParamCategory.SourceCode,
-            input_product_information.display_info(),
         )
-
-    def execute(self):
-        print("Printing code result here...")
-        brain_storm_product_info = self._run_product_brainstorm_model()
-        prd = self._run_write_brd_model(brain_storm_product_info)
-        super().execute()
-        save_to_md("PRDDocument", prd)
-        self.output = SkillOutput(
-            "Code Result",
-            SkillIOParamType.File,
+        self.add_input(self.input_product_key_info)
+        self.output_md = SkillOutput(
+            "PRD Result",
             SkillIOParamCategory.ProductRequirementsDocument,
         )
+        self.add_output(self.output_md)
+        self.input_product_information = None
+
+    def read_input(self):
+        input_path = self.get_input_path(self.input_product_key_info)
+        obj = load_from_json(input_path)
+        project_ai_says = ProductBasicInfo(
+            product_name=obj["product_name"],
+            short_description=obj["short_description"],
+            target_audience=obj["target_audience"],
+            business_goal=obj["business_goal"],
+            key_features=obj["key_features"],
+            project_timeline=obj["project_timeline"],
+        )
+        self.input_product_information = project_ai_says
+
+    def execution_impl(self):
+        print("Printing PRD result here...")
+        brain_storm_product_info = self._run_product_brainstorm_model()
+        prd = self._run_write_brd_model(brain_storm_product_info)
+        save_to_md2(self.output_md.param_path, prd)
         return
     
     def _run_write_brd_model(self, brain_storm_product_info):
@@ -71,29 +87,30 @@ class WritePRD(WorkSkill):
             gpt_model_label="product_brainstorm",
             temperature=0.01,
         )
-        brainstorm = model.chat_with_model(self.input_product_key_info.param_content)
+        brainstorm = model.chat_with_model(self.input_product_information.display_info())
         logging.info("Brainstorm result: %s", brainstorm)
         return brainstorm
 
-# Test code will remove later
-project_ai_says = ProductBasicInfo(
-    product_name="AI Says",
-    short_description="Chat with AI that aids in stock analysis and implements trading strategies.",
-    target_audience="Retail investors from China",
-    business_goal="Empower Chinese retail investors using AI",
-    key_features=[
-        "AI analyses stocks' financial reports",
-        "AI analyses key stock indicators like ROE, P/E",
-        "AI assists traders in strategy implementation and backtesting"
-    ],
-    project_timeline={
-        "08.2023": "Development phase",
-        "09.2023": "Alpha release: Analysis of 300 Chinese stocks",
-        "12.2023": "Beta release: Analysis of 5000 Chinese stocks",
-        "2024 Q1": "Official release: Includes trading strategies and backtest features"
-    }
-)
 
-GPTManager()
-skill = WritePRD(project_ai_says)
-print(skill.execute())
+# Test code will remove later
+# project_ai_says = ProductBasicInfo(
+#     product_name="AI Says",
+#     short_description="Chat with AI that aids in stock analysis and implements trading strategies.",
+#     target_audience="Retail investors from China",
+#     business_goal="Empower Chinese retail investors using AI",
+#     key_features=[
+#         "AI analyses stocks' financial reports",
+#         "AI analyses key stock indicators like ROE, P/E",
+#         "AI assists traders in strategy implementation and backtesting"
+#     ],
+#     project_timeline={
+#         "08.2023": "Development phase",
+#         "09.2023": "Alpha release: Analysis of 300 Chinese stocks",
+#         "12.2023": "Beta release: Analysis of 5000 Chinese stocks",
+#         "2024 Q1": "Official release: Includes trading strategies and backtest features"
+#     }
+# )
+#
+# GPTManager()
+# skill = WritePRD(project_ai_says)
+# print(skill.execute())

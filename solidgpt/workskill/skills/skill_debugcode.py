@@ -20,13 +20,11 @@ class DebugCode(WorkSkill):
         self.add_input(self.input_error_message)
         self.output_error_analysis = SkillOutput(
             "Debug Result",
-            SkillIOParamType.StringContent,
             SkillIOParamCategory.PlainText,
         )
         self.add_output(self.output_error_analysis)
 
-    def execute(self):
+    def execution_impl(self):
         print("Printing debug result here...")
-        super().execute()
-        self.output_error_analysis.param_content = "This code is wrong because..."
+        self.output_error_analysis.param_path = "This code is wrong because..."
         return
