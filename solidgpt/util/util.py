@@ -30,6 +30,7 @@ def save_to_md2(filename, content: str) -> str:
     full_path = add_extension_if_not_exist(full_path, ".md")
     with open(full_path, "w") as md_file:
         md_file.write(content)
+        md_file.flush()
     logging.info(f"Information saved to {full_path}")
     return full_path
 
