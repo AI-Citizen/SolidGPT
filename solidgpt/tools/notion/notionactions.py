@@ -61,9 +61,9 @@ class NotionActions:
         if content is not None:
             self.notion.blocks.children.append(self.page, content)
 
-    def sync_from_notion(self, doc_name: str = "PRDDocument"):
+    def sync_from_notion(self, path: str = os.path.join(ROOT_DIR), doc_name: str = "PRDDocument"):
         # MarkdownExporter will make markdown file on your output path
-        MarkdownExporter(block_id=PAGE_ID, output_path=os.path.join(ROOT_DIR), download=True, unzipped=True, output_filename= doc_name).export()
+        MarkdownExporter(block_id=PAGE_ID, output_path=path, download=True, unzipped=True, output_filename= doc_name).export()
 
 
 # Test will remove later

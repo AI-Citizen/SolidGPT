@@ -48,7 +48,7 @@ class WritePRD(WorkSkill):
         self.add_output(self.output_md)
         self.input_product_information = None
 
-    def read_input(self):
+    def _read_input(self):
         input_path = self.get_input_path(self.input_product_key_info)
         obj = load_from_json(input_path)
         project_ai_says = ProductBasicInfo(

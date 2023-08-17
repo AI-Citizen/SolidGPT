@@ -14,4 +14,5 @@ tqdm==4.66.1
 urllib3==2.0.4
 yarl==1.9.2
 notional==0.8.0
-notion2md==1.2.3
+notion2md==2.8.3
+pynput==1.7.6
