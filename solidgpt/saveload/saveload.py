@@ -5,17 +5,20 @@ from definitions import ROOT_DIR
 from solidgpt.worknode.worknode import *
 from solidgpt.imports import *
 from solidgpt.util.util import *
+from typing import Type
 
 
-SKILL_NAME_TO_CONSTRUCTOR: dict = {
+SKILL_NAME_TO_CONSTRUCTOR: dict[str, Type[WorkSkill]] = {
     SKILL_NAME_DEBUG_CODE: DebugCode,
     SKILL_NAME_WRITE_CODE: WriteCode,
     SKILL_NAME_WRITE_PRODUCT_REQUIREMENTS_DOCUMENTATION: WritePRD,
+    SKILL_NAME_USE_NOTION: UseNotion,
 }
 
 
-AGENT_NAME_TO_CONSTRUCTOR: dict = {
+AGENT_NAME_TO_CONSTRUCTOR: dict[str, Type[WorkAgent]] = {
     AGENT_NAME_SOFTWARE_DEVELOPER: AgentSoftwareDeveloper,
+    AGENT_NAME_PRODUCT_MANAGER: AgentProductManager,
 }
 
 

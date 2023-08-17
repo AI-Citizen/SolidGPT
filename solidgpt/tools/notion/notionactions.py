@@ -66,7 +66,7 @@ class NotionActions:
         MarkdownExporter(block_id=PAGE_ID, output_path=path, download=True, unzipped=True, output_filename= doc_name).export()
 
 
-# Test will remove later
-actions = NotionActions()
-#actions.process_markdown_and_upload(os.path.join(ROOT_DIR, "PRDDocument.md"))
-actions.sync_from_notion()
+# # Test will remove later
+# actions = NotionActions()
+# #actions.process_markdown_and_upload(os.path.join(ROOT_DIR, "PRDDocument.md"))
+# actions.sync_from_notion()

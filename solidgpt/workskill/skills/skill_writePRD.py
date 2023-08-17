@@ -42,7 +42,7 @@ class WritePRD(WorkSkill):
         )
         self.add_input(self.input_product_key_info)
         self.output_md = SkillOutput(
-            "PRD Result",
+            "Write Brd Model PRD Result",
             SkillIOParamCategory.ProductRequirementsDocument,
         )
         self.add_output(self.output_md)
