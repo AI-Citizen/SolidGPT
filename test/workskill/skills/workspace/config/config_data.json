@@ -1,0 +1,19 @@
+[
+    {
+        "node_id": 0,
+        "agent": "Product Manager",
+        "skill": "Use Notion",
+        "inputs": [
+            {
+                "param_path": "/Users/wuqiten/Workplace/solidgpt-workspace/SolidGPT/test/workskill/skills/workspace/in/PRDSimple",
+                "loading_method": "SkillInputLoadingMethod.LOAD_FROM_STRING",
+                "load_from_output_id": -1
+            }
+        ],
+        "outputs": [
+            {
+                "id": 1
+            }
+        ]
+    }
+]

@@ -47,7 +47,7 @@ class WorkSkill:
         pass
 
     def begin_execution(self):
-        self.read_input()
+        self._read_input()
         pass
 
     def finish_execution(self):
@@ -56,7 +56,7 @@ class WorkSkill:
             self.agent.node.finish_execution()
         return
 
-    def read_input(self):
+    def _read_input(self):
         pass
 
     def get_input_path(self, skill_input: SkillInput):

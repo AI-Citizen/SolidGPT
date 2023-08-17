@@ -8,11 +8,13 @@ class WorkAgent:
     skills_available: list[str] = []
     node = None
 
-    def __init__(self):
-        self.name = ""
-        self.skills_available = []
+    def __init__(self, name : str, skills_available : list[str], skill : WorkSkill):
+        self.name = name
+        self.skills_available = skills_available
         self.node = None
-        # self.skill = WorkSkill()
+        self.skill = skill if skill.name in self.skills_available else None
+        if self.skill:
+            self.skill.agent = self
         return
 
     def execute(self):
