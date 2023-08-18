@@ -18,7 +18,7 @@ def run_test():
                 "id": 1
             }
         ])
-    agent: WorkAgent = AgentSoftwareDeveloper(skill)
+    agent: WorkAgent = AgentProductManager(skill)
     node: WorkNode = WorkNode(0, agent)
     app.add_node(node)
     app.init_node_dependencies()

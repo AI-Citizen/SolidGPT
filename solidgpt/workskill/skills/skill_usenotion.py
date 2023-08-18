@@ -20,18 +20,20 @@ class UseNotion(WorkSkill):
             SkillIOParamCategory.ProductRequirementsDocument,
         )
         self.add_input(self.skill_input)
-        self.skill_ouput = SkillOutput(
-            "PRD Doc",
+        self.skill_output = SkillOutput(
+            "Notion PRD Doc",
             SkillIOParamCategory.ProductRequirementsDocument,
         )
-        self.add_output(self.skill_ouput)
+        self.add_output(self.skill_output)
         self.notion_actions = NotionActions()
 
-
+    def _read_input(self):
+        logging.info("Sync to Notion, please visit Notion to edit your PRD...")
+        input_file_path: str = self.get_input_path(self.skill_input)
+        input_file_path = add_extension_if_not_exist(input_file_path, ".md")
+        self.notion_actions.process_markdown_and_upload(input_file_path)
 
     def execution_impl(self):
-        logging.info("Sync to Notion, please visit Notion to edit your PRD...")
-        self.notion_actions.process_markdown_and_upload(self.skill_input.param_path)
         logging.info("""Sync up done. 
         Please edit PRD in Notion and press A to Approve the new revision.
         Please edit PRD in Notion and press D to Deny the new revision.
@@ -47,7 +49,8 @@ class UseNotion(WorkSkill):
             try:
                 if key.char == 'a':
                     logging.info("Approve the new PRD revision")
-                    self.notion_actions.sync_from_notion(self.skill_ouput.param_path)
+                    self.notion_actions.sync_from_notion(os.path.dirname(self.skill_output.param_path),
+                                                         os.path.basename(self.skill_output.param_path))
                     logging.info("Sync the latest revision from notion done.")
                     return False  # Stop the listener
                 elif key.char == 'd':
@@ -56,7 +59,8 @@ class UseNotion(WorkSkill):
                     return False
                 elif key.char == 'r':
                     logging.info("Request the new PRD revision")
-                    self.notion_actions.sync_from_notion(self.skill_output.param_path)
+                    self.notion_actions.sync_from_notion(os.path.dirname(self.skill_output.param_path),
+                                                         os.path.basename(self.skill_output.param_path))
                     sleep(2)
                     # Waiting for the new revision
             except AttributeError:
