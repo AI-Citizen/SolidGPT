@@ -1,7 +1,4 @@
 from solidgpt.workagent.workagent import *
-from solidgpt.workskill.skills.skill_debugcode import DebugCode
-from solidgpt.workskill.skills.skill_writecode import WriteCode
-
 
 class AgentSoftwareDeveloper(WorkAgent):
 

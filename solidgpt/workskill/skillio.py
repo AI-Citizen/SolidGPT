@@ -7,6 +7,7 @@ class SkillIOParamCategory(Enum):
     HighLevelDesignDocument = 3
     SourceCode = 4
     PlainText = 5
+    KanbanBoard = 6
 
 
 class SkillInputLoadingMethod(Enum):

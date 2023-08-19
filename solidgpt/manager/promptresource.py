@@ -142,10 +142,10 @@ PE_ROE_ASSUMPTION = f'''Assuming you are a Software Development Manager,
 help me create a Kanban board baseon the Dev Desgin.
 '''
 
-PE_KANBAN_OUTPUT_TEMPLATE = f'''Based on the provided design, 
-could you help me create a Kanban board using Markdown format? 
-The columns I'd like are: Task Name, Task Description, Priority (H/M/L), 
-Status (Input/Spec/Imple/PR/Done/Pending), Due Date, and Engineer Points.'''
+PE_KANBAN_OUTPUT_TEMPLATE = f'''Based on the provided high level design, 
+could you help me create a development Kanban board using Markdown format? 
+The columns I'd like are: 
+|Task Name|Task Description|User story|Acceptance Criteria|Priority (H/M/L)|Status (Input/Spec/Imple/PR/Done/Pending)|Due Date|Engineer Points|.'''
 
 def build_gpt_prompt(role_assumption: str, output_format: str):
     return f"{role_assumption}\n\n{output_format}"
