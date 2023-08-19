@@ -40,3 +40,9 @@ def add_extension_if_not_exist(input_string, extension):
         return input_string + extension
     else:
         return input_string
+
+
+def same_string(s1: str, s2: str, case_sensitive: bool = False):
+    if case_sensitive:
+        return s1 == s2
+    return s1.lower() == s2.lower()

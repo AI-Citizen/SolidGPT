@@ -27,6 +27,7 @@ def generate_save_data_from_nodes(nodes: list[WorkNode], generate_debug_info: bo
     for node in nodes:
         node_data = {
             "node_id": node.node_id,
+            "manual_review_result": node.manual_review_result
         }
 
         if generate_debug_info:
@@ -83,6 +84,6 @@ def load_save_data_to_nodes(loaded_data):
         skill: WorkSkill = SKILL_NAME_TO_CONSTRUCTOR.get(skill_name)()
         skill.init_config(inputs_data, outputs_data)
         agent = AGENT_NAME_TO_CONSTRUCTOR.get(agent_name)(skill)
-        node = WorkNode(node_data["node_id"], agent)
+        node = WorkNode(node_data["node_id"], agent, node_data["manual_review_result"])
         nodes.append(node)
     return nodes
