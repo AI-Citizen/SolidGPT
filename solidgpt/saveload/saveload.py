@@ -19,6 +19,7 @@ SKILL_NAME_TO_CONSTRUCTOR: dict[str, Type[WorkSkill]] = {
 AGENT_NAME_TO_CONSTRUCTOR: dict[str, Type[WorkAgent]] = {
     AGENT_NAME_SOFTWARE_DEVELOPER: AgentSoftwareDeveloper,
     AGENT_NAME_PRODUCT_MANAGER: AgentProductManager,
+    AGENT_NAME_PRINCIPAL_ENGINEER: AgentPrincipalEngineer,
 }
 
 
