@@ -7,10 +7,8 @@ class WorkSkill:
     inputs: list[SkillInput] = []
     outputs: list[SkillOutput] = []
     action: str = ""
-    agent = None
 
     def __init__(self):
-        self.agent = None
         self.name = ""
         self.inputs = []
         self.outputs = []
@@ -47,17 +45,16 @@ class WorkSkill:
         pass
 
     def begin_execution(self):
+        print("Agent begins " + str(self.name) + " task...")
         self._read_input()
         pass
 
     def finish_execution(self):
         print("Agent finishes " + str(self.name) + " task...")
-        if self.agent: 
-            self.agent.node.finish_execution()
         return
 
     def _read_input(self):
         pass
 
     def get_input_path(self, skill_input: SkillInput):
-        return self.agent.node.orchestration.get_input_path(skill_input)
+        return skill_input.get_input_path()
