@@ -5,8 +5,10 @@ from solidgpt.workagent.agents.agent_productmanager import AgentProductManager
 from solidgpt.workagent.agents.agent_softwaredeveloper import AgentSoftwareDeveloper
 from solidgpt.workagent.workagent import WorkAgent
 from solidgpt.worknode.worknode import WorkNode
+from solidgpt.workskill.skills.skill_createkanban import CreateKanBan
 from solidgpt.workskill.skills.skill_debugcode import DebugCode
 from solidgpt.workskill.skills.skill_usenotion import UseNotion
+from solidgpt.workskill.skills.skill_writeHLD import WriteHLD
 from solidgpt.workskill.skills.skill_writePRD import WritePRD
 from solidgpt.workskill.skills.skill_writecode import WriteCode
 
@@ -18,6 +20,8 @@ SKILL_NAME_TO_CONSTRUCTOR: dict[str, Type[WorkSkill]] = {
     SKILL_NAME_WRITE_CODE: WriteCode,
     SKILL_NAME_WRITE_PRODUCT_REQUIREMENTS_DOCUMENTATION: WritePRD,
     SKILL_NAME_USE_NOTION: UseNotion,
+    SKILL_NAME_WRITE_HLD: WriteHLD,
+    SKILL_NAME_CREATE_KANBAN_BOARD: CreateKanBan,
 }
 
 
