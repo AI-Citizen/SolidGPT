@@ -1,0 +1,1 @@
+export var YEAR_DECADE_COUNT = 10;

@@ -1,0 +1,85 @@
+{
+  "name": "react-docgen",
+  "version": "5.4.3",
+  "description": "A CLI and toolkit to extract information from React components for documentation generation.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reactjs/react-docgen.git"
+  },
+  "bugs": {
+    "url": "https://github.com/reactjs/react-docgen/issues"
+  },
+  "bin": {
+    "react-docgen": "bin/react-docgen.js"
+  },
+  "files": [
+    "bin",
+    "dist"
+  ],
+  "engines": {
+    "node": ">=8.10.0"
+  },
+  "main": "dist/main.js",
+  "scripts": {
+    "build": "rimraf dist/ && babel src/ --out-dir dist/ --ignore **/__tests__,**/__mocks__,**/src/types.js",
+    "lint": "eslint . --report-unused-disable-directives",
+    "fix": "eslint . --fix --report-unused-disable-directives",
+    "prepare": "yarn build",
+    "preversion": "yarn lint",
+    "test": "jest",
+    "test:ci": "yarn lint && yarn flow && yarn test --runInBand",
+    "watch": "yarn build --watch"
+  },
+  "keywords": [
+    "react",
+    "documentation-generation"
+  ],
+  "author": {
+    "name": "Felix Kling"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@babel/core": "^7.7.5",
+    "@babel/generator": "^7.12.11",
+    "@babel/runtime": "^7.7.6",
+    "ast-types": "^0.14.2",
+    "commander": "^2.19.0",
+    "doctrine": "^3.0.0",
+    "estree-to-babel": "^3.1.0",
+    "neo-async": "^2.6.1",
+    "node-dir": "^0.1.10",
+    "strip-indent": "^3.0.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "7.18.6",
+    "@babel/eslint-parser": "7.18.2",
+    "@babel/plugin-transform-runtime": "7.18.6",
+    "@babel/preset-env": "7.18.6",
+    "@babel/preset-flow": "7.18.6",
+    "babel-jest": "28.1.2",
+    "cross-spawn": "7.0.3",
+    "eslint": "8.19.0",
+    "eslint-config-prettier": "8.5.0",
+    "eslint-plugin-prettier": "4.2.1",
+    "flow-bin": "0.181.2",
+    "jest": "28.1.2",
+    "jest-diff": "28.1.1",
+    "jest-matcher-utils": "28.1.1",
+    "prettier": "2.7.1",
+    "rimraf": "3.0.2",
+    "temp": "0.9.4"
+  },
+  "jest": {
+    "snapshotSerializers": [
+      "./tests/NodePathSerializer.js"
+    ],
+    "setupFilesAfterEnv": [
+      "<rootDir>/tests/setupTestFramework.js"
+    ],
+    "roots": [
+      "bin",
+      "src"
+    ],
+    "testRegex": "/__tests__/.*-test\\.js$"
+  }
+}

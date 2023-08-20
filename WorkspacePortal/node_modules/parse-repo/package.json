@@ -1,0 +1,29 @@
+{
+  "name": "parse-repo",
+  "version": "1.0.4",
+  "description": "Extract repository info from a git remote URI",
+  "author": "Diego Guerra <dgoguerra.or@gmail.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/dgoguerra/parse-repo",
+  "keywords": [
+    "parse",
+    "repository",
+    "repo",
+    "uri",
+    "github",
+    "bitbucket"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dgoguerra/parse-repo.git"
+  },
+  "bugs": {
+    "url": "https://github.com/dgoguerra/parse-repo/issues"
+  },
+  "scripts": {
+    "test": "node_modules/.bin/tape test.js"
+  },
+  "devDependencies": {
+    "tape": "^4.5.1"
+  }
+}

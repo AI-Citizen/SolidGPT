@@ -1,0 +1,43 @@
+#!/usr/bin/env node
+
+const shell = require('shelljs');
+const publishUtils = require('../src/utils');
+const build = require('../src/build');
+const path = require('path');
+const packageJson = require(path.resolve('./package.json'));
+const parseArgs = require('../src/parse-args');
+const { config, ...args } = parseArgs(packageJson);
+
+if (!args.BUCKET_PATH) {
+  console.log(
+    'This command needs a bucket path: "my-bucket-name/path/to/destination-folder-in-bucket"'
+  );
+  process.exit(-1);
+}
+
+build(
+  args.SKIP_BUILD,
+  args.OUTPUT_DIR,
+  packageJson,
+  args.PACKAGES_DIRECTORY,
+  args.NPM_SCRIPT,
+  args.MONOREPO_INDEX_GENERATOR
+);
+
+if (args.DRY_RUN) {
+  return;
+}
+
+// If a system does not use an AWS profile we have to exclude the flag entirely.
+// This is indicated by AWS_PROFILE='NONE'.
+const awsProfile =
+  args.AWS_PROFILE === 'NONE' ? '' : `--profile ${args.AWS_PROFILE}`;
+
+console.log('=> Deploying storybook');
+publishUtils.exec(
+  `aws ${awsProfile} s3 sync ${args.OUTPUT_DIR} ${args.S3_PATH} ${args.S3_SYNC_OPTIONS || ''}`
+);
+
+shell.rm('-rf', args.OUTPUT_DIR);
+
+console.log(`=> Storybook deployed to: ${args.S3_PATH}`);

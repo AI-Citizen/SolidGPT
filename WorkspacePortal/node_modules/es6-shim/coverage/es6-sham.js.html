@@ -1,0 +1,572 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for es6-sham.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="prettify.css" />
+    <link rel="stylesheet" href="base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="index.html">All files</a> es6-sham.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">33.85% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>22/65</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">37.5% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>9/24</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">40% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>6/15</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">32.81% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>21/64</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/*!
+ * https://github.com/paulmillr/es6-shim
+ * @license es6-shim Copyright 2013-2016 by Paul Miller (http://paulmillr.com)
+ *   and contributors,  MIT License
+ * es6-sham: v0.35.4
+ * see https://github.com/paulmillr/es6-shim/blob/0.35.3/LICENSE
+ * Details and documentation:
+ * https://github.com/paulmillr/es6-shim/
+ */
+&nbsp;
+// UMD (Universal Module Definition)
+// see https://github.com/umdjs/umd/blob/master/returnExports.js
+(function (root, factory) {
+  /*global define */
+  <span class="missing-if-branch" title="if path not taken" >I</span>if (typeof define === 'function' &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >define.amd)</span> {
+    // AMD. Register as an anonymous module.
+<span class="cstat-no" title="statement not covered" >    define(factory);</span>
+  } else <span class="missing-if-branch" title="else path not taken" >E</span>if (typeof exports === 'object') {
+    // Node. Does not work with strict CommonJS, but
+    // only CommonJS-like environments that support module.exports,
+    // like Node.
+    module.exports = factory();
+  } else {
+    // Browser globals (root is window)
+<span class="cstat-no" title="statement not covered" >    root.returnExports = factory();</span>
+  }
+}(this, function () {
+  'use strict';
+&nbsp;
+  /* eslint-disable no-new-func */
+  var getGlobal = new Function('return this;');
+  /* eslint-enable no-new-func */
+&nbsp;
+  var globals = getGlobal();
+  var Object = globals.Object;
+  var _call = Function.call.bind(Function.call);
+  var functionToString = Function.toString;
+  var _strMatch = String.prototype.match;
+&nbsp;
+  var throwsError = function (func) {
+    try {
+      func();
+      return false;
+    } catch (e) {
+<span class="cstat-no" title="statement not covered" >      return true;</span>
+    }
+  };
+  var arePropertyDescriptorsSupported = function () {
+    // if Object.defineProperty exists but throws, it's IE 8
+    return !throwsError(function () {
+      Object.defineProperty({}, 'x', { get: <span class="fstat-no" title="function not covered" >fu</span>nction () {} }); // eslint-disable-line getter-return
+    });
+  };
+  var supportsDescriptors = !!Object.defineProperty &amp;&amp; arePropertyDescriptorsSupported();
+&nbsp;
+  // NOTE:  This versions needs object ownership
+  //        because every promoted object needs to be reassigned
+  //        otherwise uncompatible browsers cannot work as expected
+  //
+  // NOTE:  This might need es5-shim or polyfills upfront
+  //        because it's based on ES5 API.
+  //        (probably just an IE &lt;= 8 problem)
+  //
+  // NOTE:  nodejs is fine in version 0.8, 0.10, and future versions.
+  (function () {
+    <span class="missing-if-branch" title="else path not taken" >E</span>if (Object.setPrototypeOf) { return; }
+&nbsp;
+    // @author    Andrea Giammarchi - @WebReflection
+&nbsp;
+    var getOwnPropertyNames = <span class="cstat-no" title="statement not covered" >Object.getOwnPropertyNames;</span>
+    var getOwnPropertyDescriptor = <span class="cstat-no" title="statement not covered" >Object.getOwnPropertyDescriptor;</span>
+    var create = <span class="cstat-no" title="statement not covered" >Object.create;</span>
+    var defineProperty = <span class="cstat-no" title="statement not covered" >Object.defineProperty;</span>
+    var getPrototypeOf = <span class="cstat-no" title="statement not covered" >Object.getPrototypeOf;</span>
+    var objProto = <span class="cstat-no" title="statement not covered" >Object.prototype;</span>
+&nbsp;
+    var copyDescriptors = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >fu</span>nction (target, source) {</span>
+      // define into target descriptors from source
+<span class="cstat-no" title="statement not covered" >      getOwnPropertyNames(source).forEach(<span class="fstat-no" title="function not covered" >fu</span>nction (key) {</span>
+<span class="cstat-no" title="statement not covered" >        defineProperty(</span>
+          target,
+          key,
+          getOwnPropertyDescriptor(source, key)
+        );
+      });
+<span class="cstat-no" title="statement not covered" >      return target;</span>
+    };
+    // used as fallback when no promotion is possible
+    var createAndCopy = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >fu</span>nction (origin, proto) {</span>
+<span class="cstat-no" title="statement not covered" >      return copyDescriptors(create(proto), origin);</span>
+    };
+    var set, setPrototypeOf;
+<span class="cstat-no" title="statement not covered" >    try {</span>
+      // this might fail for various reasons
+      // ignore if Chrome cought it at runtime
+<span class="cstat-no" title="statement not covered" >      set = getOwnPropertyDescriptor(objProto, '__proto__').set;</span>
+<span class="cstat-no" title="statement not covered" >      set.call({}, null);</span>
+      // setter not poisoned, it can promote
+      // Firefox, Chrome
+<span class="cstat-no" title="statement not covered" >      setPrototypeOf = <span class="fstat-no" title="function not covered" >fu</span>nction (origin, proto) {</span>
+<span class="cstat-no" title="statement not covered" >        set.call(origin, proto);</span>
+<span class="cstat-no" title="statement not covered" >        return origin;</span>
+      };
+    } catch (e) {
+      // do one or more feature detections
+<span class="cstat-no" title="statement not covered" >      set = { __proto__: null };</span>
+      // if proto does not work, needs to fallback
+      // some Opera, Rhino, ducktape
+<span class="cstat-no" title="statement not covered" >      if (set instanceof Object) {</span>
+<span class="cstat-no" title="statement not covered" >        setPrototypeOf = createAndCopy;</span>
+      } else {
+        // verify if null objects are buggy
+        /* eslint-disable no-proto */
+<span class="cstat-no" title="statement not covered" >        set.__proto__ = objProto;</span>
+        /* eslint-enable no-proto */
+        // if null objects are buggy
+        // nodejs 0.8 to 0.10
+<span class="cstat-no" title="statement not covered" >        if (set instanceof Object) {</span>
+<span class="cstat-no" title="statement not covered" >          setPrototypeOf = <span class="fstat-no" title="function not covered" >fu</span>nction (origin, proto) {</span>
+            // use such bug to promote
+            /* eslint-disable no-proto */
+<span class="cstat-no" title="statement not covered" >            origin.__proto__ = proto;</span>
+            /* eslint-enable no-proto */
+<span class="cstat-no" title="statement not covered" >            return origin;</span>
+          };
+        } else {
+          // try to use proto or fallback
+          // Safari, old Firefox, many others
+<span class="cstat-no" title="statement not covered" >          setPrototypeOf = <span class="fstat-no" title="function not covered" >fu</span>nction (origin, proto) {</span>
+            // if proto is not null
+<span class="cstat-no" title="statement not covered" >            if (getPrototypeOf(origin)) {</span>
+              // use __proto__ to promote
+              /* eslint-disable no-proto */
+<span class="cstat-no" title="statement not covered" >              origin.__proto__ = proto;</span>
+              /* eslint-enable no-proto */
+<span class="cstat-no" title="statement not covered" >              return origin;</span>
+            }
+            // otherwise unable to promote: fallback
+<span class="cstat-no" title="statement not covered" >            return createAndCopy(origin, proto);</span>
+          };
+        }
+      }
+    }
+<span class="cstat-no" title="statement not covered" >    Object.setPrototypeOf = setPrototypeOf;</span>
+  }());
+&nbsp;
+  <span class="missing-if-branch" title="if path not taken" >I</span>if (supportsDescriptors &amp;&amp; function <span class="fstat-no" title="function not covered" >foo(</span>) {}.name !== 'foo') {
+    /* eslint no-extend-native: 1 */
+<span class="cstat-no" title="statement not covered" >    Object.defineProperty(Function.prototype, 'name', {</span>
+      configurable: true,
+      enumerable: false,
+      get: <span class="fstat-no" title="function not covered" >fu</span>nction () {
+<span class="cstat-no" title="statement not covered" >        if (this === Function.prototype) {</span>
+<span class="cstat-no" title="statement not covered" >          return '';</span>
+        }
+        var str = <span class="cstat-no" title="statement not covered" >_call(functionToString, this);</span>
+        var match = <span class="cstat-no" title="statement not covered" >_call(_strMatch, str, /\s*function\s+([^(\s]*)\s*/);</span>
+        var name = <span class="cstat-no" title="statement not covered" >match &amp;&amp; match[1];</span>
+<span class="cstat-no" title="statement not covered" >        Object.defineProperty(this, 'name', {</span>
+          configurable: true,
+          enumerable: false,
+          writable: false,
+          value: name
+        });
+<span class="cstat-no" title="statement not covered" >        return name;</span>
+      }
+    });
+  }
+}));
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Thu Mar 23 2023 11:54:14 GMT-0700 (Pacific Daylight Time)
+</div>
+</div>
+<script src="prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="sorter.js"></script>
+</body>
+</html>
