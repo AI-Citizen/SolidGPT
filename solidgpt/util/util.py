@@ -34,6 +34,13 @@ def save_to_md2(filename, content: str) -> str:
     logging.info(f"Information saved to {full_path}")
     return full_path
 
+def load_from_md(filename, path = "") -> str:
+    full_path = os.path.join(path, filename)
+    with open(full_path, "r") as md_file:
+        content = md_file.read()
+    logging.info(f"Information loaded from {full_path}")
+    return content
+
 
 def add_extension_if_not_exist(input_string, extension):
     if not input_string.endswith(extension):

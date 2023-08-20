@@ -4,8 +4,10 @@ from enum import Enum
 class SkillIOParamCategory(Enum):
     BusinessRequirementsDocument = 1
     ProductRequirementsDocument = 2
-    SourceCode = 3
-    PlainText = 4
+    HighLevelDesignDocument = 3
+    SourceCode = 4
+    PlainText = 5
+    KanbanBoard = 6
 
 
 class SkillInputLoadingMethod(Enum):

@@ -1,6 +1,4 @@
 from solidgpt.workagent.workagent import *
-from solidgpt.workskill.skills.skill_usenotion import UseNotion
-from solidgpt.workskill.skills.skill_writePRD import WritePRD
 
 
 class AgentProductManager(WorkAgent):

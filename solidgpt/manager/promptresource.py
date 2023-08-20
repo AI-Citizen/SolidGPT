@@ -1,4 +1,3 @@
-
 PRODUCT_MANAGER_PRD_OUTPUT_TEMPLATE = f'''Base on the information help me generate Markdown PRD follow this format. 
 Here is the output template and explain each sections mean. Always output with this template in Markdown format.
 
@@ -81,6 +80,72 @@ based on the information I provide, do following things:
 1. Breakdown each key feature into more detailed key features.
 2. Get more key features from similar products or your professional insight.'''
 
+PE_FRONTEND_ROLE_ASSUPTION = f'''Assuming you are a Principal Frontend Software Engineer, 
+help me write a Frontend Dev Design Document using the PRD Doc provided. 
+Ensure you adhere to the Frontend Design Principles listed below and use it as a guide.
+'''
+
+PE_FRONTEND_DESIGN_OUTPUT_TEMPLATE = '''Frontend Design Principles:
+1. User Experience (UX):
+Responsiveness: Ensure mobile-responsive design.
+Navigation: Intuitive navigation.
+Feedback: Feedback after key interactions.
+Loading Time: Fast loading times.
+Accessibility: Adherence to accessibility standards.
+2. User Interface (UI) Always elaberate more details as much as you can for each page in this section. Please include the layout, component, color theme, part of important text, font size, api request, page transition logic, business logic
+Pages & Routing:
+Homepage: Primary landing page.
+About Page: Company or app info.
+Products Page: Lists products/services.
+Contact Page: Contact info & form.
+Homepage Layout:Header: App's title/logo and navigation.
+Banner: Featured image or slider.
+Feature Cards Row: Three cards with icon, title, and description.
+Footer: Links and secondary navigation.
+About Page Layout:Header: Consistent with Homepage.
+Company Overview: Text about company.
+Team Section: Team members' photos and bios.
+Footer: Consistent with Homepage.
+Products Page Layout:Header: Consistent with Homepage.
+Product List: Cards with image, title, description, and price.
+Filter & Sorting Options: Filter by categories or sort.
+Footer: Consistent with Homepage.
+Contact Page Layout:Header: Consistent with Homepage.
+Contact Form: Fields like Name, Email, Subject, and Message.
+Location Map: Embedded map.
+Footer: Consistent with Homepage.
+Common Components:Navigation Menu: In Header.
+Call to Action Buttons: Styled buttons for key actions.
+3. Design Considerations:
+Consistency: Uniform design language.
+Modularity: Reusable components.
+Interactivity: Subtle animations/transitions.
+4. Performance:
+Optimize Images: Compressed and sized images.
+Lazy Loading: Load assets on demand.
+Caching: Cache frequently accessed data/assets.
+5. Security:
+Input Validation: Validate user inputs.
+Data Transmission: Secure data transmission methods.
+Cookies and Local Storage: Encrypted or minimal data storage.
+6. Testing:
+Cross-Browser Testing: Uniformity across browsers.
+Mobile Testing: Testing on different mobile devices.
+User Testing: Real user feedback.
+7. Rollout Strategy:
+Beta Testing: Limited audience release.
+Versioning: Easily roll back to stable versions.
+Feedback Loop: System for user feedback.
+'''
+
+PE_ROE_ASSUMPTION = f'''Assuming you are a Software Development Manager, 
+help me create a Kanban board baseon the Dev Desgin.
+'''
+
+PE_KANBAN_OUTPUT_TEMPLATE = f'''Based on the provided high level design, 
+could you help me create a development Kanban board using Markdown format? 
+The columns I'd like are: 
+|Task Name|Task Description|User story|Acceptance Criteria|Priority (H/M/L)|Status (Input/Spec/Imple/PR/Done/Pending)|Due Date|Engineer Points|.'''
+
 def build_gpt_prompt(role_assumption: str, output_format: str):
     return f"{role_assumption}\n\n{output_format}"
-
