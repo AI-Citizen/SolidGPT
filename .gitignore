@@ -165,3 +165,6 @@ solidgpt/.DS_Store
 
 # vs code
 .vscode/
+
+# Portal
+node_modules
