@@ -1,0 +1,251 @@
+diff --git a/index.js b/index.js
+index 9736df7..f86e09f 100644
+--- a/index.js
++++ b/index.js
+@@ -1,33 +1,38 @@
+ var path = require('path');
+ 
+ function parseRemoteUri(remoteUri) {
+-    var gitRemote = /^git@([^:]+):(.+\/.+)$/,
+-        httpRemote = /^(https?):\/\/([^@]+@)?([^\/]+)\/(.+)$/;
++    var httpKnownRemote = /^(https?):\/\/([^@]+@)?([^\/]+)\/(.+)$/,
++        gitKnownRemote = /^(ssh:\/\/)?git@([^:]+):(.+\/.+)$/,
++        genericRemote = /^((\w+):\/\/)?(([^@]+)?@)?(.+)$/;
++        // (([^\/:]+)(:(\d+))?)(\/(\w+)?)?
++        // (([^:]+):)?(([^:]+):)?(.+)
+ 
+     var matches = null;
+ 
+-    if (matches = gitRemote.exec(remoteUri)) {
+-        var repository = matches[2].replace(/\.git$/, ''),
++    // check if its an url with the following known format:
++    // http(s)://site.com/owner/project(.git)
++    if (matches = httpKnownRemote.exec(remoteUri)) {
++        var repository = matches[4].replace(/\.git$/, ''),
+             splitRepo = repository.split('/');
+ 
+         return {
+             remote: remoteUri,
+-            protocol: 'git',
+-            host: matches[1],
++            protocol: matches[1],
++            host: matches[3],
+             repository: repository,
+             owner: splitRepo[0],
+             project: splitRepo[1]
+         };
+     }
+ 
+-    if (matches = httpRemote.exec(remoteUri)) {
+-        var repository = matches[4].replace(/\.git$/, ''),
++    if (matches = gitKnownRemote.exec(remoteUri)) {
++        var repository = matches[3].replace(/\.git$/, ''),
+             splitRepo = repository.split('/');
+ 
+         return {
+             remote: remoteUri,
+-            protocol: matches[1],
+-            host: matches[3],
++            protocol: 'ssh',
++            host: matches[2],
+             repository: repository,
+             owner: splitRepo[0],
+             project: splitRepo[1]
+@@ -37,13 +42,28 @@ function parseRemoteUri(remoteUri) {
+     // the remote is a local path or an unknown url, just
+     // return its repository name without the owner's info
+ 
+-    var dirName = path.basename(remoteUri),
+-        repoName = dirName.split('.git')[0];
++    matches = genericRemote.exec(remoteUri);
++
++    console.log('matches', matches);
++
++    var protocol = matches[2],
++        repoPath = matches[5],
++        host = null;
++
++    if (protocol) {
++        host = repoPath.split('/')[0];
++    } else {
++        protocol = 'file';
++        host = 'localhost';
++    }
++
++    var dirName = path.basename(repoPath),
++        repoName = dirName.replace(/\.git$/, '');
+ 
+     return {
+         remote: remoteUri,
+-        protocol: 'file',
+-        host: 'localhost',
++        protocol: protocol,
++        host: host,
+         owner: null,
+         repository: repoName,
+         project: repoName
+diff --git a/test.js b/test.js
+index cf5a413..a3be8eb 100644
+--- a/test.js
++++ b/test.js
+@@ -1,7 +1,21 @@
+ var tape = require('tape'),
+     parseRepo = require('./index.js');
+ 
++
++    /*
++
++    TODO
++
++        npm install git+ssh://git@github.com:npm/npm.git#v1.0.27
++    npm install git+ssh://git@github.com:npm/npm#semver:^5.0
++    npm install git+https://isaacs@github.com/npm/npm.git
++    npm install git://github.com/npm/npm.git#v1.0.27
++    GIT_SSH_COMMAND='ssh -i ~/.ssh/custom_ident' npm install git+ssh://git@github.com:npm/npm.git
++
++    */
++
+ tape('github remotes', function(t) {
++    // http protocol ending in .git
+     t.deepEqual(parseRepo('https://github.com/npm/docs.git'), {
+         remote: 'https://github.com/npm/docs.git',
+         protocol: 'https',
+@@ -11,6 +25,7 @@ tape('github remotes', function(t) {
+         project: 'docs'
+     });
+ 
++    // http protocol without .git
+     t.deepEqual(parseRepo('https://github.com/npm/docs'), {
+         remote: 'https://github.com/npm/docs',
+         protocol: 'https',
+@@ -20,8 +35,19 @@ tape('github remotes', function(t) {
+         project: 'docs'
+     });
+ 
++    // short notation of ssh protocol
+     t.deepEqual(parseRepo('git@github.com:npm/docs.git'), {
+         remote: 'git@github.com:npm/docs.git',
++        protocol: 'ssh',
++        host: 'github.com',
++        repository: 'npm/docs',
++        owner: 'npm',
++        project: 'docs'
++    });
++
++    // alternative short notation of ssh
++    t.deepEqual(parseRepo('git://github.com/npm/docs.git'), {
++        remote: 'git://github.com/npm/docs.git',
+         protocol: 'git',
+         host: 'github.com',
+         repository: 'npm/docs',
+@@ -29,15 +55,27 @@ tape('github remotes', function(t) {
+         project: 'docs'
+     });
+ 
++    // ssh protocol long notation
++    t.deepEqual(parseRepo('ssh://git@github.com:npm/docs.git'), {
++        remote: 'ssh://git@github.com:npm/docs.git',
++        protocol: 'ssh',
++        host: 'github.com',
++        repository: 'npm/docs',
++        owner: 'npm',
++        project: 'docs'
++    });
++
++    // repo with periods in name (tests issue #2)
+     t.deepEqual(parseRepo('git@github.com:simshanith/pi.simloovoo.com.git'), {
+         remote: 'git@github.com:simshanith/pi.simloovoo.com.git',
+-        protocol: 'git',
++        protocol: 'ssh',
+         host: 'github.com',
+         repository: 'simshanith/pi.simloovoo.com',
+         owner: 'simshanith',
+         project: 'pi.simloovoo.com'
+     });
+ 
++    // repo with periods in name (tests issue #2)
+     t.deepEqual(parseRepo('https://github.com/simshanith/pi.simloovoo.com'), {
+         remote: 'https://github.com/simshanith/pi.simloovoo.com',
+         protocol: 'https',
+@@ -51,6 +89,7 @@ tape('github remotes', function(t) {
+ });
+ 
+ tape('bitbucket remotes', function(t) {
++    // http protocol ending in .git
+     t.deepEqual(parseRepo('https://user@bitbucket.org/owner/org.git'), {
+         remote: 'https://user@bitbucket.org/owner/org.git',
+         protocol: 'https',
+@@ -60,6 +99,7 @@ tape('bitbucket remotes', function(t) {
+         project: 'org'
+     });
+ 
++    // http protocol without .git
+     t.deepEqual(parseRepo('https://user@bitbucket.org/owner/org'), {
+         remote: 'https://user@bitbucket.org/owner/org',
+         protocol: 'https',
+@@ -69,9 +109,10 @@ tape('bitbucket remotes', function(t) {
+         project: 'org'
+     });
+ 
++    // ssh protocol
+     t.deepEqual(parseRepo('git@bitbucket.org:owner/org.git'), {
+         remote: 'git@bitbucket.org:owner/org.git',
+-        protocol: 'git',
++        protocol: 'ssh',
+         host: 'bitbucket.org',
+         repository: 'owner/org',
+         owner: 'owner',
+@@ -82,6 +123,7 @@ tape('bitbucket remotes', function(t) {
+ });
+ 
+ tape('gitlab remotes', function(t) {
++    // http protocol ending in .git
+     t.deepEqual(parseRepo('https://gitlab.com/gitlab-org/gitlab-ce.git'), {
+         remote: 'https://gitlab.com/gitlab-org/gitlab-ce.git',
+         protocol: 'https',
+@@ -91,9 +133,10 @@ tape('gitlab remotes', function(t) {
+         project: 'gitlab-ce'
+     });
+ 
++    // ssh protocol
+     t.deepEqual(parseRepo('git@gitlab.com:gitlab-org/gitlab-ce.git'), {
+         remote: 'git@gitlab.com:gitlab-org/gitlab-ce.git',
+-        protocol: 'git',
++        protocol: 'ssh',
+         host: 'gitlab.com',
+         repository: 'gitlab-org/gitlab-ce',
+         owner: 'gitlab-org',
+@@ -103,7 +146,8 @@ tape('gitlab remotes', function(t) {
+     t.end();
+ });
+ 
+-tape('local remotes', function(t) {
++tape('ssh and local remotes', function(t) {
++    // local path ending in .git
+     t.deepEqual(parseRepo('/full/path/to/repo.git'), {
+         remote: '/full/path/to/repo.git',
+         protocol: 'file',
+@@ -113,6 +157,7 @@ tape('local remotes', function(t) {
+         project: 'repo'
+     });
+ 
++    // local path without .git
+     t.deepEqual(parseRepo('/full/path/to/repo'), {
+         remote: '/full/path/to/repo',
+         protocol: 'file',
+@@ -122,5 +167,15 @@ tape('local remotes', function(t) {
+         project: 'repo'
+     });
+ 
++    // repos/R repository in the user's home directory of another host
++    t.deepEqual(parseRepo('ssh://user@other.host.com/~/repos/R.git'), {
++        remote: 'ssh://user@other.host.com/~/repos/R.git',
++        protocol: 'ssh',
++        host: 'other.host.com',
++        repository: 'R',
++        owner: null,
++        project: 'R'
++    });
++
+     t.end();
+ });

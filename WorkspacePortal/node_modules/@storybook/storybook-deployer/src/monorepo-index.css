@@ -1,0 +1,121 @@
+html {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 60%;
+  margin: 2rem;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+  justify-content: center;
+  margin: 3rem auto;
+}
+
+.banner {
+  max-width: 600px;
+  width: 100%;
+  margin: 3rem auto;
+}
+
+.package-row {
+  margin-bottom: 2rem;
+  color: #666;
+  display: flex;
+  align-items: stretch;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.package-row:hover {
+  box-shadow: 0 15px 20px #bbb;
+}
+
+.package-row .title {
+  padding: 2rem;
+  color: white;
+  border-top-left-radius: 5%;
+  border-bottom-left-radius: 5%;
+  font-weight: bold;
+}
+
+.package-row .description {
+  padding: 2rem 2rem 2rem 1rem;
+  border-top-right-radius: 5%;
+  border-bottom-right-radius: 5%;
+  background: #f1f1f1;
+  flex-grow: 1;
+  box-shadow: 0px 10px 0 #d8d8d8;
+  text-align: center;
+}
+
+.package-row:active .description {
+  background: #d8d8d8;
+  box-shadow: 0px 10px 0 #bebebe;
+}
+
+.is-purple {
+  background: #b57ee5;
+  box-shadow: 0px 10px 0 #9c65cc;
+}
+
+.package-row:active .is-purple {
+  background: #9c65cc;
+  box-shadow: 0px 10px 0 #824bb2;
+}
+
+.is-pink {
+  background: #f1618c;
+  box-shadow: 0px 10px 0 #d84873;
+}
+
+.package-row:active .is-pink {
+  background: #d84873;
+  box-shadow: 0px 10px 0 #be2e59;
+}
+
+.is-orange {
+  background: #f3ad38;
+  box-shadow: 0px 10px 0 #da941f;
+}
+
+.package-row:active .is-orange {
+  background: #da941f;
+  box-shadow: 0px 10px 0 #c07a05;
+}
+
+.is-green {
+  background: #a2e05e;
+  box-shadow: 0px 10px 0 #89c745;
+}
+
+.package-row:active .is-green {
+  background: #89c745;
+  box-shadow: 0px 10px 0 #6fad2b;
+}
+
+.is-blue {
+  background: #6dabf5;
+  box-shadow: 0px 10px 0 #5492dc;
+}
+
+.package-row:active .is-blue {
+  background: #5492dc;
+  box-shadow: 0px 10px 0 #3a78c2;
+}
+
+.is-red {
+  background: #f16161;
+  box-shadow: 0px 10px 0 #d84848;
+}
+
+.package-row:active .is-red {
+  background: #d84848;
+  box-shadow: 0px 10px 0 #be2e2e;
+}

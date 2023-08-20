@@ -1,0 +1,78 @@
+{
+  "name": "@storybook/storybook-deployer",
+  "version": "2.8.16",
+  "description": "Deploy your storybook as a webapp.",
+  "keywords": [
+    "deploy",
+    "github",
+    "static",
+    "storybook"
+  ],
+  "homepage": "https://github.com/storybooks/storybook-deployer#readme",
+  "bugs": {
+    "url": "https://github.com/storybooks/storybook-deployer/issues"
+  },
+  "license": "MIT",
+  "author": "Arunoda Susiripala <arunoda@kadira.io>",
+  "bin": {
+    "storybook-to-ghpages": "./bin/storybook_to_ghpages",
+    "storybook-to-aws-s3": "./bin/storybook_to_aws_s3"
+  },
+  "scripts": {
+    "release": "auto shipit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/storybooks/storybook-deployer.git"
+  },
+  "dependencies": {
+    "git-url-parse": "^12.0.0",
+    "glob": "^7.1.3",
+    "parse-repo": "^1.0.4",
+    "shelljs": "^0.8.1",
+    "yargs": "^15.0.0"
+  },
+  "devDependencies": {
+    "@auto-it/all-contributors": "^9.23.0",
+    "@auto-it/first-time-contributor": "^9.23.0",
+    "all-contributors-cli": "^6.14.1",
+    "auto": "^9.23.0",
+    "husky": "^1.2.0",
+    "lint-staged": "^10.0.0",
+    "prettier": "^1.15.3"
+  },
+  "prettier": {
+    "singleQuote": true
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,json,css,md}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "auto": {
+    "plugins": [
+      "npm",
+      "released",
+      "first-time-contributor",
+      [
+        "all-contributors",
+        {
+          "types": {
+            "plugin": "**/plugin/**/*",
+            "code": [
+              "**/src/**/*",
+              "**/package.json",
+              "**/tsconfig.json"
+            ]
+          }
+        }
+      ]
+    ]
+  }
+}
