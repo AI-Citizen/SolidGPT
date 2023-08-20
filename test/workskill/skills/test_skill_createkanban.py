@@ -1,11 +1,11 @@
 from solidgpt.manager.initializer import Initializer
-from solidgpt.orchestration.orchestration import *
+from solidgpt.workgraph.workgraph import *
 from solidgpt.workagent.agents.agent_principalengineer import AgentPrincipalEngineer
 from solidgpt.workskill.skills.skill_createkanban import CreateKanBan
 
 def run_test():
     Initializer()
-    app = Orchestration()
+    app = WorkGraph()
     skill: WorkSkill = CreateKanBan()
     input_path = os.path.join(TEST_DIR, "workskill", "skills", "out", "1", "Write_HLD_Result_1.md")
     skill.init_config(

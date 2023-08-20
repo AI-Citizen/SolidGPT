@@ -1,5 +1,5 @@
 from solidgpt.manager.initializer import Initializer
-from solidgpt.orchestration.orchestration import *
+from solidgpt.workgraph.workgraph import *
 
 # generate save data
 # app = Orchestration()
@@ -8,7 +8,7 @@ from solidgpt.orchestration.orchestration import *
 
 
 # execute app
-app = Orchestration()
+app = WorkGraph()
 app.create_default_scenario(1)
 app.execute()
 

@@ -1,0 +1,74 @@
+[
+    {
+        "node_id": 3,
+        "manual_review_result": false,
+        "agent": "Product Manager",
+        "skill": "Use Notion",
+        "inputs": [
+            {
+                "param_path": "",
+                "loading_method": "SkillInputLoadingMethod.LOAD_FROM_OUTPUT_ID",
+                "load_from_output_id": 0
+            }
+        ],
+        "outputs": [
+            {
+                "id": 3
+            }
+        ]
+    },
+    {
+        "node_id": 0,
+        "manual_review_result": false,
+        "agent": "Product Manager",
+        "skill": "Use Notion",
+        "inputs": [
+            {
+                "param_path": "",
+                "loading_method": "SkillInputLoadingMethod.LOAD_FROM_OUTPUT_ID",
+                "load_from_output_id": 1
+            }
+        ],
+        "outputs": [
+            {
+                "id": 0
+            }
+        ]
+    },
+    {
+        "node_id": 1,
+        "manual_review_result": false,
+        "agent": "Product Manager",
+        "skill": "Use Notion",
+        "inputs": [
+            {
+                "param_path": "",
+                "loading_method": "SkillInputLoadingMethod.LOAD_FROM_OUTPUT_ID",
+                "load_from_output_id": 2
+            }
+        ],
+        "outputs": [
+            {
+                "id": 1
+            }
+        ]
+    },
+    {
+        "node_id": 2,
+        "manual_review_result": false,
+        "agent": "Product Manager",
+        "skill": "Use Notion",
+        "inputs": [
+            {
+                "param_path": "",
+                "loading_method": "SkillInputLoadingMethod.LOAD_FROM_OUTPUT_ID",
+                "load_from_output_id": 3
+            }
+        ],
+        "outputs": [
+            {
+                "id": 2
+            }
+        ]
+    }
+]

@@ -1,5 +1,6 @@
 import json
 import os
+import sys
 from definitions import *
 
 
@@ -53,3 +54,7 @@ def same_string(s1: str, s2: str, case_sensitive: bool = False):
     if case_sensitive:
         return s1 == s2
     return s1.lower() == s2.lower()
+
+
+def print_error_message(message):
+    print(f"Error: {message}", file=sys.stderr)

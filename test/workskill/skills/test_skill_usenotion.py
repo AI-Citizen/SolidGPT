@@ -1,5 +1,5 @@
 from solidgpt.manager.initializer import Initializer
-from solidgpt.orchestration.orchestration import *
+from solidgpt.workgraph.workgraph import *
 from solidgpt.workagent.agents.agent_productmanager import AgentProductManager
 from solidgpt.workskill.skills.skill_usenotion import UseNotion
 
@@ -7,7 +7,7 @@ TEST_SKILL_WORKSPACE = os.path.join(TEST_DIR, "workskill", "skills", "workspace"
 
 def run_test():
     Initializer()
-    app = Orchestration()
+    app = WorkGraph()
     skill: WorkSkill = UseNotion()
     input_path = os.path.join(TEST_SKILL_WORKSPACE, "in", "PRDSimple")
     skill.init_config(

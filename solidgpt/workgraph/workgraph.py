@@ -1,4 +1,4 @@
-"""everything in orchestration can be considered as global"""
+"""everything in workgraph can be considered as global"""
 import os
 import time
 from solidgpt.saveload.saveload import *
@@ -7,7 +7,7 @@ from solidgpt.saveload.saveload import *
 output_folder_path = "out"
 
 
-class Orchestration:
+class WorkGraph:
 
     nodes: list[WorkNode] = []
     node_map: dict[int, WorkNode] = {}
@@ -81,11 +81,13 @@ class Orchestration:
                         continue
                     output_node.next_node_ids.add(node.node_id)
                     i.skill_output = self.output_map[i.load_from_output_id]
+
+        if self.__is_circular():
+            print_error_message("Circular graph detected. Terminating program...")
+            exit(1)
         return
 
     def execute(self):
-        print("Initializing node dependencies...")
-        self.init_node_dependencies()
         print("Executing SolidGPT...")
         for node in self.nodes:
             self.__execute_node(node)
@@ -144,9 +146,34 @@ class Orchestration:
         self.init_node_dependencies()
         return
 
-    def get_input_path(self, skill_input: SkillInput):
-        if skill_input.loading_method == SkillInputLoadingMethod.LOAD_FROM_STRING:
-            return skill_input.param_path
-        elif skill_input.loading_method == SkillInputLoadingMethod.LOAD_FROM_OUTPUT_ID:
-            return self.output_map[skill_input.load_from_output_id].param_path
-        return ""
+    def __is_circular(self):
+        visited = {node_id: False for node_id in self.node_map}
+        stack = {node_id: False for node_id in self.node_map}
+
+        # check every node because the graph might be disjoint
+        for node_id in self.node_map:
+            if not visited[node_id]:
+                if self.__has_cycle(node_id, visited, stack):
+                    return True
+
+        return False
+
+    def __has_cycle(self, current_node_id, visited, stack):
+        # mark the current node as visited
+        visited[current_node_id] = True
+        # add the current node to the stack representing the current path
+        stack[current_node_id] = True
+
+        # visit all the neighbors of the current node
+        for neighbor_id in self.node_map[current_node_id].next_node_ids:
+            # if the neighbor is not visited, visit it
+            if not visited[neighbor_id]:
+                if self.__has_cycle(neighbor_id, visited, stack):
+                    return True
+            # if the neighbor is already in the current path, we have found a cycle
+            elif stack[neighbor_id]:
+                return True
+
+        # remove the current node from the current path stack
+        stack[current_node_id] = False
+        return False
