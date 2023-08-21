@@ -162,3 +162,9 @@ cython_debug/
 # Mac
 .DS_Store
 solidgpt/.DS_Store
+
+# vs code
+.vscode/
+
+# Portal
+node_modules

@@ -4,25 +4,21 @@ from solidgpt.workskill.workskill import *
 
 class WriteCode(WorkSkill):
 
-    def __init__(self, inputs_config: dict = None, output_config = None):
+    def __init__(self):
         super().__init__()
         self.name = SKILL_NAME_WRITE_CODE
         self.input_design_doc = SkillInput(
-            None if inputs_config is None else inputs_config[0],
             "Design Doc",
-            SkillOutputParamType.STRING,
-            "Write a division by 0 error code...",
+            SkillIOParamCategory.ProductRequirementsDocument,
         )
-        self.inputs.append(self.input_design_doc)
-        self.output = SkillOutput(
-            output_config,
+        self.add_input(self.input_design_doc)
+        self.output_source_code = SkillOutput(
             "Code Result",
-            SkillOutputParamType.STRING,
-            "a = a/0;",
-            -1,
+            SkillIOParamCategory.SourceCode,
         )
+        self.add_output(self.output_source_code)
 
-    def execute(self):
+    def execution_impl(self):
         print("Printing code result here...")
-        super().execute()
+        self.output_source_code.param_path = "a = a + 1;"
         return

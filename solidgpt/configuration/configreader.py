@@ -1,8 +1,11 @@
 import yaml
+import os
+
+from definitions import ROOT_DIR
 
 class ConfigReader:
     def __init__(self):
-        self.file_path = "Config/Configuration.yaml"
+        self.file_path = os.path.join(ROOT_DIR, "solidgpt", "configuration", "Configuration.yaml")
         self.data = self.read()
 
     def read(self):

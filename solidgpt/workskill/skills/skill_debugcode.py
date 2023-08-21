@@ -4,33 +4,27 @@ from solidgpt.workskill.workskill import *
 
 class DebugCode(WorkSkill):
 
-    def __init__(self, inputs_config: list = None, output_config=None):
+    def __init__(self):
         super().__init__()
         self.name = SKILL_NAME_DEBUG_CODE
         self.input_source_code = SkillInput(
-            None if inputs_config is None else inputs_config[0],
             "Source Code",
-            SkillOutputParamType.STRING,
-            "a = a/0;",
+            SkillIOParamCategory.SourceCode,
         )
-        self.inputs.append(self.input_source_code)
+        self.add_input(self.input_source_code)
         self.input_error_message = SkillInput(
-            None if inputs_config is None else inputs_config[1],
             "Error Message",
-            SkillOutputParamType.STRING,
-            "ZeroDivisionError: division by zero.",
+            SkillIOParamCategory.PlainText,
             optional=True,
         )
-        self.inputs.append(self.input_error_message)
-        self.output = SkillOutput(
-            output_config,
+        self.add_input(self.input_error_message)
+        self.output_error_analysis = SkillOutput(
             "Debug Result",
-            SkillOutputParamType.STRING,
-            "The bug is caused by...",
-            -1,
+            SkillIOParamCategory.PlainText,
         )
+        self.add_output(self.output_error_analysis)
 
-    def execute(self):
-        super().execute()
-        "Printing debug result here..."
+    def execution_impl(self):
+        print("Printing debug result here...")
+        self.output_error_analysis.param_path = "This code is wrong because..."
         return

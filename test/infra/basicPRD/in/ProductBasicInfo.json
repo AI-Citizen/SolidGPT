@@ -1,0 +1,17 @@
+{
+    "product_name": "AI Says",
+    "short_description": "Chat with AI that aids in stock analysis and implements trading strategies.",
+    "target_audience": "Retail investors from China",
+    "business_goal": "Empower Chinese retail investors using AI",
+    "key_features": [
+        "AI analyses stocks' financial reports",
+        "AI analyses key stock indicators like ROE, P/E",
+        "AI assists traders in strategy implementation and backtesting"
+    ],
+    "project_timeline": {
+        "08.2023": "Development phase",
+        "09.2023": "Alpha release: Analysis of 300 Chinese stocks",
+        "12.2023": "Beta release: Analysis of 5000 Chinese stocks",
+        "2024 Q1": "Official release: Includes trading strategies and backtest features"
+    }
+}
