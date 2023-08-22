@@ -3,6 +3,7 @@ import openai
 import pandas as pd
 import numpy as np
 from numpy.linalg import norm
+from solidgpt.configuration.configreader import ConfigReader
 
 
 # from definitions import ROOT_DIR
@@ -15,6 +16,7 @@ class YAMLValidator:
         self.input_df = pd.read_csv(os.path.join("..", "embedding", "input_block_embedding.csv"))
         self.display_df = pd.read_csv(os.path.join("..", "embedding", "display_block_embedding.csv"))
         self.all_embedding_df = pd.concat([self.container_df, self.input_df, self.display_df], axis=1)
+        openai.api_key = ConfigReader().get_property("openai_api_key")
 
     def validate(self) -> str:
         """
