@@ -1,6 +1,7 @@
 # config.yaml
 openai_api_key: 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
-
+# Backup
+#openai_api_key: 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
 # notion
 notion_api_key : secret_WsyROn1tI3isU1Xdes6CKTicJaG6Auzab1lUyKxlw6W
 notion_page_id : 7d21cede88ca4f3a9282bcb8c1311cac

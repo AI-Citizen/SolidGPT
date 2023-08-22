@@ -1,5 +1,6 @@
 from solidgpt.constants import *
 from typing import Type
+from solidgpt.diy.customizeskillmanager import CustomizeSkillManager
 from solidgpt.worknode.worknode import *
 from solidgpt.imports import *
 
@@ -81,6 +82,8 @@ def load_save_data_to_nodes(loaded_data):
         inputs_data = node_data["inputs"]
         outputs_data = node_data["outputs"]
         skill: WorkSkill = SKILL_NAME_TO_CONSTRUCTOR.get(skill_name)()
+        if skill is None:
+            skill = CustomizeSkillManager._instance.get_customzied_skill(skill_name)
         skill.init_config(inputs_data, outputs_data)
         agent = AGENT_NAME_TO_CONSTRUCTOR.get(agent_name)(skill)
         node = WorkNode(node_data["node_id"], agent, node_data["manual_review_result"])
