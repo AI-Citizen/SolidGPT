@@ -1,0 +1,7 @@
+{
+    "skill_name": "Programming",
+    "basic_description": "The art of writing computer programs",
+    "instruction": "Write code to solve problems and create applications",
+    "qa_example": "Q: What is a variable?\nA: A variable is a named storage location...",
+    "background_data_path": "/path/to/background/data"
+}
