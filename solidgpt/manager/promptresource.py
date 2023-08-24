@@ -147,5 +147,208 @@ could you help me create a development Kanban board using Markdown format?
 The columns I'd like are: 
 |Task Name|Task Description|User story|Acceptance Criteria|Priority (H/M/L)|Status (Input/Spec/Imple/PR/Done/Pending)|Due Date|Engineer Points|.'''
 
+SDE_LOWDEFY_ASSUMPTION = f'''Assume you are a Software developer specializing in lowdefy,
+You will create lowdefy yaml files given product requirement document.
+You must follow theses principles.
+1. Do not generate actions.
+2. Do not import plugins that are not already built.
+3. Do not generate reference pages (fields with '_ref').
+4. Do not create functions or events.
+5. Do not generate duplicate map keys in yaml file.
+6. Be concise. Keep the yaml file less than 200 lines.
+7. Always use lowdefy version 4.0.0-rc.10"
+8. Do not use Nested mappings, only one colon is allowed in each line.
+'''
+
+SDE_LOWDEFY_YAML_OUTPUT_TEMPLATE = '''
+Task: Create a sample main page with the name lowdefy.yaml
+Answer:
+```yaml
+lowdefy: 4.0.0-rc.10
+name: Lowdefy starter
+menus:
+  - id: default
+    links:
+      - id: new-ticket
+        type: MenuLink
+        properties:
+          icon: AiOutlineAlert
+          title: New ticket
+        pageId: new-ticket
+      - id: welcome
+        type: MenuLink
+        properties:
+          icon: AiOutlineHome
+          title: Home
+        pageId: welcome
+pages:
+  - _ref: new-ticket.yaml
+  - id: welcome
+    type: PageHeaderMenu
+    properties:
+      title: Welcome
+    areas:
+      content:
+        justify: center
+        blocks:
+          - id: content_card
+            type: Card
+            style:
+              maxWidth: 800
+            blocks:
+              - id: content
+                type: Result
+                properties:
+                  title: Welcome to your Lowdefy app
+                  subTitle: We are excited to see what you are going to build
+                  icon:
+                    name: AiOutlineHeart
+                    color: '#f00'
+                areas:
+                  extra:
+                    blocks:
+                      - id: docs_button
+                        type: Button
+                        properties:
+                          size: large
+                          title: Let's build something
+                        events:
+                          onClick:
+                            - id: link_to_docs
+                              type: Link
+                              params:
+                                url: https://docs.lowdefy.com
+                                newWindow: true
+```
+Task: Create a page for a web form where users can log a new ticket with the name new-ticket.yaml
+Answer:
+```yaml
+id: new-ticket
+type: PageHeaderMenu
+properties:
+  title: New ticket # The title in the browser tab.
+layout:
+  contentJustify: center # Center the contents of the page.
+blocks:
+  - id: content_card
+    type: Card
+    layout:
+      size: 800 # Set the size of the card so it does not fill the full screen.
+      contentGutter: 16 # Make a 16px gap between all blocks in this card.
+    blocks:
+      - id: page_heading
+        type: Title
+        properties:
+          content: Log a ticket # Change the title on the page.
+          level: 3 # Make the title a little smaller (an html `<h3>`).
+```
+Task: Create a BI report/dashboard pages in Lowdefy with the name lowdefy.yaml
+Answer:
+```yaml
+name: Lowdefy Reporting Example
+lowdefy: 4.0.0-rc.10
+licence: MIT
+
+# description
+# This example show patterns that can be used to implement a BI report/dashboard.
+# It assumes that it is connected to a MongoDB database with the Atlas sample dataset loaded.
+
+# Define all the data connections, in this case the brands and products MongoDB collections
+connections:
+  - id: movies_mongodb # The connectionId that will be used when defining requests and mutations on our pages
+    type: MongoDBCollection
+    properties:
+      databaseName: sample_mflix # The database name
+      collection: movies # The collection name
+      databaseUri:
+        _secret: EXAMPLES_MDB # The database connection uri that is stored as a secret and accessed using the _secret operator
+
+# Menus used in the app can be listed here
+# By default, the menu with id default, or the first menu defined is used.
+# If no menu is defined, a default menu is created using all the defined pages.
+menus:
+  - id: default
+    links:
+      - id: report # Define the menu link that directs to the report page
+        type: MenuLink
+        pageId: report # Id of the report page
+        properties:
+          title: Report # Title to show on the menu
+          icon: AiOutlineLineChart
+
+# All the pages in the app are listed here
+# Instead of defining the page in the lowdefy.yaml file, it is defined in its own yaml file and referenced here
+pages:
+  - _ref: report.yaml
+```
+Task: Create the main page of blog web app with the name lowdefy.yaml
+Answer: 
+```yaml
+lowdefy: 3.23.3
+name: Lowdefy starter
+licence: MIT
+
+config:
+  # Always direct users to home.
+  homePageId: home
+  auth:
+    openId:
+      # The url the user should be redirected to after logout.
+      logoutRedirectUri: '{{ openid_domain }}/v2/logout?returnTo={{ host }}/home&client_id={{ client_id }}'
+    pages:
+      # All pages in the app can be seen only by logged in users
+      protected: true
+      # except for the following pages:
+      public:
+        - login
+        - '404'
+        - home
+
+types:
+  AmChartsPie:
+    url: https://blocks-cdn.lowdefy.com/v3.10.1/blocks-amcharts/meta/AmChartsPie.json
+
+connections:
+  - id: blog_posts
+    type: MongoDBCollection
+    properties:
+      databaseUri:
+        _secret: MONGODB_URI
+      databaseName: lowdefy_blog
+      collection: blog_posts
+      write: true
+
+menus:
+  - id: default
+    links:
+      - id: home
+        type: MenuLink
+        properties:
+          icon: HomeOutlined
+          title: Home
+        pageId: home
+      - id: analytics
+        type: MenuLink
+        properties:
+          icon: LineChartOutlined
+          title: Analytics
+        pageId: analytics
+      - id: new-blog-post
+        type: MenuLink
+        properties:
+          icon: FormOutlined
+          title: New Blog Post
+        pageId: new-blog-post
+
+pages:
+  - _ref: home.yaml
+  - _ref: analytics.yaml
+  - _ref: new-blog-post.yaml
+  - _ref: edit-blog-post.yaml
+  - _ref: login.yaml
+```
+'''
+
+
 def build_gpt_prompt(role_assumption: str, output_format: str):
     return f"{role_assumption}\n\n{output_format}"

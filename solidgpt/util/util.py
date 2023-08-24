@@ -35,6 +35,17 @@ def save_to_md2(filename, content: str) -> str:
     logging.info(f"Information saved to {full_path}")
     return full_path
 
+
+def save_to_yaml(filename, content: str) -> str:
+    full_path = filename
+    full_path = add_extension_if_not_exist(full_path, ".yaml")
+    with open(full_path, "w") as md_file:
+        md_file.write(content)
+        md_file.flush()
+    logging.info(f"Information saved to {full_path}")
+    return full_path
+
+
 def load_from_md(filename, path = "") -> str:
     full_path = os.path.join(path, filename)
     with open(full_path, "r") as md_file:
