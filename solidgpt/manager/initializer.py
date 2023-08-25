@@ -1,3 +1,4 @@
+from solidgpt.diy.customizeskillmanager import CustomizeSkillManager
 from solidgpt.manager.gptmanager import GPTManager
 
 
@@ -16,3 +17,4 @@ class Initializer:
 
     def _initialize(self):
         self.gpt_manager = GPTManager()
+        self.customize_skill_manager = CustomizeSkillManager()

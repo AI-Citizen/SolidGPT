@@ -11,7 +11,7 @@ class GPTManager:
             # You can initialize the instance attributes here
         return cls._instance
     
-    def __init__(self, if_show_reply = False):
+    def __init__(self, if_show_reply = True):
         # read api key from config file
         openai.api_key = ConfigReader().get_property("openai_api_key")
         self.gpt_models_container = {}

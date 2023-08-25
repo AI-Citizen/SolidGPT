@@ -1,11 +1,10 @@
 import * as React from 'react';
 import {useEffect, useState} from 'react';
 import {DiagramEngine, DiagramModel} from '@projectstorm/react-diagrams';
-import {Button, Checkbox, Select} from "antd";
+import {Button, Select} from "antd";
 import {JSCustomNodeModel} from "./custom-node-js/JSCustomNodeModel";
 import {CustomClickItemsAction} from "./CustomClickItemsAction";
 import {DataClass, Inputs, JsonDataClass, LogicHelper, Outputs} from "./LogicHelper";
-import {CheckboxChangeEvent} from "antd/lib/checkbox";
 
 export interface BodyWidgetProps {
 	engine: DiagramEngine;
@@ -21,7 +20,6 @@ export class LeftPanelWidget extends React.Component<BodyWidgetProps> {
 			// create a diagram model
 			const model = this.props.model;
 			const [agentValue, setAgentValue] = useState("Software Developer");
-			const [manualReviewResultBool, setManualReviewResultBool] = useState(false);
 
 			// Specify the type of the dependency array
 			useEffect(() => {
@@ -36,13 +34,10 @@ export class LeftPanelWidget extends React.Component<BodyWidgetProps> {
 				return Math.floor(randomNumber);
 			}
 
-			const handleAgentChange = (value: string) => {
+			const handleChange = (value: string) => {
 				setAgentValue(value);
 			};
 
-			const onManualReviewResultChange = (e: CheckboxChangeEvent) => {
-				setManualReviewResultBool(e.target.checked)
-			};
 
 			function isEmptyObject(obj) {
 				return Object.keys(obj).length === 0;
@@ -66,14 +61,14 @@ export class LeftPanelWidget extends React.Component<BodyWidgetProps> {
 				<Select
 					defaultValue={agentValue}
 					style={{width: "100%"}}
-					onChange={handleAgentChange}
+					onChange={handleChange}
 					value={agentValue}
 					options={[
 						{value: 'Software Developer', label: 'Software Developer'},
 						{value: 'Product Manager', label: 'Product Manager'},
 					]}
 				/>
-				<Checkbox onChange={onManualReviewResultChange} checked={manualReviewResultBool}>Manual Review Result</Checkbox>
+
 				<Button
 					block
 					ghost
@@ -91,8 +86,6 @@ export class LeftPanelWidget extends React.Component<BodyWidgetProps> {
 							nodeClicked: (event: any) => {
 								setAgentValue((((dataStorage.getData(dataStorage.getClickedInfo("clickedNodeId")) as
 									DataClass).jsonDataClass) as JsonDataClass).agent);
-								setManualReviewResultBool((((dataStorage.getData(dataStorage.getClickedInfo("clickedNodeId")) as
-									DataClass).jsonDataClass) as JsonDataClass).manual_review_result);
 							},
 						})
 						model.registerListener({
@@ -108,7 +101,7 @@ export class LeftPanelWidget extends React.Component<BodyWidgetProps> {
 
 
 						dataStorage.setData(nodeNew.getOptions().id, new DataClass(
-							new JsonDataClass(nodeNew.getOptions().id, manualReviewResultBool,agentValue, "", [], [new Outputs(nodeNew.getPort("out").getID())]), nodeNew));
+							new JsonDataClass(nodeNew.getOptions().id, agentValue, null, [], [new Outputs(nodeNew.getPort("out").getID())]), nodeNew));
 					}}>
 					Add Node
 				</Button>
@@ -129,7 +122,7 @@ export class LeftPanelWidget extends React.Component<BodyWidgetProps> {
 									((value as DataClass).jsonDataClass).inputs.length = 0;
 									if (!isEmptyObject(((value as DataClass).node as JSCustomNodeModel).getPort("in").links)) {
 										Object.keys(((value as DataClass).node as JSCustomNodeModel).getPort("in").links).forEach(item => {
-											((value as DataClass).jsonDataClass).inputs.push(new Inputs("","",item));
+											((value as DataClass).jsonDataClass).inputs.push(new Inputs(null,null,item));
 										});
 									}
 									if (!isEmptyObject(((value as DataClass).node as JSCustomNodeModel).getPort("out").links)) {
