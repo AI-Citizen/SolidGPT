@@ -4,7 +4,7 @@ import tiktoken
 from solidgpt.manager.gptmanager import GPTModel  # Import GPTModel from the correct location
 
 # Set your OpenAI API key here
-openai.api_key = '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'
+openai.api_key = ''
 
 MAX_TOKENS_LIMIT = 16000
 

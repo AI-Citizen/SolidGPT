@@ -5,7 +5,7 @@ from transformers import (
     BitsAndBytesConfig,
 )
 
-class ModelSettings:
+class LlamaModelSettings:
     def __init__(self, model_name, lora_r, lora_alpha, lora_dropout, use_4bit, bnb_4bit_compute_dtype,
                  bnb_4bit_quant_type, use_nested_quant, device_map):
         self.model_name = model_name

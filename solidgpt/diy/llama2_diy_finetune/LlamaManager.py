@@ -1,6 +1,6 @@
 from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
 
-class LLMManager:
+class LlamaManager:
     def __init__(self, model_path, template_path):
         with open(template_path, "r") as f:
             self.template = f.read()
@@ -24,7 +24,7 @@ if __name__ == "__main__":
     model_path = "./llama2-7b-lowdefy_generator_saved"
     template_path = "./dataset/template.yaml"
 
-    inference_model = LLMManager(model_path, template_path)
+    inference_model = LlamaManager(model_path, template_path)
 
     user_input = input("Enter your custom prompt or press Enter to use the default template: ")
 

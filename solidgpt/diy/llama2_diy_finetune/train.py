@@ -3,9 +3,9 @@ import torch
 from trl import SFTTrainer
 from peft import LoraConfig, PeftModel
 from DataLoader import ModelDataLoader
-from config import ModelSettings
+from llama2modelsetting import LlamaModelSettings
 
-class ModelTrainer:
+class Llama2Trainer:
     def __init__(self, model, tokenizer, train_dataset, valid_dataset, peft_config, max_seq_length, training_arguments, packing,  model_name):
         self.model = model
         self.tokenizer = tokenizer
@@ -57,13 +57,13 @@ def generate_system_message(prompt):
 # Usage example
 if __name__ == "__main__":
     
-    prompt = "A model that takes in a function description and output the lowdefy yaml file to configures a website. The general lowdefy has a good indent. f{template}"
+    prompt = "A model that takes in a function description and output the lowdefy yaml file to configures a website. The general lowdefy has a good indent."
     model_type = "togethercomputer/LLaMA-2-7B-32K-Instruct"
     model_name_ = "llama-2-7b-lowdefy_Instruct"
     result_dir = "./result"
     model_path = "./llama2-7b-lowdefy_generator_saved"
 
-    model_settings = ModelSettings(
+    model_settings = LlamaModelSettings(
         model_name=model_type,
         lora_r=512,
         lora_alpha=64,
@@ -114,7 +114,7 @@ if __name__ == "__main__":
         eval_steps=5
     )
 
-    model_trainer = ModelTrainer(
+    model_trainer = Llama2Trainer(
         model=model,
         tokenizer=tokenizer,
         train_dataset=train_dataset_mapped,
@@ -127,6 +127,7 @@ if __name__ == "__main__":
     )
     model_trainer.train_model()
 
+# load and save the llama2 pramas
     base_model = AutoModelForCausalLM.from_pretrained(model_type, low_cpu_mem_usage=True, return_dict=True, torch_dtype=torch.float16, device_map={"":0})
     model = PeftModel.from_pretrained(base_model, model_name_)
     model = model.merge_and_unload()
