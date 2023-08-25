@@ -1,17 +1,33 @@
-from transformers import AutoModelForCausalLM, AutoTokenizer
-from transformers import pipeline
+from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
 
-with open("./template.yaml", "r") as f:
-    tmps = f.read()
+class LLMManager:
+    def __init__(self, model_path, template_path):
+        with open(template_path, "r") as f:
+            self.template = f.read()
 
-system_message = "`Given a function description, you will generate the Lowdefy YAML file to configure a website. The generated YAML file should follow the general Lowdefy indentation format.`. Feel free to re-run this cell if you want a better result. "
+        self.system_message = "`Given a function description, you will generate the Lowdefy YAML file to configure a website. The generated YAML file should follow the general Lowdefy indentation format.`. Feel free to re-run this cell if you want a better result."
 
-model_path = "./llama2-7b-lowdefy_generator_saved"
+        self.model = AutoModelForCausalLM.from_pretrained(model_path)
+        self.tokenizer = AutoTokenizer.from_pretrained(model_path)
+        self.gen = pipeline('text-generation', model=self.model, tokenizer=self.tokenizer, max_length=2048)
 
-model = AutoModelForCausalLM.from_pretrained(model_path)
-tokenizer = AutoTokenizer.from_pretrained(model_path)
+    def generate_yaml(self, user_prompt=None):
+        if user_prompt is None:
+            user_prompt = self.template
 
-prompt = f"[INST] <<SYS>>\n{system_message}\n<</SYS>>\n\nWrite yaml file that generate website based on the f{tmps}. [/INST]"
-gen = pipeline('text-generation', model=model, tokenizer=tokenizer, max_length=2048)
-result = gen(prompt)
-print(result[0]['generated_text'])
+        prompt = f"[INST] <<SYS>>\n{self.system_message}\n<</SYS>>\n\nWrite yaml file that generate website based on the f{user_prompt}. [/INST]"
+        result = self.gen(prompt)
+        return result[0]['generated_text']
+
+# Usage example
+if __name__ == "__main__":
+    model_path = "./llama2-7b-lowdefy_generator_saved"
+    template_path = "./dataset/template.yaml"
+
+    inference_model = LLMManager(model_path, template_path)
+
+    user_input = input("Enter your custom prompt or press Enter to use the default template: ")
+
+    generated_yaml = inference_model.generate_yaml(user_input)
+    print(generated_yaml)
+
