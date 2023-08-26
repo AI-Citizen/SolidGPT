@@ -350,5 +350,19 @@ pages:
 '''
 
 
+CUSTOM_GENERATE_PRINCIPLES = f'''Base on the inforamtion I provide, help me generate principles follow this format.
+Principle : [Principle  description]'''
+
+
 def build_gpt_prompt(role_assumption: str, output_format: str):
-    return f"{role_assumption}\n\n{output_format}"
+    return f"{role_assumption}\n\nOutput format is: {output_format}"
+
+def build_gpt_standard_prompt(role_assumption: str, description: str, output_format: str):
+    return f"{role_assumption}\n\nThis task description: {description}\n\n Output format: {output_format}"
+
+def build_custom_skill_gpt_prompt(role_assumption: str, instruction: str, principles: str, few_shots: str):
+    return f'''{role_assumption}\n\n 
+    Here are instruction, always get the answer from instruction first 
+    and if no suitable content then response base on your professional knowledge. instruction: {instruction}\n\n
+    Here are principles you need to always follow: {principles}\n\n 
+    Here are the prompt and completion examples: {few_shots}'''

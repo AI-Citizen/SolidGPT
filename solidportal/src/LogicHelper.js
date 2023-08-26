@@ -63,9 +63,8 @@ export class DataClass {
 }
 
 export class JsonDataClass {
-	constructor(node_id, manual_review_result, agent, skill, inputs, outputs) {
+	constructor(node_id, agent, skill, inputs, outputs) {
 		this.node_id = node_id;
-		this.manual_review_result = manual_review_result;
 		this.agent = agent;
 		this.skill = skill;
 		this.inputs = inputs;

@@ -1,5 +1,5 @@
+from solidgpt.manager.initializer import Initializer
 from solidgpt.workgraph.workgraph import *
-from solidgpt.manager.gptmanager import GPTManager
 
 
 def run_test_with_config():
@@ -8,5 +8,5 @@ def run_test_with_config():
     app.execute()
 
 
-GPTManager()
+Initializer()
 run_test_with_config()

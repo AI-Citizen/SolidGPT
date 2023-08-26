@@ -22,6 +22,7 @@ class CustomizeSkillManager:
         skill = self.customized_skills_map.get(skill_name)
         if skill is None:
             logging.error(f"Error, Customized skill {skill_name} is not found.")
+        return skill
     
     def __load_customized_skills(self):
         # load all of the customized skills josn files
