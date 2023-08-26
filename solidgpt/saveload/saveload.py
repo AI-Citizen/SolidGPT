@@ -12,6 +12,7 @@ SKILL_NAME_TO_CONSTRUCTOR: dict[str, Type[WorkSkill]] = {
     SKILL_NAME_USE_NOTION: UseNotion,
     SKILL_NAME_WRITE_HLD: WriteHLD,
     SKILL_NAME_CREATE_KANBAN_BOARD: CreateKanBan,
+    SKILL_NAME_WRITE_YAML: WriteYAML
 }
 
 
@@ -81,7 +82,7 @@ def load_save_data_to_nodes(loaded_data):
         skill_name = node_data["skill"]
         inputs_data = node_data["inputs"]
         outputs_data = node_data["outputs"]
-        skill: WorkSkill = SKILL_NAME_TO_CONSTRUCTOR.get(skill_name)()
+        skill: WorkSkill = SKILL_NAME_TO_CONSTRUCTOR.get(skill_name, None)
         if skill is None:
             skill = CustomizeSkillManager._instance.get_customzied_skill(skill_name)
         skill.init_config(inputs_data, outputs_data)
