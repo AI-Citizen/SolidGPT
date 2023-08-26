@@ -22,6 +22,7 @@ export class LeftPanelWidget extends React.Component<BodyWidgetProps> {
 			// create a diagram model
 			const model = this.props.model;
 			const [agentValue, setAgentValue] = useState("Software Developer");
+			const [skillValue, setSkillValue] = useState("WritePRD");
 			const [manualReviewResultBool, setManualReviewResultBool] = useState(false);
 			const [file, setFile] = useState(null);
 			const [fileName, setFileName] = useState();
@@ -41,6 +42,10 @@ export class LeftPanelWidget extends React.Component<BodyWidgetProps> {
 
 			const handleAgentChange = (value: string) => {
 				setAgentValue(value);
+			};
+
+			const handleSkillChange = (value: string) => {
+				setSkillValue(value)
 			};
 
 			const onManualReviewResultChange = (e: CheckboxChangeEvent) => {
@@ -119,6 +124,21 @@ export class LeftPanelWidget extends React.Component<BodyWidgetProps> {
 						{value: 'Product Manager', label: 'Product Manager'},
 					]}
 				/>
+				<div>select skill:</div>
+				<Select
+					defaultValue={skillValue}
+					style={{width: "100%"}}
+					onChange={handleSkillChange}
+					value={skillValue}
+					options={[
+						{value: 'DebugCode', label: 'DebugCode'},
+						{value: 'WriteCode', label: 'WriteCode'},
+						{value: 'WritePRD', label: 'WritePRD'},
+						{value: 'UseNotion', label: 'UseNotion'},
+						{value: 'WriteHLD', label: 'WriteHLD'},
+						{value: 'CreateKanBan', label: 'CreateKanBan'},
+					]}
+				/>
 				<Checkbox onChange={onManualReviewResultChange} checked={manualReviewResultBool}>Manual Review Result</Checkbox>
 				<Button
 					block
@@ -129,7 +149,7 @@ export class LeftPanelWidget extends React.Component<BodyWidgetProps> {
 					onClick={() => {
 						const nodeNew = new JSCustomNodeModel({color: 'rgb(38,39,42)'});
 						dataStorage.setData(nodeNew.getOptions().id, new DataClass(
-							new JsonDataClass(nodeNew.getOptions().id, manualReviewResultBool, agentValue, "", [new Inputs("","SkillInputLoadingMethod.LOAD_FROM_OUTPUT_ID","")],
+							new JsonDataClass(nodeNew.getOptions().id, manualReviewResultBool, agentValue, skillValue, [new Inputs("","SkillInputLoadingMethod.LOAD_FROM_OUTPUT_ID","")],
 								[new Outputs(nodeNew.getPort("out").getID())]), nodeNew));
 						addNewNode(nodeNew);
 
@@ -146,7 +166,7 @@ export class LeftPanelWidget extends React.Component<BodyWidgetProps> {
 							handleUpload().then(r => {
 								const nodeNew = new JSCustomNodeModel({color: 'rgb(38,39,42)'});
 								dataStorage.setData(nodeNew.getOptions().id, new DataClass(
-									new JsonDataClass(nodeNew.getOptions().id, manualReviewResultBool, agentValue, "", [new Inputs(fileName,"SkillInputLoadingMethod.LOAD_FROM_STRING","")],
+									new JsonDataClass(nodeNew.getOptions().id, manualReviewResultBool, agentValue, skillValue, [new Inputs(fileName,"SkillInputLoadingMethod.LOAD_FROM_STRING","")],
 										[new Outputs(nodeNew.getPort("out").getID())]), nodeNew));
 								addNewNode(nodeNew);
 

@@ -25,8 +25,11 @@ export class JSCustomNodeWidget extends React.Component {
 						</div>
 					</PortWidget></>
 				}
-				<div className="custom-node-color">{
-					dataStorage.getData(this.props.node.getID()).jsonDataClass.agent}
+				<div className="custom-node-color">
+					{dataStorage.getData(this.props.node.getID()).jsonDataClass.agent}
+					<div>
+						Skill: {dataStorage.getData(this.props.node.getID()).jsonDataClass.skill}
+					</div>
 					<Checkbox checked={dataStorage.getData(this.props.node.getID()).jsonDataClass.manual_review_result}
 							  disabled={true}>Manual Review Result</Checkbox>
 					{dataStorage.getData(this.props.node.getID()).jsonDataClass.inputs[0].param_path && <div>Input File Name: {dataStorage.getData(this.props.node.getID()).jsonDataClass.inputs[0].param_path}</div>}
