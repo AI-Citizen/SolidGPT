@@ -1,11 +1,12 @@
 import * as React from 'react';
 import {useEffect, useState} from 'react';
 import {DiagramEngine, DiagramModel} from '@projectstorm/react-diagrams';
-import {Button, Checkbox, Select} from "antd";
+import {Button, Checkbox, Input, Select, Upload} from "antd";
 import {JSCustomNodeModel} from "./custom-node-js/JSCustomNodeModel";
 import {CustomClickItemsAction} from "./CustomClickItemsAction";
 import {DataClass, Inputs, JsonDataClass, LogicHelper, Outputs} from "./LogicHelper";
 import {CheckboxChangeEvent} from "antd/lib/checkbox";
+import axios from "axios";
 
 export interface BodyWidgetProps {
 	engine: DiagramEngine;
@@ -22,6 +23,8 @@ export class LeftPanelWidget extends React.Component<BodyWidgetProps> {
 			const model = this.props.model;
 			const [agentValue, setAgentValue] = useState("Software Developer");
 			const [manualReviewResultBool, setManualReviewResultBool] = useState(false);
+			const [file, setFile] = useState(null);
+			const [fileName, setFileName] = useState();
 
 			// Specify the type of the dependency array
 			useEffect(() => {
@@ -61,6 +64,49 @@ export class LeftPanelWidget extends React.Component<BodyWidgetProps> {
 				URL.revokeObjectURL(url); // Release the URL object
 			};
 
+			const handleFileChange = (e) => {
+				setFile(e.target.files[0]);
+				setFileName(e.target.files[0].name);
+			};
+
+			const handleUpload = async () => {
+				const formData = new FormData();
+				formData.append('file', file);
+
+				try {
+					await axios.post('http://localhost:3001/upload', formData);
+					console.log('File uploaded successfully!');
+				} catch (error) {
+					console.error('Error uploading file:', error);
+				}
+			};
+
+			function addNewNode(nodeNew) {
+				nodeNew.setPosition(getRandomNumber(1, 300), getRandomNumber(1, 300));
+				model.addAll(nodeNew)
+				engine.setModel(model);
+				// register a CustomClickItemsAction with custom keyCodes (in this case, only Delete key)
+				engine.getActionEventBus().registerAction(new CustomClickItemsAction());
+				model.registerListener({
+					nodeClicked: (event: any) => {
+						setAgentValue((((dataStorage.getData(dataStorage.getClickedInfo("clickedNodeId")) as
+							DataClass).jsonDataClass) as JsonDataClass).agent);
+						setManualReviewResultBool((((dataStorage.getData(dataStorage.getClickedInfo("clickedNodeId")) as
+							DataClass).jsonDataClass) as JsonDataClass).manual_review_result);
+					},
+				})
+				model.registerListener({
+					linksUpdated: (event) => {
+						event.link.registerListener({
+							targetPortChanged: (event) => {
+								console.log('Link Changed' + event.entity.getSourcePort().getID());
+								console.log('Link Changed' + event.entity.getTargetPort().getID());
+							}
+						})
+					}
+				});
+			}
+
 			return <div className="left">
 				<div>select agent:</div>
 				<Select
@@ -82,36 +128,33 @@ export class LeftPanelWidget extends React.Component<BodyWidgetProps> {
 					variant="base"
 					onClick={() => {
 						const nodeNew = new JSCustomNodeModel({color: 'rgb(38,39,42)'});
-						nodeNew.setPosition(getRandomNumber(1, 300), getRandomNumber(1, 300));
-						model.addAll(nodeNew)
-						engine.setModel(model);
-						// register a CustomClickItemsAction with custom keyCodes (in this case, only Delete key)
-						engine.getActionEventBus().registerAction(new CustomClickItemsAction());
-						model.registerListener({
-							nodeClicked: (event: any) => {
-								setAgentValue((((dataStorage.getData(dataStorage.getClickedInfo("clickedNodeId")) as
-									DataClass).jsonDataClass) as JsonDataClass).agent);
-								setManualReviewResultBool((((dataStorage.getData(dataStorage.getClickedInfo("clickedNodeId")) as
-									DataClass).jsonDataClass) as JsonDataClass).manual_review_result);
-							},
-						})
-						model.registerListener({
-							linksUpdated: (event) => {
-								event.link.registerListener({
-									targetPortChanged: (event) => {
-										console.log('Link Changed' + event.entity.getSourcePort().getID());
-										console.log('Link Changed' + event.entity.getTargetPort().getID());
-									}
-								})
-							}
-						});
-
-
 						dataStorage.setData(nodeNew.getOptions().id, new DataClass(
-							new JsonDataClass(nodeNew.getOptions().id, manualReviewResultBool,agentValue, "", [], [new Outputs(nodeNew.getPort("out").getID())]), nodeNew));
+							new JsonDataClass(nodeNew.getOptions().id, manualReviewResultBool, agentValue, "", [new Inputs("","SkillInputLoadingMethod.LOAD_FROM_OUTPUT_ID","")],
+								[new Outputs(nodeNew.getPort("out").getID())]), nodeNew));
+						addNewNode(nodeNew);
+
 					}}>
 					Add Node
 				</Button>
+				<Input type="file" onChange={handleFileChange}/>
+				<Button block
+						ghost
+						shape="rectangle"
+						size="large"
+						variant="base"
+						onClick={() => {
+							handleUpload().then(r => {
+								const nodeNew = new JSCustomNodeModel({color: 'rgb(38,39,42)'});
+								dataStorage.setData(nodeNew.getOptions().id, new DataClass(
+									new JsonDataClass(nodeNew.getOptions().id, manualReviewResultBool, agentValue, "", [new Inputs(fileName,"SkillInputLoadingMethod.LOAD_FROM_STRING","")],
+										[new Outputs(nodeNew.getPort("out").getID())]), nodeNew));
+								addNewNode(nodeNew);
+
+								}
+							);
+						}
+
+						}>Add Node With Input File</Button>
 				<Button
 					block
 					ghost
@@ -126,10 +169,9 @@ export class LeftPanelWidget extends React.Component<BodyWidgetProps> {
 							if (dataStorage.getAllData().hasOwnProperty(key)) {
 								const value = dataStorage.getAllData()[key];
 								if (allNode.includes((value as DataClass).node)) {
-									((value as DataClass).jsonDataClass).inputs.length = 0;
 									if (!isEmptyObject(((value as DataClass).node as JSCustomNodeModel).getPort("in").links)) {
 										Object.keys(((value as DataClass).node as JSCustomNodeModel).getPort("in").links).forEach(item => {
-											((value as DataClass).jsonDataClass).inputs.push(new Inputs("","",item));
+											((value as DataClass).jsonDataClass).inputs[0].load_from_output_id = item;
 										});
 									}
 									if (!isEmptyObject(((value as DataClass).node as JSCustomNodeModel).getPort("out").links)) {
