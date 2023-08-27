@@ -1,7 +1,7 @@
 import logging
 import os
 from definitions import ROOT_DIR
-from solidgpt.diy.customizedskilldefinition import CustomizedSkillDefinition
+from solidgpt.diy.custom.customizedskilldefinition import CustomizedSkillDefinition
 from solidgpt.util.util import load_from_json
 from solidgpt.workskill.skills.skill_custom import CustomSkill
 

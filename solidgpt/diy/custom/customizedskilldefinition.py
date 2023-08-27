@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+import json
 
 from solidgpt.workskill.skillio import SkillIOParamCategory
 
@@ -15,3 +16,14 @@ class CustomizedSkillDefinition:
         self.background_data_path = background_data_path
         self.input_method = input_method
         self.output_method = output_method
+
+    def toDict(self):
+        return {
+            "skill_name": self.skill_name,
+            "basic_description": self.basic_description,
+            "instruction": self.instruction,
+            "qa_example": self.qa_example,
+            "background_data_path": self.background_data_path,
+            "input_method": self.input_method,
+            "output_method": self.output_method
+        }
