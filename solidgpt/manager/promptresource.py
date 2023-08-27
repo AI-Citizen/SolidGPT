@@ -1083,13 +1083,32 @@ Assume you are a developer who only creates pages.
 Find and output a single task of creating main page/homepage. Do not output the tasks that are not related.
 """
 
-
+### CUSTOM SKILL GENERATOR
 CUSTOM_GENERATE_PRINCIPLES = f'''Base on the inforamtion I provide, help me generate principles follow this format.
 Principle : [Principle  description]'''
 
+CUSTOM_GENERATE_LIST_SKILLS_OUTPUT_FORMAT = '''
+skill1:description &&skill2:description &&skill3:description &&skill4:description &&skill5:description&&
+'''
+
+CUSTOM_GENERATE_SKILL_JSON_ROLE_ASSUMPTION = f'''Base on the inforamtion I provide, help me generate individual json file for the skill. Only output json file'''
+
+CUSTOM_GENERATE_SKILL_JSON_OUTPUT_FORMAT = '''{
+    "skill_name": "skill name",
+    "basic_description": "give a short description for this skill",
+    "instruction": "How to do what's the tenant, and what's the step by step instructions",
+    "qa_example": "give one or two, input output example",
+    "background_data_path": "", (Don't need to change this)
+    "input_method": "SkillIOParamCategory.PlainText", (Don't need to change this)
+    "output_method": "SkillIOParamCategory.PlainText" (Don't need to change this)
+}'''
+
+def get_custom_skills_assumption_role_prompt(question_subject):
+    return f"""Assume you are the expert of {question_subject}. 
+I want to know the list of top 5 essential actual hard skills (no softskill) for the {question_subject}. Can you please list them for me and use && sign to seperate them?"""
 
 def build_gpt_prompt(role_assumption: str, output_format: str):
-    return f"{role_assumption}\n\nOutput format is: {output_format}"
+    return f"{role_assumption}\n\nAlways follow the Output format which is: {output_format}"
 
 def build_gpt_standard_prompt(role_assumption: str, description: str, output_format: str):
     return f"{role_assumption}\n\nThis task description: {description}\n\n Output format: {output_format}"

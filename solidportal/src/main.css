@@ -52,11 +52,21 @@ html, body {
 	cursor: grab;
 }
 
+.circle-port-output-only {
+	width: 240px;
+	height: 40px;
+	cursor: grab;
+}
+
 .circle-port-input:hover {
 	background: #bfbfbf;
 }
 
 .circle-port-output:hover {
+	background: #c21a1a;
+}
+
+.circle-port-output-only:hover {
 	background: #c21a1a;
 }
 

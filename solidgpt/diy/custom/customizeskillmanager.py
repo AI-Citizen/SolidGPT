@@ -1,7 +1,7 @@
 import logging
 import os
 from definitions import ROOT_DIR
-from solidgpt.diy.customizedskilldefinition import CustomizedSkillDefinition
+from solidgpt.diy.custom.customizedskilldefinition import CustomizedSkillDefinition
 from solidgpt.util.util import load_from_json
 from solidgpt.workskill.skills.skill_custom import CustomSkill
 
@@ -14,9 +14,11 @@ class CustomizeSkillManager:
             # You can initialize the instance attributes here
         return cls._instance
     
-    def __init__(self):
+    def __init__(self, is_active: bool = False):
+        self.is_active = is_active
         self.customized_skills_map: dict[str, CustomSkill] = {}
-        self.__load_customized_skills()
+        if is_active:
+            self.__load_customized_skills()
 
     def get_customzied_skill(self, skill_name: str)-> CustomSkill:
         skill = self.customized_skills_map.get(skill_name)
@@ -51,5 +53,5 @@ class CustomizeSkillManager:
         return customized_skills_definition
     
 
-manager = CustomizeSkillManager()
-print(list(manager.customized_skills_map.values()))
+# manager = CustomizeSkillManager()
+# print(list(manager.customized_skills_map.values()))
