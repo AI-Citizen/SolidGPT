@@ -1,5 +1,5 @@
 import logging
-from solidgpt.diy.customizedskilldefinition import CustomizedSkillDefinition
+from solidgpt.diy.custom.customizedskilldefinition import CustomizedSkillDefinition
 from solidgpt.manager.gptmanager import GPTManager
 from solidgpt.manager.promptresource import CUSTOM_GENERATE_PRINCIPLES, build_custom_skill_gpt_prompt, build_gpt_prompt
 from solidgpt.util.util import load_from_md, save_to_md2

@@ -1,4 +1,4 @@
-from solidgpt.diy.customizeskillmanager import CustomizeSkillManager
+from solidgpt.diy.custom.customizeskillmanager import CustomizeSkillManager
 from solidgpt.manager.gptmanager import GPTManager
 
 
