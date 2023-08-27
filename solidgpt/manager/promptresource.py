@@ -148,7 +148,7 @@ The columns I'd like are:
 |Task Name|Task Description|User story|Acceptance Criteria|Priority (H/M/L)|Status (Input/Spec/Imple/PR/Done/Pending)|Due Date|Engineer Points|.'''
 
 SDE_LOWDEFY_ASSUMPTION = f'''Assume you are a Software developer specializing in lowdefy,
-You will create lowdefy yaml files given product requirement document.
+You will create lowdefy yaml files given kanban tasks.
 You must follow theses principles.
 1. Do not generate actions.
 2. Do not import plugins that are not already built.
@@ -348,6 +348,740 @@ pages:
   - _ref: login.yaml
 ```
 '''
+
+SDE_LOWDEFY_PAGE_ASSUMPTION = f'''Assume you are a Software developer specializing in lowdefy,
+You will create yaml files given kanban board tasks.
+You must follow theses principles.
+1. Do not generate actions.
+2. Do not import plugins that are not already built.
+3. Do not generate reference pages (fields with '_ref').
+4. Do not create functions or events.
+5. Do not generate duplicate map keys in yaml file.
+6. Be concise. Keep the yaml file less than 200 lines.
+7. Do not use Nested mappings, only one colon is allowed in each line.
+'''
+
+SDE_PAGE_YAML_OUTPUT_TEMPLATE = f'''
+Task: Create a page referred in the main page that can generate business report.
+Answer:
+```yaml
+id: report
+type: PageHeaderMenu
+properties:
+  title: Report
+layout:
+  contentGutter: 16 # Set a gutter of 16px between all the cards on the page
+requests:
+  # Request for the bar and pie charts
+  - id: scores_by_genre
+    type: MongoDBAggregation # MongoDB Aggregation to get the data
+    connectionId: movies_mongodb
+    properties:
+      pipeline:
+        - $unwind:
+            path: $genres # Genres is an array, so unwind to create 1 document for every array entry
+        - $match: # Only look at top 6 genres
+            genres:
+              $in:
+                - Drama
+                - Comedy
+                - Romance
+                - Crime
+                - Thriller
+                - Action
+        - $group:
+            # Calculate the average Rotten Tomatoes viewer and critic ratings for each genre.
+            _id: $genres # Group data by the genre field
+            viewerRating:
+              $avg: $tomatoes.viewer.rating
+            criticRating:
+              $avg: $tomatoes.critic.rating
+            count:
+              $sum: 1 # Count the number of documents by summing 1 for every document
+        - $addFields:
+            # Multiply viewerRating by 2 as it is out of 5 not 10.
+            viewerRating:
+              $multiply:
+                - $viewerRating
+                - 2
+        - $sort:
+            count: -1 # Sort by descending count
+
+  # Request for the table
+  - id: top_100_score_difference_movies
+    type: MongoDBAggregation # MongoDB Aggregation to get the data
+    connectionId: movies_mongodb
+    properties:
+      pipeline:
+        - $match:
+            tomatoes.critic.numReviews: # Match where there are 20 or more critic reviews
+              $gte: 20
+            tomatoes.viewer.numReviews: # and 100 or more viewer reviews
+              $gte: 100
+            genres: # Only look at top 6 genres
+              $in:
+                - Drama
+                - Comedy
+                - Romance
+                - Crime
+                - Thriller
+                - Action
+        - $project: # Include fields we want to show in the table
+            title: 1
+            year: 1
+            rated: 1
+            viewerRating: # Multiply viewerRating by 2 as it is out of 5 not 10.
+              $multiply:
+                - $tomatoes.viewer.rating
+                - 2
+            criticRating: $tomatoes.critic.rating
+            viewerReviews: $tomatoes.viewer.numReviews
+            criticReviews: $tomatoes.critic.numReviews
+            difference: # Calculate the difference between the critic and viewer scores
+              $abs: # Take the absolute (positive) value
+                $subtract:
+                  - $multiply:
+                      - $tomatoes.viewer.rating
+                      - 2
+                  - $tomatoes.critic.rating
+        - $sort:
+            difference: -1 # Sort by biggest difference
+        - $limit: 100 # Only return the first 100 results
+
+events:
+  # A list of actions that gets completed when this page is first loaded.
+  onInitAsync:
+    - id: fetch_data # Fetch the request data before the page renders in order to populate the charts
+      type: Request
+      params:
+        - scores_by_genre
+        - top_100_score_difference_movies
+
+areas:
+  content:
+    blocks:
+      - id: title # Title on page
+        type: Title
+        properties:
+          content: Movie Critic and Viewer Ratings
+          level: 4
+      - id: genre_counts_bar_chart_card
+        type: Card
+        properties:
+          title: Comparison of Critic and Viewer Ratings by Genre
+        layout:
+          span: 16 # Make the card span 2 thirds of the screen
+        blocks:
+          - id: genre_counts_bar_chart
+            type: EChart
+            properties:
+              height: 400
+              option:
+                dataset:
+                  source:
+                    _request: scores_by_genre # Use scores_by_genre request for chart data
+                legend:
+                  show: true
+                  bottom: 0 # Display legend below chart
+                grid:
+                  bottom: 100
+                tooltip:
+                  show: true
+                  trigger: item
+                xAxis:
+                  type: category # Add a category for the x axis
+                  data:
+                    _array.map: # Map over the data and get the list of _ids which will serve as our categories
+                      - _request: scores_by_genre
+                      - _function:
+                          __args: 0._id
+                  axisLabel:
+                    rotate: 60 # Rotate the labels
+                yAxis:
+                  - type: value # Add a value for the y axis
+                    name: Rating # Give the y axis a title
+                    nameRotate: 90 ß
+                    nameLocation: middle
+                    nameGap: 40
+                    min: # Set minimum y value
+                      _function:
+                        __math.floor:
+                          __if_none:
+                            - __args: 0.min
+                            - 0
+                series:
+                  - type: bar # Create a column series to show columns
+                    name: Critics Rating
+                    itemStyle:
+                      color: '#5D7092' # Set column fill color
+                      borderColor: '#5D7092' # Set column border color
+                    encode:
+                      x: _id # Set the category value to the field _id in the data
+                      y: criticRating # Set the value value to the field in the data
+                  - type: bar
+                    name: Viewer Rating
+                    itemStyle:
+                      color: '#5AD8A6'
+                      borderColor: '#5AD8A6'
+                    encode:
+                      x: _id
+                      y: viewerRating
+
+      - id: pie_chart_card
+        type: Card
+        layout:
+          span: 8
+        properties:
+          title: Genre Counts
+        blocks:
+          - id: pie_chart
+            type: EChart
+            properties:
+              height: 400
+              option:
+                series:
+                  - name: genre_counts
+                    type: pie
+                    radius: [30%, 50%] # Make the chart a donut chart
+                    label:
+                      fontSize: 12
+                    data:
+                      _mql.aggregate: # Format data to have fields name and value
+                        on:
+                          _request: scores_by_genre # Share the same request as the bar chart
+                        pipeline:
+                          - $project:
+                              name: $_id
+                              value: $count
+                          - $sort:
+                              value: -1
+                    color: # Add custom colors
+                      - '#122C6A'
+                      - '#0044A4'
+                      - '#005BBF'
+                      - '#3874DB'
+                      - '#5A8DF8'
+                      - '#7EABFF'
+
+      - id: table_card
+        type: Card
+        properties:
+          title: 100 Movies with Largest Difference between Critic and Viewer Ratings
+        blocks:
+          - id: table
+            type: AgGridAlpine
+            properties:
+              theme: basic
+              rowData:
+                _request: top_100_score_difference_movies
+              defaultColDef: # Define default column definitions that apply to all the defined columns
+                sortable: true # Enables sorting on the columns when the header is clicked
+                resizable: true # Enables resizing of column widths
+                filter: true # Enables filtering of the columns using agGrid's default filter
+              columnDefs: # Define all the columns
+                - headerName: Title # Display name
+                  field: title # The field name in the data
+                  minWidth: 350
+                  flex: 1 0 auto
+                - headerName: Year
+                  field: year
+                  width: 100
+                - headerName: Difference
+                  field: difference
+                  width: 160
+                  type: numericColumn # Setting this aligns the number on the right
+                  valueFormatter:
+                    _function: # Provide a fprmatter function to pretty render the data value.
+                      __intl.numberFormat:
+                        on:
+                          __args: 0.value
+                        params:
+                          options:
+                            minimumFractionDigits: 1 # Format the number with 1 decimal place
+                - headerName: Viewer Rating
+                  field: viewerRating
+                  width: 160
+                  type: numericColumn
+                  valueFormatter:
+                    _function:
+                      __intl.numberFormat:
+                        on:
+                          __args: 0.value
+                        params:
+                          options:
+                            maximumFractionDigits: 1
+                - headerName: Critic Rating
+                  field: criticRating
+                  width: 160
+                  type: numericColumn
+                  valueFormatter:
+                    _function:
+                      __intl.numberFormat:
+                        on:
+                          __args: 0.value
+                        params:
+                          options:
+                            maximumFractionDigits: 1
+                - headerName: Viewer Reviews
+                  field: viewerReviews
+                  width: 160
+                  type: numericColumn
+                  valueFormatter:
+                    _function:
+                      __intl.numberFormat:
+                        on:
+                          __args: 0.value
+                        params:
+                          options:
+                            maximumFractionDigits: 0
+                - headerName: Critic Reviews
+                  field: criticReviews
+                  width: 160
+                  type: numericColumn
+                  valueFormatter:
+                    _function:
+                      __intl.numberFormat:
+                        on:
+                          __args: 0.value
+                        params:
+                          options:
+                            maximumFractionDigits: 0
+  header:
+    blocks:
+      - id: affix
+        type: Affix
+        blocks:
+          - id: source_button
+            type: Button
+            properties:
+              icon: AiOutlineGithub
+              title: View App Source Code
+              type: default
+              shape: round
+            events:
+              onClick:
+                - id: link_repo
+                  type: Link
+                  params:
+                    url: https://github.com/lowdefy/lowdefy-example-reporting
+                    newTab: true
+```
+Task: Create a page referred in the main page that can let users fill in a survey.
+Answer:
+```yaml
+# Define the survey page
+id: survey
+type: Box
+style:
+  background: '#ababab'
+layout:
+  contentAlign: center
+requests:
+  - id: get_employees
+    type: GoogleSheetGetMany
+    connectionId: employee_sheet
+    properties:
+      # Filter all employees which has the role of "Sales person" in the data
+      filter:
+        role: Sales person
+events:
+  onInitAsync:
+    # When the page initializes, the get_employee request is executed to fetch all "Sales person" employees.
+    - id: go_get_employees
+      type: Request
+      params: get_employees # Here we refer to the get_employees id.
+blocks:
+  # Add some very basic HTML to create a nice customer friendly company banner.
+  - id: logo
+    type: Html
+    style:
+      borderBottom: '0.3em solid #000'
+    properties:
+      html: '<div style="background: #fff; text-align: center; padding: 10px"><img src="https://lowdefy-public.s3-eu-west-1.amazonaws.com/dunder_logo.jpg" height="80px"/></div>'
+  # Wrap our survey questioner to center it nicely for all screen sizes.
+  - id: content_box
+    type: Box
+    style:
+      maxWidth: 660
+      padding: 30px 30px 60px 30px
+      minHeight: 90vh
+      background: '#fff'
+    layout:
+      contentGutter: 20
+    blocks:
+      - id: title
+        type: Title
+        style:
+          textAlign: center
+          paddingTop: 20
+        properties:
+          content: How was your paper experience?
+          level: 1
+      - id: intro
+        type: Title
+        style:
+          textAlign: center
+          paddingTop: 20
+        properties:
+          content: Your input is highly valued here at Dunder Mifflin. Your feedback will mostly be used to improve our service to you.
+          level: 4
+      # The first input field will manage the name field in the page context state variable.
+      - id: name
+        type: TextInput
+        required: true # We indicate that some fields are required, later we will validate our input before submitting the data to the server.
+        properties:
+          title: Name & Surname
+          size: large
+      - id: company
+        type: TextInput
+        required: true
+        properties:
+          title: Company Name
+          size: large
+      - id: type
+        type: ButtonSelector
+        required: true
+        properties:
+          title: Type
+          size: large
+          options:
+            - Feedback
+            - Query
+            - Complaint
+      # The visible field is used to determine when a block should exist. As a block goes invisible, its field is also remove from the context state.
+      - id: sales_person
+        type: Selector
+        required: true
+        visible:
+          # These operators evaluate to `true` when the type field is selected and is not equal to the "Feedback" option.
+          _and:
+            - _not:
+                _eq:
+                  - _state: type
+                  - Feedback
+            - _state: type
+        properties:
+          title: Sales Person
+          size: large
+          options:
+            # The list of selector options are populated from the result of our get_employees request. Here we make use of the mql aggregate operator to modify our request response and sort according to label. The mql.aggregate operator is a client side implementation to run aggregations on client side data using an implementation of MongoDB's Aggregation language.
+            _mql.aggregate:
+              on:
+                _if_none: # Since we are fetching the `get_employees` with onInitAsync, `_request: get_employees` will be `null` until a request response is received. Checking for _if_none here handles the non-array type `on` input error until the data is returned be the request.
+                  - _request: get_employees
+                  - []
+              pipeline:
+                - $project:
+                    value: $name
+                    label: $name
+                - $sort:
+                    label: 1
+      - id: response
+        type: TextArea
+        required: true
+        visible: # The `response` field will only be visible in our webform if the `type` field has a value.
+          _if_none:
+            - _state: type
+            - false
+        properties:
+          title: Please tell us more
+          size: large
+      - id: satisfaction_title
+        type: Title
+        visible:
+          _if_none:
+            - _state: response
+            - false
+        style:
+          textAlign: center
+          paddingTop: 20
+        properties:
+          content: One last thing, based on your experience with us, how likely are you to recommend Dunder Mufflin Paper Company?
+          level: 4
+      - id: satisfaction
+        type: RatingSlider
+        visible:
+          _if_none:
+            - _state: response
+            - false
+        properties:
+          label:
+            disabled: true
+      - id: detractor_response_title
+        type: Title
+        visible:
+          # Show a different question based on the customer satisfaction rating.
+          _and:
+            - _lte:
+                - _state: satisfaction
+                - 7
+            - _if_none:
+                - _state: satisfaction
+                - false
+        style:
+          textAlign: center
+          paddingTop: 20
+        properties:
+          content:
+            # Some unfair logic to bias Dwight's scores, and also because Jim is probably up to no good.
+            _if:
+              test:
+                _eq:
+                  - _state: sales_person
+                  - Dwight Schrute
+              then: Wait! Be careful what you write... (Did Jim put you up to this?)
+              else: Oh no! We can do better!
+          level: 4
+      - id: detractor_response
+        type: TextArea
+        required: true
+        visible:
+          _and:
+            - _lte:
+                - _state: satisfaction
+                - 7
+            - _if_none:
+                - _state: satisfaction
+                - false
+        properties:
+          title: Please could your provide us with some further detail on your hesitancy to recommend us so we know what to work on.
+          placeholder: What could we have done better?
+          size: large
+          label:
+            colon: false
+      - id: promoter_response_title
+        type: Title
+        visible:
+          _gt:
+            - _state: satisfaction
+            - 7
+        style:
+          textAlign: center
+          paddingTop: 20
+        properties:
+          content: Your smile makes us smile!
+          level: 4
+      - id: promoter_response
+        type: TextArea
+        required: true
+        visible:
+          _gt:
+            - _state: satisfaction
+            - 7
+        properties:
+          title: Good news should be shared! Please can you let us know what made you smile so we can keep up the good work.
+          placeholder: What did you like?
+          size: large
+          label:
+            colon: false
+      - id: save
+        type: Button
+        visible:
+          _if_none:
+            - _state: satisfaction
+            - false
+        requests:
+          - id: save_survey
+            type: GoogleSheetAppendOne
+            connectionId: survey_sheet
+            payload:
+              row:
+                _state: true
+            properties:
+              row:
+                _payload: row
+        events:
+          # When the save button is clicked:
+          onClick:
+            - id: set_state # Add a timestamp variable to the context state.
+              type: SetState
+              params:
+                timestamp:
+                  _date: now
+            - id: validate # Then validate our webform input.
+              type: Validate
+            - id: call_save # Then call the `save_survey` request which will insert the new response record on the survey Google sheet.
+              type: Request
+              params: save_survey
+            - id: to_thank_you_page # Lastly redirect the customer to the `think-you` page.
+              type: Link
+              params:
+                pageId: thank-you
+        properties:
+          title: Submit
+          block: true
+          color: '#000'
+          icon: AiOutlineCheck
+          size: large
+      - id: header_bar
+        type: Html
+        visible:
+          _if_none:
+            - _state: satisfaction
+            - false
+        style:
+          fontSize: 10
+          textAlign: center
+          color: red
+        properties:
+          html: For this example, the submitted data will be public.
+  # Add a static footer to the bottom of the page to link to this repository.
+  - id: affix
+    type: Affix
+    properties:
+      offsetBottom: 0
+    blocks:
+      - id: bar_footer
+        type: Box
+        layout:
+          contentJustify: center
+        style:
+          background: '#fff'
+          padding: 5
+          borderTop: '0.3em solid #000'
+        blocks:
+          - id: link_repo
+            type: Anchor
+            layout:
+              shrink: 1
+            properties:
+              url: https://github.com/lowdefy/lowdefy-example-survey
+              title: ⚡️ View the Lowdefy config for this app ⚡️
+              newTab: true
+```
+Task: Create a page referred in the main page that can post new blog.
+Answer:
+```yaml
+id: new-blog-post
+type: PageHeaderMenu
+properties:
+  title: New Blog Post # The title in the browser tab.
+layout:
+  contentJustify: center # Center the contents of the page.
+
+requests:
+  - id: insert_new_blog_post
+    type: MongoDBInsertOne
+    connectionId: blog_posts
+    properties:
+      doc:
+        blog_post_title:
+          _state: blog_post_title
+        blog_post_flair:
+          _state: blog_post_flair
+        blog_post_description:
+          _state: blog_post_description
+        blog_post_likes: 0
+        created_at:
+          _date: now
+        updated_at:
+          _date: now
+
+areas:
+  content:
+    blocks:
+      - id: content_card
+        type: Card
+        layout:
+          size: 800 # Set the size of the card so it does not fill the full screen.
+          contentGutter: 16 # Make a 16px gap between all blocks in this card.
+        blocks:
+          - id: page_heading
+            type: Title
+            properties:
+              content: New blog post # Change the title on the page.
+              level: 3 # Make the title a little smaller (an html `<h3>`).
+          - id: blog_post_title
+            type: TextInput
+            required: true
+            properties:
+              title: Title
+          - id: blog_post_flair
+            type: ButtonSelector
+            required: true
+            properties:
+              title: Flair
+              options: # Set the allowed options
+                - Informative
+                - Update
+                - Fact
+                - Funny
+                - Patch
+                - Feedback
+          - id: blog_post_description
+            type: TextArea
+            required: true
+            properties:
+              title: Description
+          - id: clear_button
+            type: Button
+            layout:
+              span: 12 # Set the size of the button (span 12 of 24 columns)
+            properties:
+              title: Clear
+              block: true # Make the button fill all the space available to it
+              type: default # Make the button a plain button
+              icon: ClearOutlined
+            events:
+              onClick:
+                - id: reset
+                  type: Reset
+          - id: submit_button
+            type: Button
+            layout:
+              span: 12
+            properties:
+              title: Submit
+              block: true
+              type: primary # Make the button a primary button
+              icon: SaveOutlined
+            events:
+              onClick:
+                - id: validate
+                  type: Validate
+                - id: insert_new_blog_post # Make a request to the database
+                  type: Request
+                  params: insert_new_blog_post
+                - id: reset # Reset the form once data has been submitted
+                  type: Reset
+                - id: link_to_blog_posts # Link back to the blog_posts page.
+                  type: Link
+                  params:
+                    pageId: home
+
+  footer:
+    blocks:
+      - id: footer
+        type: Paragraph
+        properties:
+          type: secondary
+          content: |
+            Made using Lowdefy
+        style:
+          text-align: center
+      - id: block_id
+        type: Icon
+        properties:
+          name: RobotOutlined
+        style:
+          text-align: center
+```
+'''
+
+SDE_FRONTEND_ASSUMPTION = f"""
+Assume you are a developer who only creates pages. 
+Find and only output the tasks of creating pages in the kanban board. Do not output the tasks that are not related.
+"""
+
+SDE_FRONTEND_OUTPUT_TEMPLATE = f"""
+The columns I'd like are: |Task Description|User story|Acceptance Criteria|. 
+Do not output the column names and separation line.
+"""
+
+SDE_FRONTEND_HOMEPAGE_ASSUMPTION = f"""
+Assume you are a developer who only creates pages. 
+Find and output a single task of creating main page/homepage. Do not output the tasks that are not related.
+"""
 
 
 CUSTOM_GENERATE_PRINCIPLES = f'''Base on the inforamtion I provide, help me generate principles follow this format.

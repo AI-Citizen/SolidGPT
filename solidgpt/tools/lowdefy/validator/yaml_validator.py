@@ -4,17 +4,15 @@ import pandas as pd
 import numpy as np
 from numpy.linalg import norm
 from solidgpt.configuration.configreader import ConfigReader
-
-
-# from definitions import ROOT_DIR
+from definitions import ROOT_DIR
 
 
 class YAMLValidator:
     def __init__(self, yaml_str: str):
         self.yaml = yaml_str
-        self.container_df = pd.read_csv(os.path.join("..", "embedding", "container_block_embedding.csv"))
-        self.input_df = pd.read_csv(os.path.join("..", "embedding", "input_block_embedding.csv"))
-        self.display_df = pd.read_csv(os.path.join("..", "embedding", "display_block_embedding.csv"))
+        self.container_df = pd.read_csv(os.path.join(ROOT_DIR, "solidgpt", "tools", "lowdefy", "embedding", "container_block_embedding.csv"))
+        self.input_df = pd.read_csv(os.path.join(ROOT_DIR, "solidgpt", "tools", "lowdefy", "embedding", "input_block_embedding.csv"))
+        self.display_df = pd.read_csv(os.path.join(ROOT_DIR, "solidgpt", "tools", "lowdefy", "embedding", "display_block_embedding.csv"))
         self.all_embedding_df = pd.concat([self.container_df, self.input_df, self.display_df], axis=1)
         openai.api_key = ConfigReader().get_property("openai_api_key")
 
@@ -36,7 +34,6 @@ class YAMLValidator:
         idx = 0
         while idx < len(cur_yaml):
             line = cur_yaml[idx]
-            print(line)
             tokens = line.split(":")
             key = tokens[0]
             if key.strip() == "type":
@@ -59,6 +56,20 @@ class YAMLValidator:
 
     def verify_indentation(self, yaml_str: str) -> str:
         pass
+
+    def add_reference(self, yaml_str: str, page_list: list[str]) -> str:
+        ref_list = [f"  - _ref: {page_name}" for page_name in page_list]
+        cur_yaml = yaml_str.split("\n")
+        idx = 0
+        while idx < len(cur_yaml):
+            line = cur_yaml[idx]
+            tokens = line.split(":")
+            key = tokens[0]
+            if key.strip() == "pages":
+                cur_yaml[idx+1:1] = ref_list
+                break
+            idx += 1
+        return "\n".join(cur_yaml)
 
     @staticmethod
     def vector_similarity(x: list[float], y: list[float]) -> float:
