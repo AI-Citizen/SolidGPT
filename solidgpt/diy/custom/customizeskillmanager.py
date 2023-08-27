@@ -51,5 +51,5 @@ class CustomizeSkillManager:
         return customized_skills_definition
     
 
-manager = CustomizeSkillManager()
-print(list(manager.customized_skills_map.values()))
+# manager = CustomizeSkillManager()
+# print(list(manager.customized_skills_map.values()))
