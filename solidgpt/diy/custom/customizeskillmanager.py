@@ -14,9 +14,11 @@ class CustomizeSkillManager:
             # You can initialize the instance attributes here
         return cls._instance
     
-    def __init__(self):
+    def __init__(self, is_active: bool = False):
+        self.is_active = is_active
         self.customized_skills_map: dict[str, CustomSkill] = {}
-        self.__load_customized_skills()
+        if is_active:
+            self.__load_customized_skills()
 
     def get_customzied_skill(self, skill_name: str)-> CustomSkill:
         skill = self.customized_skills_map.get(skill_name)
