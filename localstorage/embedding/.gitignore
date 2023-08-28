@@ -1,0 +1,7 @@
+dividedresources/*
+embeddedresources/*
+originalresources/*
+
+!dividedresources/Placeholder.md
+!embeddedresources/Placeholder.md
+!originalresources/Placeholder.md

@@ -8,7 +8,7 @@ TEST_SKILL_WORKSPACE = os.path.join(TEST_DIR, "workskill", "skills", "workspace"
 
 
 def run_test():
-    Initializer(is_custom_skill_active=True)
+    Initializer()
     app = WorkGraph()
     skill = CustomizeSkillManager._instance.get_customzied_skill("Brainstorming")
     input_path = os.path.join(TEST_SKILL_WORKSPACE, "in", "Brainstorming")
