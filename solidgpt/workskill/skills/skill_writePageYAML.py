@@ -15,14 +15,14 @@ class WritePageYAML(WorkSkill):
     def __init__(self):
         super().__init__()
         self.gpt_manager = GPTManager._instance
-        self.name = SKILL_NAME_WRITE_YAML
+        self.name = SKILL_NAME_WRITE_PageYAML
         self.skill_input = SkillInput(
             "High level design document",
             SkillIOParamCategory.KanbanBoard,
         )
         self.add_input(self.skill_input)
         self.skill_output = SkillOutput(
-            "Write YAML Result",
+            "Write page YAML Result",
             SkillIOParamCategory.YAML,
         )
         self.add_output(self.skill_output)
@@ -68,4 +68,3 @@ class WritePageYAML(WorkSkill):
         primitive_yaml = YAMLValidator.parse(gpt_output)
         validator = YAMLValidator(primitive_yaml)
         return validator.validate()
-

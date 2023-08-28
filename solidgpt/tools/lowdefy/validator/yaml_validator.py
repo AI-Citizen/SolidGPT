@@ -22,6 +22,7 @@ class YAMLValidator:
         :return: Converted valid lowdefy yaml file string
         """
         ret_yaml_str = self.verify_block_type(self.yaml)
+        ret_yaml_str = self.remove_events(ret_yaml_str)
         return ret_yaml_str
 
     def verify_block_type(self, yaml_str: str) -> str:
@@ -57,8 +58,29 @@ class YAMLValidator:
     def verify_indentation(self, yaml_str: str) -> str:
         pass
 
-    def add_reference(self, yaml_str: str, page_list: list[str]) -> str:
-        ref_list = [f"  - _ref: {page_name}" for page_name in page_list]
+    @staticmethod
+    def remove_events(yaml_str: str) -> str:
+        cur_yaml = yaml_str.split("\n")
+        idx = 0
+        while idx < len(cur_yaml):
+            line = cur_yaml[idx]
+            tokens = line.split(":")
+            key = tokens[0]
+            if key.strip() == "events":
+                indentation = key.rfind(" ")
+                next_indentation = float("inf")
+                while idx < len(cur_yaml) and next_indentation > indentation:
+                    cur_yaml.pop(idx)
+                    line = cur_yaml[idx]
+                    tokens = line.split(":")
+                    key = tokens[0]
+                    next_indentation = key.rfind(" ")
+            idx += 1
+        return "\n".join(cur_yaml)
+
+    @staticmethod
+    def add_reference(yaml_str: str, page_list: list[str]) -> str:
+        ref_list = [f"  - _ref: {page_name}.yaml" for page_name in page_list]
         cur_yaml = yaml_str.split("\n")
         idx = 0
         while idx < len(cur_yaml):
