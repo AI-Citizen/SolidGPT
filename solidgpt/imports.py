@@ -5,6 +5,7 @@ from solidgpt.workskill.skills.skill_writeHLD import WriteHLD
 from solidgpt.workskill.skills.skill_writePRD import WritePRD
 from solidgpt.workskill.skills.skill_writecode import WriteCode
 from solidgpt.workskill.skills.skill_writeYAML import WriteYAML
+from solidgpt.workskill.skills.skill_writePageYAML import WritePageYAML
 
 from solidgpt.workagent.agents.agent_principalengineer import AgentPrincipalEngineer
 from solidgpt.workagent.agents.agent_productmanager import AgentProductManager
