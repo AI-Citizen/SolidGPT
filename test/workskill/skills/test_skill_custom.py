@@ -1,4 +1,6 @@
-from solidgpt.manager.initializer import Initializer
+from solidgpt.manager.embedding.embeddingmanager import EmbeddingManager
+from solidgpt.manager.embedding.embeddingmodel import EmbeddingModelParameter
+from solidgpt.manager.gptmanager import GPTManager
 from solidgpt.workgraph.workgraph import *
 from solidgpt.workagent.agents.agent_principalengineer import AgentPrincipalEngineer
 
@@ -8,7 +10,17 @@ TEST_SKILL_WORKSPACE = os.path.join(TEST_DIR, "workskill", "skills", "workspace"
 
 
 def run_test():
-    Initializer(is_custom_skill_active=True)
+    GPTManager()
+    embedding_manager = EmbeddingManager()
+    embedding_manager.add_embed_model("TestEmbedding", EmbeddingModelParameter(
+        resource_name= "TestEmbedding",
+        original_resources_folder_path= os.path.join(TEST_SKILL_WORKSPACE, "embedding", "original"),
+        divided_resources_folder_path= os.path.join(TEST_SKILL_WORKSPACE, "embedding", "divided"),
+        embedded_resources_folder_path= os.path.join(TEST_SKILL_WORKSPACE, "embedding", "embedded"),
+        has_embedded=False
+    ))
+    CustomizeSkillManager(os.path.join(TEST_SKILL_WORKSPACE, 'custom_skill_definitions'))
+    print(CustomizeSkillManager._instance.customized_skills_map.keys())
     app = WorkGraph()
     skill = CustomizeSkillManager._instance.get_customzied_skill("Brainstorming")
     input_path = os.path.join(TEST_SKILL_WORKSPACE, "in", "Brainstorming")
@@ -29,7 +41,6 @@ def run_test():
     node = WorkNode(2, agent)
     app.add_node(node)
     app.init_node_dependencies()
-    #app.save_data(os.path.join(TEST_SKILL_WORKSPACE, "config", "config_data.json"))
     app.execute()
 
 # It is durable work, please run with sudo and give the right access of keyboard.
