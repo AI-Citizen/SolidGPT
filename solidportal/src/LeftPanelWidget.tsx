@@ -23,16 +23,35 @@ export class LeftPanelWidget extends React.Component<BodyWidgetProps> {
 			const model = this.props.model;
 			const [agentValue, setAgentValue] = useState("Software Developer");
 			const [skillValue, setSkillValue] = useState("WritePRD");
+			const [skillListValue, setSkillListValue] = useState(["DebugCode","WriteCode","WritePRD","UseNotion","WriteHLD","CreateKanBan"]);
 			const [manualReviewResultBool, setManualReviewResultBool] = useState(false);
 			const [file, setFile] = useState(null);
 			const [fileName, setFileName] = useState();
 
-			// Specify the type of the dependency array
 			useEffect(() => {
+				// Fetch the list of files from the server when the component mounts
+				axios.get('http://localhost:3001/listfiles')
+					.then((response) => {
+						const customizeSkills = response.data.files
+						customizeSkills.map((item, index) => (
+							handleFileSelect(item)
+						))
+					})
+					.catch((error) => {
+						console.error('Error fetching file list:', error);
+					});
+			}, []);
 
-			}, [agentValue]);
 
-
+			const handleFileSelect = async (filename) => {
+				try {
+					const response = await axios.get(`http://localhost:3001/readfile/${filename}`);
+					const jsonObject = JSON.parse(response.data.content);
+					setSkillListValue((skillListValue) => [...skillListValue, jsonObject.skill_name]);
+				} catch (error) {
+					console.error('Error fetching file content:', error);
+				}
+			}
 
 			function getRandomNumber(min, max) {
 				const randomDecimal = Math.random();
@@ -130,14 +149,10 @@ export class LeftPanelWidget extends React.Component<BodyWidgetProps> {
 					style={{width: "100%"}}
 					onChange={handleSkillChange}
 					value={skillValue}
-					options={[
-						{value: 'DebugCode', label: 'DebugCode'},
-						{value: 'WriteCode', label: 'WriteCode'},
-						{value: 'WritePRD', label: 'WritePRD'},
-						{value: 'UseNotion', label: 'UseNotion'},
-						{value: 'WriteHLD', label: 'WriteHLD'},
-						{value: 'CreateKanBan', label: 'CreateKanBan'},
-					]}
+					options={skillListValue.map(item => ({
+						value: item,
+						label: item
+					}))}
 				/>
 				<Checkbox onChange={onManualReviewResultChange} checked={manualReviewResultBool}>Manual Review Result</Checkbox>
 				<Button
