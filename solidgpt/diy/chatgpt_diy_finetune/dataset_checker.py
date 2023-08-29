@@ -1,5 +1,10 @@
 # We start by importing the required packages
 # The scripts adopt from the https://platform.openai.com/docs/guides/fine-tuning
+# The script will check if the data a good to use chatgpt to train. User need
+# to update the `data_path` to the training files. The output is the format
+# error or format approved. Also provide an estimation of the token usa byto
+# the training files. The output is the format error or format approved. Also
+# provide an estimation of the token usage.
 import json
 import os
 import tiktoken

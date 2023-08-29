@@ -1,3 +1,7 @@
+#convert the original data from Austin. Input is unformat data as chatgpt
+#output. The output is the format json file which can use by the chatgpt fine
+#tuning dataset <train_json> file
+
 import json
 import argparse
 
