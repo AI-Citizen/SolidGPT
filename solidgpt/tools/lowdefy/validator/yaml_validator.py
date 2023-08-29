@@ -4,17 +4,15 @@ import pandas as pd
 import numpy as np
 from numpy.linalg import norm
 from solidgpt.configuration.configreader import ConfigReader
-
-
-# from definitions import ROOT_DIR
+from definitions import ROOT_DIR
 
 
 class YAMLValidator:
     def __init__(self, yaml_str: str):
         self.yaml = yaml_str
-        self.container_df = pd.read_csv(os.path.join("..", "embedding", "container_block_embedding.csv"))
-        self.input_df = pd.read_csv(os.path.join("..", "embedding", "input_block_embedding.csv"))
-        self.display_df = pd.read_csv(os.path.join("..", "embedding", "display_block_embedding.csv"))
+        self.container_df = pd.read_csv(os.path.join(ROOT_DIR, "solidgpt", "tools", "lowdefy", "embedding", "container_block_embedding.csv"))
+        self.input_df = pd.read_csv(os.path.join(ROOT_DIR, "solidgpt", "tools", "lowdefy", "embedding", "input_block_embedding.csv"))
+        self.display_df = pd.read_csv(os.path.join(ROOT_DIR, "solidgpt", "tools", "lowdefy", "embedding", "display_block_embedding.csv"))
         self.all_embedding_df = pd.concat([self.container_df, self.input_df, self.display_df], axis=1)
         openai.api_key = ConfigReader().get_property("openai_api_key")
 
@@ -24,6 +22,7 @@ class YAMLValidator:
         :return: Converted valid lowdefy yaml file string
         """
         ret_yaml_str = self.verify_block_type(self.yaml)
+        ret_yaml_str = self.remove_events(ret_yaml_str)
         return ret_yaml_str
 
     def verify_block_type(self, yaml_str: str) -> str:
@@ -36,7 +35,6 @@ class YAMLValidator:
         idx = 0
         while idx < len(cur_yaml):
             line = cur_yaml[idx]
-            print(line)
             tokens = line.split(":")
             key = tokens[0]
             if key.strip() == "type":
@@ -59,6 +57,41 @@ class YAMLValidator:
 
     def verify_indentation(self, yaml_str: str) -> str:
         pass
+
+    @staticmethod
+    def remove_events(yaml_str: str) -> str:
+        cur_yaml = yaml_str.split("\n")
+        idx = 0
+        while idx < len(cur_yaml):
+            line = cur_yaml[idx]
+            tokens = line.split(":")
+            key = tokens[0]
+            if key.strip() == "events":
+                indentation = key.rfind(" ")
+                next_indentation = float("inf")
+                while idx < len(cur_yaml) and next_indentation > indentation:
+                    cur_yaml.pop(idx)
+                    line = cur_yaml[idx]
+                    tokens = line.split(":")
+                    key = tokens[0]
+                    next_indentation = key.rfind(" ")
+            idx += 1
+        return "\n".join(cur_yaml)
+
+    @staticmethod
+    def add_reference(yaml_str: str, page_list: list[str]) -> str:
+        ref_list = [f"  - _ref: {page_name}.yaml" for page_name in page_list]
+        cur_yaml = yaml_str.split("\n")
+        idx = 0
+        while idx < len(cur_yaml):
+            line = cur_yaml[idx]
+            tokens = line.split(":")
+            key = tokens[0]
+            if key.strip() == "pages":
+                cur_yaml[idx+1:1] = ref_list
+                break
+            idx += 1
+        return "\n".join(cur_yaml)
 
     @staticmethod
     def vector_similarity(x: list[float], y: list[float]) -> float:

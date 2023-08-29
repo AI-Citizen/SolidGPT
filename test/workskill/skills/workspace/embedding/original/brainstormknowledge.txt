@@ -1,0 +1,85 @@
+Teamwork makes the dream work—knowing how to brainstorm product ideas is key to coming up with the next great innovation. 
+In this article, we’ll explore some strategies you can use to prepare for your team’s next brainstorming session and how to get more out of the process to help you come up with a product idea that makes an impact in your industry. 
+What Is Brainstorming?
+Brainstorming is a group problem-solving technique introduced in 1953 by the creativity theorist and businessman Alex Osborn. The idea behind this popular approach is to bring together team members in a welcoming environment, where they’ll contemplate a problem and generate as many ideas as they can within a given time frame. Removing inhibitions helps participants think freely and devise creative suggestions.
+Why Brainstorming is Useful
+Tom Monaghan, the co-founder of Domino’s Pizza, may have put it best when he said, “I sometimes compare my brainstorming on paper to the drilling of oil wells. The only way to strike oil is to dig a lot of wells.”
+In other words, the goal behind brainstorming is to generate a high volume of possibilities. Some ideas may be wildly improbable. Others may not be innovative enough. And one idea just might be your next successful product. If your team has not yet arrived at a game-changing solution, drilling as many “oil wells” as possible could help them get there. As companies like Amazon, Microsoft, Kraft, and Airbnb know, the strategy works.
+What Size Group Works Best for Brainstorming?
+Alex Osborn believed brainstorming worked best with five to 12 people. However, recent studies have found that smaller teams may actually produce the best results. In 2010, researchers examined teams tasked with building Lego kits. Some teams had four members, while others only had two people. The larger teams took an average of 44 percent longer than the smaller teams to complete the same task.
+Richard Hackman, a Harvard University Professor of Social and Organizational Psychology, came to similar conclusions. He found that as groups increased in size, members tended to encounter more process problems. Some of the most successful tech companies in the world have caught on to the idea that smaller is better. The product team at Instagram has 13 members, and Twitter only has five to seven people. Jeff Bezos at Amazon uses the “two-pizza team” method: if you can’t feed your team with two pizzas, the group is too big. 
+Brainstorming individually and using activities like free writing and mind mapping, can also be effective. In fact, inviting members of your team to brainstorm on their own before participating in a group brainstorming session may encourage more informed and thoughtful suggestions.
+Brainstorming Techniques
+There’s no single way to conduct a product brainstorming session, and trying a variety of methods could help unlock your team’s next great idea. Try a few of these popular techniques: 
+The Working-Backward Technique
+Amazon regularly uses this exercise that involves envisioning how and why a future product might succeed. As a team, imagine your future product launch day and write a press release together. You can even craft fictional customer testimonials and answer frequently asked questions consumers might have about your product. Other documents to inspire your brainstorm include the following:
+Definition of the customer experience 
+Product user manual
+Advertisement or commercial 
+Product sales pitch
+Remember, this technique works even if you don’t have the faintest inkling of what your product will look like. Simply work from the knowledge you have of the problem you hope to solve. 
+Lush Cosmetics wanted to raise money for charities helping the wildlife affected by the Australian bushfires. 3D printing helped them to quickly react and manufacture limited-edition soaps.
+The Role-Storming Technique
+Role storming requires participants to put themselves in the customer’s shoes. Together, you’ll act out a scene in which one or two people play the role of customers with a problem your team hopes to solve. Everyone else will play problem solvers and try to resolve the challenge. This technique offers several benefits:
+You’ll gain a better understanding of the problem. Asking team members to articulate a challenge from the customer’s perspective may unlock new angles you haven’t yet considered.
+You’ll inhabit the customer experience. Instead of thinking in abstract terms about the people who will one day buy your product, you’ll gain firsthand insights into your customer’s needs and challenges.
+Solutions will arise organically. As team members play, problem-solvers addressing customer challenges will have to think on their feet. As with an improv performance, expect to see wild, hilarious, and even brilliant solutions.
+The “What If?” Technique
+With this brainstorming technique, you’ll ask your team to respond to “what if?” scenarios related to the problem you’re trying to solve. You can either come up with a list of questions in advance or ask your team to brainstorm both questions and answers. Here are some “what if?” questions to get you started:
+What if this problem came up one hundred years in the past? (Or, alternatively, one hundred years in the future?) How would you solve it?
+What if you had only five minutes to solve this problem? What would you do?
+What if Google had this problem? (Or McDonald’s? Or BMW?) How would they solve it?
+What if a group of 10-year-olds had to solve this problem? How do you think they’d approach it?
+You can also adapt this technique by using other types of questions, including those specific to your industry or even the resources you have on hand. For instance, researchers at academic medical centers recently asked themselves how they could use their 3D printers to respond to COVID-19. Centers around the US began using 3D printing technology to produce personal protective equipment, nasal swabs, and other much-needed supplies.
+The founders of Plaato are avid homebrewers. They thought, “What if we could empower brewers with data?” To turn their idea into reality, they used 3D printing to prototype their first product, a smart airlock.
+The Brainwriting Technique
+In this technique, each person writes as many ideas as possible on a sheet of paper, leaving space for others to write. Then, the moderator collects and redistributes papers among the team members, who add their thoughts to each initial idea. In a small group, you can repeat this exercise until everyone has commented on everyone else’s ideas. The team leader can then guide a discussion about the ideas that generate the most enthusiasm. 
+Another way to use this technique is writing the problem on a whiteboard or large notepad in an area of your office that gets regular traffic. Afterwards, invite team members to jot down their suggestions and respond to others’ suggestions—perhaps over the course of a week. 
+How to Prepare for Brainstorming
+Set the stage for a productive brainstorming session with the following steps:
+1. Choose Your Team
+Everyone wants to be in the room when new product ideas are up in the air. It’s exciting to be part of the team that looks to the future and decides what to build next. That said, it’s important to choose your team members carefully and keep the group as small as possible. Be sure to include a diverse mix of these essential people: 
+Product designer
+Product manager
+Engineers (front-end, back-end, hardware, etc.)
+Product marketing team members
+Anyone else who is integral to developing and promoting the product
+2. Stage the Perfect Space
+At Alex Osborn’s advertising agency Batten, Barton, Durstine, and Osborn. Inc. (BBDO), brainstorming sessions took place in a bright yellow room. The idea was to make the environment friendly and unintimidating. Don’t have a yellow room? Consider these tips for creating an atmosphere conducive to brainstorming:
+Create casual seating arrangements. A conference room table can feel too formal. One idea is to provide cushions and have everyone sit on the floor.
+Be conscious of sounds. Find a quiet space free of distracting background noise. Consider playing serene music to create a relaxing ambiance.
+Lower the lights. Soft lighting can help participants relax and feel less self-conscious about sharing ideas.
+Provide fun writing supplies. Think beyond the yellow legal pad and get creative with colorful paper, sticky notes, markers, and more.
+Brainstorming in times of pandemic. If you're working in a remote team, use an online collaborative whiteboard platform such as Miro.
+3. Plan Some Warm-Ups
+If some members are new to the team or it’s early on Monday morning, warm-up activities will get everyone’s creative juices flowing. For instance, you could try word association. Come prepared with a list of words. At random, give team members a word and have them shout the first thing that comes to mind.
+Step-by-Step Guide to Brainstorming
+Conduct an engaging, idea-generating brainstorming session in just five steps:
+1. Define the Problem 
+To devise potentially viable product ideas, your team needs to be clear on what they’re solving for. Maybe that’s an existing customer issue. Or maybe it’s a little more ambiguous, like discovering an unfilled niche in your industry. When introducing a creative challenge to your team, use questions such as “In what ways might we...?” or “How could we…?” to frame the problem.
+Bob Barker Company’s team asked how they could devise safer personal care products for prison inmates. The problem with existing products was that inmates could sharpen them to make weapons. One resulting innovation was the Exo-Frame Toothbrush, which the Bob Barker company prototyped using stereolithography 3D printing. 
+2. Explain the Rules
+Osborn had four key rules for brainstorming, paraphrased here:
+Aim for quantity 
+Withhold criticism
+Welcome wild ideas
+Combine and improve ideas
+These tenets encapsulate what brainstorming is all about: uninhibited creativity. However, research from the University of California, Berkeley, found that allowing team members to debate or respectfully criticize ideas actually resulted in more creativity by encouraging teams to think rigorously about the problem at hand. 
+Whether you borrow the above brainstorming rules as they stand or tailor them to your needs, make sure your team understands what’s expected. Finally, don’t forget to set a time limit. For a small group, try half an hour. A larger group may need 45 minutes to an hour to give everyone a chance to contribute. 
+3. Ask for and Record Ideas
+Depending on the brainstorming technique you use, participants should write down their ideas or call them out to the group. If participants share ideas verbally, the moderator or a designated notetaker should record suggestions somewhere visible to everyone, like a whiteboard or large pad of paper. 
+4. Discuss, Elaborate, and Improve
+As a team, decide on a handful of ideas that sound promising and begin to build on and improve these suggestions. One idea is to break out the best ideas into their own mini brainstorming sessions. 
+To do so, consider creating a “mind map” with the product idea at the center. Add branches radiating off the central idea and ask the team to shout out potential features, benefits, and even marketing ideas for the prospective product. 
+5. Repeat Steps 3 and 4
+As time allows, hold additional rounds of ideation and discussion.
+Best Practices for Brainstorming
+Keep these tips in mind for a successful product brainstorming session:
+Focus on the idea, not the person. Brainstorming should be a team effort, so avoid assigning credit for great ideas or blame for suggestions that don’t hit the mark. 
+Stay sensitive to diverse communication styles. This requires you to know your team. Some members may find it easy to ideate on the fly. Others may be more comfortable jotting down a few ideas in advance of the brainstorming session. 
+Leave the CEO out of it. Your team should feel free to shout out their wildest ideas. That can be difficult if your session includes a potentially intimidating personality.
+Keep sessions short and sweet. To avoid creative fatigue and encourage new thoughts and connections to percolate between sessions, you may find it better to schedule multiple short brainstorms rather than one long one. This can also help to let ideas settle in between sessions and provide the opportunity to improve upon them in consecutive discussions.
+Empower your team with information. The biggest criticism of brainstorming is that it can sometimes feel aimless, leading to no actionable solutions. This doesn’t have to be the case. The better your team understands the problem to be solved, the more targeted their product ideas will be.  
+Moving from Product Idea to Proof of Concept and Prototype
+Not only can brainstorming help define what you want to build, but it’s much more efficient to iterate in an ideation session than at the prototype stage. 
+Once you have a product idea that you’re ready to develop further, learn how you can create a proof of concept or a rapid prototype using 3D printers to bring your team’s vision to life. 

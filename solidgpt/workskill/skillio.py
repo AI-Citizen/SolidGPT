@@ -8,6 +8,7 @@ class SkillIOParamCategory(Enum):
     SourceCode = 4
     PlainText = 5
     KanbanBoard = 6
+    YAML = 7
 
 
 class SkillInputLoadingMethod(Enum):

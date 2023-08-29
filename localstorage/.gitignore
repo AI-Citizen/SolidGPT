@@ -1,0 +1,9 @@
+embedding/dividedresources/*
+embedding/embeddedresources/*
+embedding/originalresources/*
+
+!embedding/dividedresources/Placeholder.md
+!embedding/embeddedresources/Placeholder.md
+!embedding/originalresources/Placeholder.md
+
+customizedskilldefinition/*.json
