@@ -4,7 +4,7 @@
     "instruction": "Write code to solve problems and create applications",
     "qa_example": "Q: What is a variable?\nA: A variable is a named storage location...",
     "principles": "Dive deep",
-    "background_data_path": "/path/to/background/data",
+    "embedding_background_data_list": "",
     "input_method": "SkillIOParamCategory.PlainText",
     "output_method": "SkillIOParamCategory.PlainText"
 }

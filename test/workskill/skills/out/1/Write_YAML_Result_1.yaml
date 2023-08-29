@@ -1,0 +1,49 @@
+lowdefy: 4.0.0-rc.10
+name: Lowdefy starter
+menus:
+  - id: default
+    links:
+      - id: home
+        type: MobileMenu
+        properties:
+          icon: HomeOutlined
+          title: Home
+        pageId: home
+pages:
+  - _ref: login.yaml
+  - _ref: login.yaml
+  - _ref: redirect.yaml
+  - _ref: registration.yaml
+  - _ref: register.yaml
+  - _ref: confirmation.yaml
+  - _ref: personalization.yaml
+  - _ref: activities.yaml
+  - _ref: navigation.yaml
+  - _ref: view.yaml
+  - _ref: edit.yaml
+  - _ref: confirmation.yaml
+  - _ref: customization.yaml
+  - _ref: update.yaml
+  - _ref: preferences.yaml
+  - _ref: reset.yaml
+  - _ref: email.yaml
+  - _ref: reset.yaml
+  - id: home
+    type: PageHeaderMenu
+    properties:
+      title: Welcome to our Website
+    areas:
+      content:
+        justify: center
+        blocks:
+          - id: content_card
+            type: Card
+            style:
+              maxWidth: 800
+            blocks:
+              - id: content
+                type: TextInput
+                properties:
+                  content: |
+                    Welcome to our website! We are dedicated to providing you with the best user experience.
+                    Explore our pages to learn more about our services and offerings.

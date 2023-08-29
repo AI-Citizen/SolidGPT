@@ -1,6 +1,6 @@
 import logging
 from solidgpt.manager.gptmanager import GPTManager
-from solidgpt.manager.promptresource import PE_FRONTEND_DESIGN_OUTPUT_TEMPLATE, PE_FRONTEND_ROLE_ASSUPTION, PE_KANBAN_OUTPUT_TEMPLATE, PE_ROE_ASSUMPTION, build_gpt_prompt
+from solidgpt.manager.promptresource import PE_KANBAN_OUTPUT_TEMPLATE, PE_ROE_ASSUMPTION, build_gpt_prompt
 from solidgpt.saveload.saveload import *
 from solidgpt.util.util import *
 from solidgpt.workskill.skillio import *

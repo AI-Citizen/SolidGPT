@@ -3,18 +3,18 @@ import os
 from definitions import ROOT_DIR
 from solidgpt.diy.custom.customizedskilldefinition import CustomizedSkillDefinition
 from solidgpt.util.util import load_from_json
-from solidgpt.workskill.skills.skill_custom import CustomSkill
+from solidgpt.workskill.skills.custom_skill import CustomSkill
 
 class CustomizeSkillManager:
     _instance = None
 
-    def __new__(cls, custom_skill_definition_folder_path=os.path.join(ROOT_DIR, 'localstorage', 'customizedskilldefinition')):
+    def __new__(cls):
         if cls._instance is None:
             cls._instance = super(CustomizeSkillManager, cls).__new__(cls)
             # You can initialize the instance attributes here
         return cls._instance
     
-    def __init__(self, custom_skill_definition_folder_path):
+    def __init__(self, custom_skill_definition_folder_path=os.path.join(ROOT_DIR, 'localstorage', 'customizedskilldefinition')):
         self.customized_skills_map: dict[str, CustomSkill] = {}
         self.custom_skill_definition_folder_path = custom_skill_definition_folder_path
         self.__load_customized_skills()

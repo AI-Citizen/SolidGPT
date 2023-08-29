@@ -2,7 +2,7 @@ import logging
 from solidgpt.diy.custom.customizedskilldefinition import CustomizedSkillDefinition
 from solidgpt.manager.embedding.embeddingmanager import EmbeddingManager
 from solidgpt.manager.gptmanager import GPTManager, GPTModel
-from solidgpt.manager.promptresource import CUSTOM_GENERATE_PRINCIPLES, build_custom_skill_gpt_prompt, build_gpt_prompt
+from solidgpt.manager.promptresource import build_custom_skill_gpt_prompt, build_gpt_prompt
 from solidgpt.util.util import load_from_md, save_to_md2
 from solidgpt.workskill.skillio import *
 from solidgpt.workskill.workskill import *
