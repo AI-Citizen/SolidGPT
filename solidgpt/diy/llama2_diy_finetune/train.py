@@ -85,7 +85,7 @@ if __name__ == "__main__":
     train_dataset_mapped, valid_dataset_mapped = data_loader.load_and_preprocess_datasets()
 
     peft_config = LoraConfig(
-        lora_alpha=64,
+        lora_alpha=128,
         lora_dropout=0.1,
         r=512,
         bias="none",
@@ -94,7 +94,7 @@ if __name__ == "__main__":
 
     training_arguments = TrainingArguments(
         output_dir=result_dir,
-        num_train_epochs=1,
+        num_train_epochs=10,
         per_device_train_batch_size=8,
         gradient_accumulation_steps=1,
         optim="paged_adamw_32bit",
