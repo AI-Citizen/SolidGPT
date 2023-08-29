@@ -5,6 +5,7 @@ from definitions import *
 
 
 def save_to_json(data, filename="data.json"):
+    create_directories_if_not_exist(filename)
     # Save data to a JSON file
     with open(filename, "w") as json_file:
         json.dump(data, json_file, indent=4)
@@ -18,6 +19,7 @@ def load_from_json(filename="data.json"):
 
 
 def save_to_md(filename, content: str, path = "") -> str:
+    create_directories_if_not_exist(filename)
     path = os.path.join(ROOT_DIR, path)
     full_path = os.path.join(path, filename)
     with open(full_path, "w") as md_file:
@@ -27,6 +29,7 @@ def save_to_md(filename, content: str, path = "") -> str:
 
 
 def save_to_md2(filename, content: str) -> str:
+    create_directories_if_not_exist(filename)
     full_path = filename
     full_path = add_extension_if_not_exist(full_path, ".md")
     with open(full_path, "w") as md_file:
@@ -37,6 +40,7 @@ def save_to_md2(filename, content: str) -> str:
 
 
 def save_to_yaml(filename, content: str) -> str:
+    create_directories_if_not_exist(filename)
     full_path = filename
     full_path = add_extension_if_not_exist(full_path, ".yaml")
     with open(full_path, "w", encoding='utf-8') as md_file:
@@ -44,6 +48,13 @@ def save_to_yaml(filename, content: str) -> str:
         md_file.flush()
     logging.info(f"Information saved to {full_path}")
     return full_path
+
+
+def create_directories_if_not_exist(filepath: str):
+    dir_name = os.path.dirname(filepath)
+    if not os.path.exists(dir_name):
+        os.makedirs(dir_name)
+    return
 
 
 def load_from_md(filename, path = "") -> str:
