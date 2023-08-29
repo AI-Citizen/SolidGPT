@@ -1,19 +1,17 @@
 from solidgpt.constants import *
 from typing import Type
-from solidgpt.diy.custom.customizeskillmanager import CustomizeSkillManager
 from solidgpt.worknode.worknode import *
 from solidgpt.imports import *
 
 
 SKILL_NAME_TO_CONSTRUCTOR: dict[str, Type[WorkSkill]] = {
-    SKILL_NAME_DEBUG_CODE: DebugCode,
-    SKILL_NAME_WRITE_CODE: WriteCode,
     SKILL_NAME_WRITE_PRODUCT_REQUIREMENTS_DOCUMENTATION: WritePRD,
     SKILL_NAME_USE_NOTION: UseNotion,
     SKILL_NAME_WRITE_HLD: WriteHLD,
     SKILL_NAME_CREATE_KANBAN_BOARD: CreateKanBan,
-    SKILL_NAME_WRITE_YAML: WriteYAML,
-    SKILL_NAME_WRITE_PageYAML: WritePageYAML,
+    SKILL_NAME_WRITE_MAIN_PAGE: WriteMainPage,
+    SKILL_NAME_WRITE_SUB_PAGE: WriteSubPage,
+    SKILL_NAME_RUN_APP: RunApp,
 }
 
 

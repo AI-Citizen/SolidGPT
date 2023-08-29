@@ -1,15 +1,15 @@
 from solidgpt.manager.initializer import Initializer
 from solidgpt.workgraph.workgraph import *
-from solidgpt.workagent.agents.agent_principalengineer import AgentPrincipalEngineer
-from solidgpt.workskill.skills.skill_writeHLD import WriteHLD
+from solidgpt.workagent.agents.agent_productmanager import AgentProductManager
+from solidgpt.workskill.skills.use_notion import UseNotion
 
 TEST_SKILL_WORKSPACE = os.path.join(TEST_DIR, "workskill", "skills", "workspace")
 
 def run_test():
     Initializer()
     app = WorkGraph()
-    skill: WorkSkill = WriteHLD()
-    input_path = os.path.join(TEST_SKILL_WORKSPACE, "in", "PRDDocument.md")
+    skill: WorkSkill = UseNotion()
+    input_path = os.path.join(TEST_SKILL_WORKSPACE, "in", "PRDSimple")
     skill.init_config(
         [
             {
@@ -21,10 +21,10 @@ def run_test():
         [
             {
                 "id": 1
-            } 
+            }
         ])
-    agent = AgentPrincipalEngineer(skill)
-    node = WorkNode(1, agent)
+    agent: WorkAgent = AgentProductManager(skill)
+    node: WorkNode = WorkNode(0, agent)
     app.add_node(node)
     app.init_node_dependencies()
     app.save_data(os.path.join(TEST_SKILL_WORKSPACE, "config", "config_data.json"))

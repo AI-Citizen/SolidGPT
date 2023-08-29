@@ -1,15 +1,15 @@
 from solidgpt.manager.initializer import Initializer
 from solidgpt.workgraph.workgraph import *
-from solidgpt.workagent.agents.agent_productmanager import AgentProductManager
-from solidgpt.workskill.skills.skill_usenotion import UseNotion
+from solidgpt.workagent.agents.agent_principalengineer import AgentPrincipalEngineer
+from solidgpt.workskill.skills.write_hld import WriteHLD
 
 TEST_SKILL_WORKSPACE = os.path.join(TEST_DIR, "workskill", "skills", "workspace")
 
 def run_test():
     Initializer()
     app = WorkGraph()
-    skill: WorkSkill = UseNotion()
-    input_path = os.path.join(TEST_SKILL_WORKSPACE, "in", "PRDSimple")
+    skill: WorkSkill = WriteHLD()
+    input_path = os.path.join(TEST_SKILL_WORKSPACE, "in", "PRDDocument.md")
     skill.init_config(
         [
             {
@@ -21,17 +21,15 @@ def run_test():
         [
             {
                 "id": 1
-            }
+            } 
         ])
-    agent: WorkAgent = AgentProductManager(skill)
-    node: WorkNode = WorkNode(0, agent)
+    agent = AgentPrincipalEngineer(skill)
+    node = WorkNode(1, agent)
     app.add_node(node)
     app.init_node_dependencies()
-    app.save_data(os.path.join(TEST_SKILL_WORKSPACE, "config", "config_data.json"))
+    # app.save_data(os.path.join(TEST_SKILL_WORKSPACE, "config", "config_data.json"))
     app.execute()
 
-# It is durable work, please run with sudo and give the right access of keyboard.
-# example: sudo PYTHONPATH=/Users/wuqiten/Workplace/solidgpt-workspace/SolidGPT/ python3 test_skill_usenotion.py
 if __name__ == "__main__":
     run_test()
 

@@ -1,7 +1,7 @@
 from solidgpt.manager.initializer import Initializer
 from solidgpt.workgraph.workgraph import *
 from solidgpt.workagent.agents.agent_principalengineer import AgentPrincipalEngineer
-from solidgpt.workskill.skills.skill_createkanban import CreateKanBan
+from solidgpt.workskill.skills.create_kanban import CreateKanBan
 
 def run_test():
     Initializer()
