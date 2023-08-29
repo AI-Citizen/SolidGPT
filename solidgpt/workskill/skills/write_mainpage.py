@@ -48,7 +48,7 @@ class WriteMainPage(WorkSkill):
             input_message=self.kanban_md
         )
         for task in task_info.split("\n"):
-            summarize_prompt = "Summarize the page name in one word"
+            summarize_prompt = "Find one word in the Task Name that best describes the page. Only output a single word."
             page_name = self.gpt_manager.create_and_chat_with_model(
                 model="gpt-3.5-turbo",
                 prompt=summarize_prompt,
