@@ -89,7 +89,15 @@ class WorkGraph:
 
     def execute(self):
         print("Executing SolidGPT...")
+        first_nodes = []
         for node in self.nodes:
+            if len(node.output_id_dependencies) == 0:
+                first_nodes.append(node)
+
+        if len(first_nodes) == 0:
+            print_error_message("Cannot execute graph, no node can be executed.")
+
+        for node in first_nodes:
             self.__execute_node(node)
 
     def __execute_node(self, node: WorkNode):

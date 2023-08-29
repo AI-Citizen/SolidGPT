@@ -42,12 +42,26 @@ class Orchestration:
         #     return
 
         self.__graphs.append(temp_graph)
+        return
 
-    def run_graph(self, graph_index: int):
-        if 0 <= graph_index < len(self.__graphs):
+    def run_graph_with_index(self, graph_index: int):
+        if 0 < graph_index < len(self.__graphs):
             print("Cannot run graph, index out of range.", file=sys.stderr)
             return
         self.__graphs[graph_index].get_graph().execute()
+
+    def run_graph_with_name(self, graph_name: str):
+        idx = self.get_graph_index(graph_name)
+        if idx < 0:
+            print_error_message("Cannot run graph, invalid graph name.")
+            return
+        return self.run_graph_with_index(idx)
+
+    def get_graph_index(self, graph_name: str):
+        for graph in self.__graphs:
+            if graph.get_name() == graph_name:
+                return self.__graphs.index(graph)
+        return -1
 
     def remove_graph(self, graph_index: int):
         if 0 <= graph_index < len(self.__graphs):

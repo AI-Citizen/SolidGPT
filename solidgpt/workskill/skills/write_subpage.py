@@ -50,8 +50,20 @@ class WriteSubPage(WorkSkill):
                 input_message=task
             )
             if page_name.lower() not in {"mainpage", "homepage", "main"}:
-                yaml = self.__run_write_page_yaml_model(task)
-                save_to_yaml(os.path.join(self.skill_output.param_path, page_name.lower()), yaml)
+                error_count = 0
+                while error_count < 5:
+                    try:
+                        yaml = self.__run_write_page_yaml_model(task)
+                    except:
+                        print("Malformed Yaml, trying again.")
+                        error_count += 1
+                        continue
+
+                    save_to_yaml(os.path.join(self.skill_output.param_path, page_name.lower()), yaml)
+                    break
+
+                if error_count >= 5:
+                    print_error_message("Error, trying too many times and writing sub page still fails.")
         return
 
     def __run_write_page_yaml_model(self, task):
