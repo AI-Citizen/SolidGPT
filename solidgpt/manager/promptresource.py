@@ -1070,11 +1070,11 @@ areas:
 
 SDE_FRONTEND_ASSUMPTION = f"""
 Assume you are a developer who only creates pages. 
-Find and only output the tasks of creating pages in the kanban board. Do not output the tasks that are not related.
+Find and only output the tasks of creating pages or designing pages in the kanban board. Do not output the tasks that are not related.
 """
 
 SDE_FRONTEND_OUTPUT_TEMPLATE = f"""
-The columns I'd like are: |Task Description|User story|Acceptance Criteria|. 
+The columns I'd like are: |Task Name|Task Description|User story|Acceptance Criteria|. 
 Do not output the column names and separation line.
 """
 

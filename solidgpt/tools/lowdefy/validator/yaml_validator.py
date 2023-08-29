@@ -5,6 +5,7 @@ import numpy as np
 from numpy.linalg import norm
 from solidgpt.configuration.configreader import ConfigReader
 from definitions import ROOT_DIR
+import time
 
 
 class YAMLValidator:
@@ -67,14 +68,16 @@ class YAMLValidator:
             tokens = line.split(":")
             key = tokens[0]
             if key.strip() == "events":
-                indentation = key.rfind(" ")
+                indentation = key.rfind(" ") if "-" not in key else key.rfind("-") - 1
                 next_indentation = float("inf")
                 while idx < len(cur_yaml) and next_indentation > indentation:
                     cur_yaml.pop(idx)
+                    if idx >= len(cur_yaml):
+                        break
                     line = cur_yaml[idx]
                     tokens = line.split(":")
                     key = tokens[0]
-                    next_indentation = key.rfind(" ")
+                    next_indentation = key.rfind(" ") if "-" not in key else key.rfind("-") - 1
             idx += 1
         return "\n".join(cur_yaml)
 
