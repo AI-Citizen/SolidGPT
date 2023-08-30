@@ -1,4 +1,5 @@
 # GPT Finetune (Beta Version)
+
 ## About the project
 The implementation the lastest of the gpt-3.5 fine tuning. This code allows you to fine-tune a GPT-3.5 model for a custom chatbot application using OpenAI's API. The fine-tuned model can then be used to generate responses based on input prompts. Follow the steps below to use the code for fine-tuning and checking your dataset compatibility.
 
@@ -60,5 +61,5 @@ python dataset_checker.py
 
 - Remember to respect OpenAI's usage policies and guidelines when fine-tuning and deploying models.
 
-
 Feel free to customize the script according to your needs and explore further functionalities provided by the OpenAI API.
+
