@@ -108,7 +108,7 @@ Notion, powered by LLM, can assist users with quickly editing, improving, review
 ## 🖇️ Document
 [Solid Portal](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/solidporta.md)
 
-[Solid GPT Infrastructure](https://github.com/AI-Citizen/SolidGPT/blob/wuaustin/readme/docs/infrastructure.md)
+[Solid GPT Infrastructure](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/infrastructure.md)
 
 [Fine-tuning with GPT3.5](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/gptfinetuning.md)
 
