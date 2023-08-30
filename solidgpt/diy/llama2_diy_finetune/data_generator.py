@@ -49,7 +49,7 @@ class GenerateDataset:
         return dataset
 
 def main():
-    model_name = "text-davinci-003"  # Replace with your desired model name
+    model_name = "gpt-3.5-turbo-16k"  # Replace with your desired model name
     root_folder = input("Enter the root folder path containing sub-folders with YAML files: ")
 
     dataset_generator = GenerateDataset(model_name)
