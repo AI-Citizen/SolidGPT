@@ -1,225 +1,106 @@
-# SolidGPT
+# SolidGPT: Graph Agents
 
-## Structure
+# 🚀 What’s this
 
-### WorkSkill
-A WorkSkill is a skill to be executed, for example, writing a production requirement document.
+SolidGPT is a human-AI collaboration platform. Users can add private data and tailor agent workflows using techniques like embedding finetuning. Our goal: empower AI to work with humans using tools to accomplish business tasks.
 
-A WorkSkill have inputs and outputs, and these are defined by each specific skill itself.
+Currently, agents are optimized for software development using tools like Notion, Lowdefy, and more. From the inception of an idea to the documentation of software development, task division, and eventual task implementation - everything can either be automatically or semi-automatically accomplished within SolidGPT.
 
-```python
-    inputs: list[SkillInput] = []
-    outputs: list[SkillOutput] = []
-```
+# 🏁 Quick Start
 
-### SkillInput
+## **Prerequisite**
 
-A SkillInput has:
+- python3.7 or above
+- Docker [https://docs.docker.com/engine/install/](https://docs.docker.com/engine/install/)
+- (Optional) Node.js - Required if you wish to utilize the SolidPortal
+- Openai api key
+- Optional）Notion api key and Notion page
 
-| Field            | Description          |
-|------------------|----------------------|
-| `param_name` | Name of this input. |
-| `param_category` | This enum indicates the category of the param, for example, the category can be plaintext, python source code, or production requirement document.|
-| `loading_method` | This enum indicates how the input is going to be loaded. Currently there are two Loading methods, loading manually or loading from another output.|
-| `load_from_output_id` | This is only effective when `loading_method` is loading from another output, this points to the id of that output. |
-| `param_path` | This is only effective when `loading_method` is loading manually, this points path to load the input. |
-|
+## **Quick Setup**
 
-### SkillOutput
+- git clone the repo
+- pip3 install -r requirements
+- Input api keys at solidgpt/configuration/Configuration.yaml
 
-A SKillOutput has:
+    - input your openai api token 
 
-| Field            | Description          |
-|------------------|----------------------|
-| `param_name` | Name of this output. |
-| `param_category` | This enum indicates the category of the param, for example, the category can be plaintext, python source code, or production requirement document.|
-| `id` | ID of this output. |
-|
+    - (optional)input your notion token and page id
 
-### WorkAgent
-A WorkAgent is an agent that can perform certains skills. A specific WorkAgent is capable of performaing multiple skills.
-
-### WorkNode
-A WorkNode is a unit on a WorkGraph contains a WorkAgent and the WorkSkill that agent is going to perform. 
-
-### WorkGraph
-A WorkGraph is a graph that contains multiple WorkNodes.
-
-## Adding a new WorkAgent/WorkSkill
-
-The first step to add a new WorkAgent / WorkSkill is to add the agent/skill names to constants.py.
+## **Run Demo**
 
 ```python
-"""Agent Names"""
-AGENT_NAME_PRODUCT_MANAGER = "Product Manager"
-...
-AGENT_NEW_AGENT = "New Agent Name here"
-
-"""Skill Names"""
-SKILL_NAME_WRITE_PRODUCT_REQUIREMENTS_DOCUMENTATION = "Write Product Requirement Documentation"
-SKILL_NAME_USE_NOTION = "Use Notion"
-...
-AGENT_NEW_SKILL = "New Skill Name here"
+cd demo
+python3 quickstart.py
 ```
 
-To add a new Agent, follow `AgentProductManager` as an example:
+### **Start Your Own Graph**
+
+1. Create a graph by solidportal[learn more about solidportal](solidportal/Readme.md)
+2. Create a entry point under the solidgpt folder and input the work graph path
+3. Run the code with python3 your_file_name.py
 
 ```python
-class AgentProductManager(WorkAgent):
+from solidgpt.orchestration.orchestration import *
 
-    def __init__(self, skill: WorkSkill):
-        super().agent_setup(
-            name=AGENT_NAME_PRODUCT_MANAGER,
-            skills_available=[SKILL_NAME_WRITE_PRODUCT_REQUIREMENTS_DOCUMENTATION, SKILL_NAME_USE_NOTION],
-            skill=skill,
-            )
+app = Orchestration()
+app.add_graph("workspace/config/config_data.json", "default graph")
+app.run_graph_with_name("default graph")
 ```
 
-You'll need to specify agent name, and the skill names the agent can perform.
+## ⁉️ What can this help with?
 
-To add a new Skill, follow `WriteHLD` as an example:
+- Speed up the journey from idea to functioning app.
+- Agents that are semi/fully automated run the specific business tasks with private data.
+- Engage with QA/chatbots enhanced by private data.
 
-Initialization:
-```python
-def __init__(self):
-        # call super().__init__()
-        super().__init__()
+# 🔥 Key Features
 
-        # set GPT manager if necessary
-        self.gpt_manager = GPTManager._instance
+## Boost Software Product
 
-        # set skill name
-        self.name = SKILL_NAME_WRITE_HLD
+Processes can be either fully or semi-automated with users interfacing through Notion. Agents ensure efficiency and quality in every step.
 
-        # set all inputs and register each input with add_input()
-        self.skill_input = SkillInput(
-            "Design Doc",
-            SkillIOParamCategory.ProductRequirementsDocument,
-        )
-        self.add_input(self.skill_input)
+Three key agents are:
 
-        # set all outputs and register each output with add_output()
-        self.skill_output = SkillOutput(
-            "Write HLD Result",
-            SkillIOParamCategory.HighLevelDesignDocument,
-        )
-        self.add_output(self.skill_output)
+- **PM Agent**: Refines ideas into structured PRD documents. Users can collaborate and tweak outputs on Notion for maximum value.
+- **PE Agent**: Creates high-level designs, splits them into tasks, and organizes them on a Notion Kanban board. Tasks are distributed between AI and human teams.
+- **SDE Agent**: Train the Agent to harness the open-source project, Lowdefy. This approach highlights the value of smart tool integration.
 
-        # do anything special for current skill...
-        self.prd_md : str = None
-```
+![sopdiagram](https://github.com/AI-Citizen/SolidGPT/docs/images/sopdiagram.png)
 
-Load Input:
-```python
-def _read_input(self):
-        # get path to load input
-        input_path = self.get_input_path(self.skill_input)
+## 🤖 Deep Customized Agent Skill
 
-        # load input for current skill, some existing loading methods can be found in util.py
-        self.prd_md = load_from_md(input_path)
-```
+### Connect private dataset
 
-Execution:
-```python
-def execution_impl(self):
-        print("Printing HLD result here...")
-        # execution
-        hld_md = self.__run_write_hld_model()
+easier use private data to make a QA bot or add LLM prompt to do  in-context-learning.
 
-        # saving output file
-        save_to_md2(self.skill_output.param_path, hld_md)
-        return
-```
+ provide the embedding and query the private data easily.
 
-Note, you'll need to use the exact same function names for `__init__`, `_read_input` and `execution_impl`, as they override the methods in WorkSkill class.
+### Auto Alignement
 
-### Update saveload mappings
+Using few-shot learning and auto-generating principles based on user tasks can allow AI to always follow principles, resulting in a more stable and reliable LLM.
 
-the last thing is to update the mappings in `saveload.py`
+### Dynamic Agent Skill
 
-```python
-SKILL_NAME_TO_CONSTRUCTOR: dict[str, Type[WorkSkill]] = {
-    SKILL_NAME_DEBUG_CODE: DebugCode,
-    SKILL_NAME_WRITE_CODE: WriteCode,
-    SKILL_NAME_WRITE_PRODUCT_REQUIREMENTS_DOCUMENTATION: WritePRD,
-    SKILL_NAME_USE_NOTION: UseNotion,
-    SKILL_NAME_WRITE_HLD: WriteHLD,
-    SKILL_NAME_CREATE_KANBAN_BOARD: CreateKanBan,
-    ...
-    NewSKillName: NewSkillClass
-}
+Automatically generate the customized agent skills base on the key word. And make up user’s business agents team
 
+## 🕸️ Solid Graph
 
-AGENT_NAME_TO_CONSTRUCTOR: dict[str, Type[WorkAgent]] = {
-    AGENT_NAME_SOFTWARE_DEVELOPER: AgentSoftwareDeveloper,
-    AGENT_NAME_PRODUCT_MANAGER: AgentProductManager,
-    AGENT_NAME_PRINCIPAL_ENGINEER: AgentPrincipalEngineer,
-    ...
-    NewAgentName: NewAgentClass
-}
-```
+### Customized workflow
 
-## Config
+People can build a agents graph, each agent will focus on the specific work and pass the work result to the user and other agents. User can review/edit/regenerate the agent output.
 
-An example config file looks like this, in this example, node 1 is loading from a local file, and node 0 is loading from node 1's output
+![solidportal](https://github.com/AI-Citizen/SolidGPT/docs/images/solidportalscreenshot.png)
 
-```json
-[
-    {
-        "node_id": 1, // current node id
-        "manual_review_result": false, // boolean indicating whether current node needs to pause before executing the next one
-        "agent": "Product Manager", // agent name, corresponds to the agent name in constants.py
-        "skill": "Write Product Requirement Documentation", // skill name, corresponds to the skill name in constants.py
-        "inputs": [
-            {
-                "param_path": "in/ProductBasicInfo.json", // path to load the file, can be relative or absolute. This is only used when manual loading.
-                "loading_method": "SkillInputLoadingMethod.LOAD_FROM_STRING", // loading method
-                "load_from_output_id": -1 // id of the output that to load from, this is only used when loading from output id is used.
-            }
-        ],
-        "outputs": [
-            {
-                "id": 1 // id of the output.
-            }
-        ]
-    },
-    {
-        "node_id": 0,
-        "manual_review_result": false,
-        "agent": "Product Manager",
-        "skill": "Use Notion",
-        "inputs": [
-            {
-                "param_path": "",
-                "loading_method": "SkillInputLoadingMethod.LOAD_FROM_OUTPUT_ID",
-                "load_from_output_id": 1
-            }
-        ],
-        "outputs": [
-            {
-                "id": 2
-            }
-        ]
-    }
-]
-```
+### Visualized Build Graph UI
 
-Note: output id is different from node id.
+We also provide the UI let user build the solid Graph easier and quicker.
 
+## 🏉 Human-AI Deep Colleberation
 
-## Running the program
+### Colleberate with AI
 
-To run the program, simply load from json and then execute.
+Agent-created content auto-syncs with Notion, enabling user reviews during the LLM workflow. Subsequent agents use the user-edited result. Users can also establish a fully automated agent workflow.
 
-An example:
-```python
-def run_test_with_config():
-    app = WorkGraph()
-    app.load_data("config/config_data.json")
-    app.execute()
+### Notion
 
-
-GPTManager()
-run_test_with_config()
-
-```
+Notion, powered by LLM, can assist users with quickly editing, improving, reviewing, sharing, and sending final content editions to the next LLM agent.
