@@ -39,8 +39,9 @@ When creating a Skill node, two properties require selection:
 - Save the work graph as json file
 - Load the json file in SolidGPT and run the graph
 Sample code to load the graph and run the graph
+
 ```python
-from solidgpt.orchestration.orchestration import *
+from solidgpt.src.orchestration.orchestration import *
 
 app = Orchestration()
 app.add_graph("your/work/graph/path.json", "default graph")

@@ -161,7 +161,7 @@ cython_debug/
 
 # Mac
 .DS_Store
-solidgpt/.DS_Store
+solidgpt/src/.DS_Store
 
 # vs code
 .vscode/
