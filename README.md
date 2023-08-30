@@ -11,10 +11,10 @@ Currently, agents are optimized for software development using tools like Notion
 ## **Prerequisite**
 
 - python3.7 or above
-- Docker [https://docs.docker.com/engine/install/](https://docs.docker.com/engine/install/)
-- (Optional) Node.js - Required if you wish to utilize the SolidPortal
-- Openai api key
-- Optional）Notion api key and Notion page
+- (Optional)[Yarn](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable)  - Required if you wish to utilize the SolidPortal
+- [Docker](https://docs.docker.com/engine/install/)
+- [Openai api key](https://openai.com/blog/openai-api)
+- (Optional）[Notion](https://developers.notion.com/) Notion api key and Notion page id
 
 ## **Quick Setup**
 
@@ -106,10 +106,10 @@ Agent-created content auto-syncs with Notion, enabling user reviews during the L
 Notion, powered by LLM, can assist users with quickly editing, improving, reviewing, sharing, and sending final content editions to the next LLM agent.
 
 ## 🖇️ Document
-[Solid Portal](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/solidportal)
+[Solid Portal](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/solidporta.md)
 
-[Solid GPT Infrastructure](https://github.com/AI-Citizen/SolidGPT/blob/wuaustin/readme/docs/infrastructure)
+[Solid GPT Infrastructure](https://github.com/AI-Citizen/SolidGPT/blob/wuaustin/readme/docs/infrastructure.md)
 
-[Fine-tuning with GPT3.5](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/gptfinetuning)
+[Fine-tuning with GPT3.5](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/gptfinetuning.md)
 
-[Fine-tuning with Llama2](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/llama2finetuning)
+[Fine-tuning with Llama2](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/llama2finetuning.md)
