@@ -22,8 +22,9 @@ export class LeftPanelWidget extends React.Component<BodyWidgetProps> {
 			// create a diagram model
 			const model = this.props.model;
 			const [agentValue, setAgentValue] = useState("Software Developer");
-			const [skillValue, setSkillValue] = useState("WritePRD");
-			const [skillListValue, setSkillListValue] = useState(["DebugCode","WriteCode","WritePRD","UseNotion","WriteHLD","CreateKanBan"]);
+			const [skillValue, setSkillValue] = useState("Write Product Requirement Documentation");
+			const [skillListValue, setSkillListValue] = useState(["Debug Code", "Write Code", "Write Product Requirement Documentation",
+				"Use Notion", "Write High Level Design", "Create Kanban Board", "Custom Skill", "Write lowdefy YAML", "Write lowdefy page YAML"]);
 			const [manualReviewResultBool, setManualReviewResultBool] = useState(false);
 			const [file, setFile] = useState(null);
 			const [fileName, setFileName] = useState();
@@ -140,7 +141,9 @@ export class LeftPanelWidget extends React.Component<BodyWidgetProps> {
 					value={agentValue}
 					options={[
 						{value: 'Software Developer', label: 'Software Developer'},
+						{value: 'Principal Engineer', label: 'Principal Engineer'},
 						{value: 'Product Manager', label: 'Product Manager'},
+						{value: 'Custom Agent', label: 'Custom Agent'},
 					]}
 				/>
 				<div>select skill:</div>
