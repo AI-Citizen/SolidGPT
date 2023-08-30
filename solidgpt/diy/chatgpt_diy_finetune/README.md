@@ -1,5 +1,5 @@
-#Chatgpt diy finetune
-##About the project
+# Chatgpt diy finetune
+## About the project
 The implementation the lastest of the gpt-3.5 fine tuning. This code allows you to fine-tune a GPT-3.5 model for a custom chatbot application using OpenAI's API. The fine-tuned model can then be used to generate responses based on input prompts. Follow the steps below to use the code for fine-tuning and checking your dataset compatibility.
 
 ## Prerequisites
