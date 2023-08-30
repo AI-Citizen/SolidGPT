@@ -1,5 +1,4 @@
-from solidgpt.orchestration.orchestration import *
-from solidgpt.manager.initializer import Initializer
+from solidgpt.src.orchestration.orchestration import *
 
 
 def generate_node_prd(node_id: int, input_ids: list[int], output_ids: list[int]):

@@ -1,4 +1,4 @@
-from solidgpt.orchestration.orchestration import *
+from solidgpt.src.orchestration.orchestration import *
 
 
 app = Orchestration()
