@@ -138,7 +138,6 @@ class LLamaModel:
 if __name__ == "__main__":
     llama_model = LLamaModel()
     llama_model.train_model()
-    llama_model.__save_model()
 
     prompt = "help me create lowdefy file for personal website"
     user_template_path = "./dataset/template.yaml"
