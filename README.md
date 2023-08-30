@@ -1,4 +1,4 @@
-# SolidGPT: Graph Agents
+<h1 align="center">🧱 SolidGPT-Time to create your agent team</h1>
 
 # 🚀 What’s this
 
@@ -35,7 +35,7 @@ python3 quickstart.py
 
 ### **Start Your Own Graph**
 
-1. Create a graph by solidportal[learn more about solidportal](solidportal/Readme.md)
+1. Create a graph by solidportal [learn more about solidportal](solidportal/Readme.md)
 2. Create a entry point under the solidgpt folder and input the work graph path
 3. Run the code with python3 your_file_name.py
 
@@ -65,7 +65,7 @@ Three key agents are:
 - **PE Agent**: Creates high-level designs, splits them into tasks, and organizes them on a Notion Kanban board. Tasks are distributed between AI and human teams.
 - **SDE Agent**: Train the Agent to harness the open-source project, Lowdefy. This approach highlights the value of smart tool integration.
 
-![sopdiagram](https://github.com/AI-Citizen/SolidGPT/docs/images/sopdiagram.png)
+![sopdiagram](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/images/sopdiagram.png)
 
 ## 🤖 Deep Customized Agent Skill
 
@@ -89,7 +89,7 @@ Automatically generate the customized agent skills base on the key word. And mak
 
 People can build a agents graph, each agent will focus on the specific work and pass the work result to the user and other agents. User can review/edit/regenerate the agent output.
 
-![solidportal](https://github.com/AI-Citizen/SolidGPT/docs/images/solidportalscreenshot.png)
+![solidportal](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/images/solidportalscreenshot.png)
 
 ### Visualized Build Graph UI
 
@@ -104,3 +104,12 @@ Agent-created content auto-syncs with Notion, enabling user reviews during the L
 ### Notion
 
 Notion, powered by LLM, can assist users with quickly editing, improving, reviewing, sharing, and sending final content editions to the next LLM agent.
+
+## 🖇️ Document
+[Solid Portal](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/solidportal)
+
+[Solid GPT Infrastructure](https://github.com/AI-Citizen/SolidGPT/blob/wuaustin/readme/docs/infrastructure)
+
+[Fine-tuning with GPT3.5](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/gptfinetuning)
+
+[Fine-tuning with Llama2](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/llama2finetuning)
