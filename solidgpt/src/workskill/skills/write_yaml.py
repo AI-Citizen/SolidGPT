@@ -7,12 +7,12 @@ from solidgpt.src.workskill.workskill import *
 from solidgpt.src.tools.lowdefy.validator.yaml_validator import YAMLValidator
 
 
-class WriteMainPage(WorkSkill):
+class WriteYAML(WorkSkill):
 
     def __init__(self):
         super().__init__()
         self.gpt_manager = GPTManager._instance
-        self.name = SKILL_NAME_WRITE_MAIN_PAGE
+        self.name = SKILL_NAME_WRITE_YAML
         self.skill_input = SkillInput(
             "High level design document",
             SkillIOParamCategory.KanbanBoard,
