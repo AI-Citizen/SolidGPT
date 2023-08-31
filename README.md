@@ -106,7 +106,7 @@ Agent-created content auto-syncs with Notion, enabling user reviews during the L
 Notion, powered by LLM, can assist users with quickly editing, improving, reviewing, sharing, and sending final content editions to the next LLM agent.
 
 ## 🖇️ Document
-[Solid Portal](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/solidporta.md)
+[Solid Portal](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/solidportal.md)
 
 [Solid GPT Infrastructure](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/infrastructure.md)
 
