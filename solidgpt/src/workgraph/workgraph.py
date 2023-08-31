@@ -160,7 +160,7 @@ class WorkGraph:
                                 output_md_filepath = add_extension_if_not_exist(output_path, ".md")
                                 self.notion.process_markdown_and_upload(output_md_filepath)
                             else:
-                                print("Notion does not support skill with no outputs.")
+                                print("Notion does not support current output.")
                                 continue
                         else:
                             print("Notion does not support skill with no outputs.")
