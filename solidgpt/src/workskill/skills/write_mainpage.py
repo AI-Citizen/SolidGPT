@@ -1,6 +1,7 @@
 from solidgpt.src.manager.gptmanager import GPTManager
 from solidgpt.src.manager.promptresource import SDE_LOWDEFY_ASSUMPTION, SDE_LOWDEFY_YAML_OUTPUT_TEMPLATE, \
-    SDE_FRONTEND_HOMEPAGE_ASSUMPTION, SDE_FRONTEND_OUTPUT_TEMPLATE, SDE_FRONTEND_ASSUMPTION, build_gpt_prompt
+    SDE_FRONTEND_HOMEPAGE_ASSUMPTION, SDE_FRONTEND_OUTPUT_TEMPLATE, SDE_FRONTEND_ASSUMPTION, build_gpt_prompt, \
+    SDE_LOWDEFY_PAGE_ASSUMPTION, SDE_PAGE_YAML_OUTPUT_TEMPLATE, SDE_SUMMARIZE_TASK_ASSUMPTION
 from solidgpt.src.util.util import *
 from solidgpt.src.workskill.workskill import *
 from solidgpt.src.tools.lowdefy.validator.yaml_validator import YAMLValidator
@@ -23,55 +24,75 @@ class WriteMainPage(WorkSkill):
         )
         self.add_output(self.skill_output)
         self.kanban_md: str = ""
+        self.task_info: str = ""
+        self.reference_list: list = []
 
     def _read_input(self):
         input_path = self.get_input_path(self.skill_input)
         self.kanban_md = load_from_md(input_path)
 
     def execution_impl(self):
-        print("Printing YAML result here...")
-        yaml = self.__run_write_yaml_model()
+        logging.info("Printing page YAML result here...")
+        task_prompt = build_gpt_prompt(SDE_FRONTEND_ASSUMPTION, SDE_FRONTEND_OUTPUT_TEMPLATE)
+        self.task_info = self.gpt_manager.create_and_chat_with_model(
+            prompt=task_prompt,
+            gpt_model_label="find create page task",
+            input_message=self.kanban_md
+        )
+
+        task_prompt = build_gpt_prompt(SDE_FRONTEND_HOMEPAGE_ASSUMPTION, SDE_FRONTEND_OUTPUT_TEMPLATE)
+        homepage_info = self.gpt_manager.create_and_chat_with_model(
+            prompt=task_prompt,
+            gpt_model_label="find homepage task",
+            input_message=self.task_info
+        )
+
+        homepage_name = self.gpt_manager.create_and_chat_with_model(
+            prompt=SDE_SUMMARIZE_TASK_ASSUMPTION,
+            gpt_model_label="summarize page name",
+            input_message=homepage_info
+        ).lower()
+        page_prompt = build_gpt_prompt(SDE_LOWDEFY_PAGE_ASSUMPTION, SDE_PAGE_YAML_OUTPUT_TEMPLATE)
+        homepage_prompt = build_gpt_prompt(SDE_LOWDEFY_ASSUMPTION, SDE_LOWDEFY_YAML_OUTPUT_TEMPLATE)
+        for task in self.task_info.split("\n"):
+            page_name = self.gpt_manager.create_and_chat_with_model(
+                prompt=SDE_SUMMARIZE_TASK_ASSUMPTION,
+                gpt_model_label="summarize page name",
+                input_message=task
+            ).lower()
+
+            if page_name != homepage_name:
+                print(page_name, homepage_name)
+                error_count = 0
+                while error_count < 5:
+                    try:
+                        page_msg = f"Task:\nCreate the yaml file that implements the following tasks in kanban " \
+                                   f"board \n{task}"
+                        yaml = self.__run_write_yaml_model(page_msg, page_name, page_prompt, [])
+                    except:
+                        print("Malformed Yaml, trying again.")
+                        error_count += 1
+                        continue
+                    save_to_yaml(os.path.join(self.skill_output.param_path, page_name), yaml)
+                    self.reference_list.append(page_name)
+                    break
+
+                if error_count >= 5:
+                    print_error_message("Error, trying too many times and writing sub page still fails.")
+
+        home_msg = f"Task:\nCreate the yaml file that implements the following task in kanban board " \
+            f"with the name lowdefy.yaml\n{homepage_info}"
+        yaml = self.__run_write_yaml_model(home_msg, "lowdefy", homepage_prompt, self.reference_list)
         save_to_yaml(os.path.join(self.skill_output.param_path, "lowdefy"), yaml)
         return
 
-    def build_reference_list(self):
-        ret = []
-        prompt = build_gpt_prompt(SDE_FRONTEND_ASSUMPTION, SDE_FRONTEND_OUTPUT_TEMPLATE)
-        task_info = self.gpt_manager.create_and_chat_with_model(
-            prompt=prompt,
-            gpt_model_label="find create page tasks",
-            input_message=self.kanban_md
-        )
-        for task in task_info.split("\n"):
-            summarize_prompt = "Find one word in the Task Name that best describes the page. Only output a single word."
-            page_name = self.gpt_manager.create_and_chat_with_model(
-                prompt=summarize_prompt,
-                gpt_model_label="write_yaml",
-                input_message=task
-            )
-            if page_name.lower() not in {"mainpage", "homepage", "main"}:
-                ret.append(page_name.lower())
-        return ret
-
-    def __run_write_yaml_model(self, ):
+    def __run_write_yaml_model(self, message, page_name, prompt, subpages):
         logging.info("Running write lowdefy yaml model...")
-        task_prompt = build_gpt_prompt(SDE_FRONTEND_HOMEPAGE_ASSUMPTION, SDE_FRONTEND_OUTPUT_TEMPLATE)
-        page_prompt = build_gpt_prompt(SDE_LOWDEFY_ASSUMPTION, SDE_LOWDEFY_YAML_OUTPUT_TEMPLATE)
-        task_info = self.gpt_manager.create_and_chat_with_model(
-            prompt=task_prompt,
-            gpt_model_label="find homepage task",
-            input_message=self.kanban_md
-        )
-        message = f"Task:\nCreate the yaml file that implements the following task in kanban board " \
-                  f"with the name lowdefy.yaml\n{task_info}"
         gpt_output = self.gpt_manager.create_and_chat_with_model(
-            prompt=page_prompt,
+            prompt=prompt,
             gpt_model_label="write lowdefy yaml",
             input_message=message
         )
         primitive_yaml = YAMLValidator.parse(gpt_output)
-        validator = YAMLValidator(primitive_yaml)
-        verified_type_yaml = validator.validate()
-        refence_list = self.build_reference_list()
-        ret_yaml = validator.add_reference(verified_type_yaml, refence_list)
-        return ret_yaml
+        validator = YAMLValidator(primitive_yaml, page_name, subpages)
+        return validator.validate()
