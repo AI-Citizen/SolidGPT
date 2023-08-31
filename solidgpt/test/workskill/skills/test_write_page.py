@@ -4,7 +4,7 @@ from solidgpt.src.manager.initializer import Initializer
 from solidgpt.src.workagent.agents.agent_softwaredeveloper import AgentSoftwareDeveloper
 from solidgpt.src.workgraph.workgraph import WorkGraph
 from solidgpt.src.worknode.worknode import WorkNode
-from solidgpt.src.workskill.skills.write_mainpage import WriteMainPage
+from solidgpt.src.workskill.skills.write_yaml import WriteYAML
 from solidgpt.src.workskill.workskill import WorkSkill
 
 md = """
@@ -46,7 +46,7 @@ Note: The "Status" column represents the current status of each task, with the f
 def run_test():
     Initializer()
     app = WorkGraph()
-    skill: WorkSkill = WriteMainPage()
+    skill: WorkSkill = WriteYAML()
     input_path = os.path.join(TEST_SKILL_WORKSPACE, "in", "Kanban.md")
     skill.init_config(
         [

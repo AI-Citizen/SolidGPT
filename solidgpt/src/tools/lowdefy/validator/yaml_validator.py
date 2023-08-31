@@ -8,8 +8,12 @@ from solidgpt.definitions import ROOT_DIR
 
 
 class YAMLValidator:
-    def __init__(self, yaml_str: str):
+    def __init__(self, yaml_str: str, filename: str, subpages: list):
         self.yaml = yaml_str
+        self.filename = filename
+        self.subpages = subpages
+        self.yaml_list = self.yaml.split("\n")
+        self.homepage_id = None
         self.container_df = pd.read_csv(os.path.join(ROOT_DIR, "src", "tools", "lowdefy", "embedding", "container_block_embedding.csv"))
         self.input_df = pd.read_csv(os.path.join(ROOT_DIR, "src", "tools", "lowdefy", "embedding", "input_block_embedding.csv"))
         self.display_df = pd.read_csv(os.path.join(ROOT_DIR, "src", "tools", "lowdefy", "embedding", "display_block_embedding.csv"))
@@ -21,23 +25,27 @@ class YAMLValidator:
         Check and convert the GPT created yaml file string to valid lowdefy yaml file string
         :return: Converted valid lowdefy yaml file string
         """
-        ret_yaml_str = self.verify_block_type(self.yaml)
-        ret_yaml_str = self.remove_events(ret_yaml_str)
-        return ret_yaml_str
+        self.verify_block_type()
+        self.remove_events()
+        if len(self.subpages) > 0 and self.filename == "lowdefy":
+            self.verify_reference(self.subpages)
+            self.verify_menu(self.subpages)
+        return "\n".join(self.yaml_list)
 
-    def verify_block_type(self, yaml_str: str) -> str:
+    def verify_block_type(self):
         """
         Using embedding to convert random block types to valid lowdefy block
         :param yaml_str: Original yaml file string
         :return: Converted yaml file string
         """
-        cur_yaml = yaml_str.split("\n")
         idx = 0
-        while idx < len(cur_yaml):
-            line = cur_yaml[idx]
+        while idx < len(self.yaml_list):
+            line = self.yaml_list[idx]
             tokens = line.split(":")
             key = tokens[0]
-            if key.strip() == "type":
+            if key == "id":
+                self.yaml_list[idx] = f"{key}: {self.filename}"
+            elif key.strip() == "type":
                 # indent_level = key.rindex(" ") + 1
                 query_type = tokens[1].strip().split(" ")[0]
                 all_types = self.all_embedding_df.columns.values.tolist()
@@ -51,49 +59,68 @@ class YAMLValidator:
                         cache[query_type] = valid_type
                     else:
                         valid_type = cache[query_type]
-                    cur_yaml[idx] = f"{key}: {valid_type}"
+                    self.yaml_list[idx] = f"{key}: {valid_type}"
             idx += 1
-        return "\n".join(cur_yaml)
+        return
 
-    def verify_indentation(self, yaml_str: str) -> str:
-        pass
+    def remove_blocks(self, key, idx):
+        indentation = key.rfind(" ") if "-" not in key else key.rfind("-") - 1
+        next_indentation = float("inf")
+        while idx < len(self.yaml_list) and next_indentation > indentation:
+            self.yaml_list.pop(idx)
+            if idx >= len(self.yaml_list):
+                break
+            line = self.yaml_list[idx]
+            tokens = line.split(":")
+            key = tokens[0]
+            next_indentation = key.rfind(" ") if "-" not in key else key.rfind("-") - 1
 
-    @staticmethod
-    def remove_events(yaml_str: str) -> str:
-        cur_yaml = yaml_str.split("\n")
+    def remove_events(self):
         idx = 0
-        while idx < len(cur_yaml):
-            line = cur_yaml[idx]
+        while idx < len(self.yaml_list):
+            line = self.yaml_list[idx]
             tokens = line.split(":")
             key = tokens[0]
             if key.strip() == "events":
-                indentation = key.rfind(" ") if "-" not in key else key.rfind("-") - 1
-                next_indentation = float("inf")
-                while idx < len(cur_yaml) and next_indentation > indentation:
-                    cur_yaml.pop(idx)
-                    if idx >= len(cur_yaml):
-                        break
-                    line = cur_yaml[idx]
-                    tokens = line.split(":")
-                    key = tokens[0]
-                    next_indentation = key.rfind(" ") if "-" not in key else key.rfind("-") - 1
+                self.remove_blocks(key, idx)
             idx += 1
-        return "\n".join(cur_yaml)
+        return
 
-    @staticmethod
-    def add_reference(yaml_str: str, page_list: list[str]) -> str:
-        ref_list = [f"  - _ref: {page_name}.yaml" for page_name in page_list]
-        cur_yaml = yaml_str.split("\n")
+    def verify_menu(self, page_list: list[str]):
         idx = 0
-        while idx < len(cur_yaml):
-            line = cur_yaml[idx]
+        while idx < len(self.yaml_list):
+            line = self.yaml_list[idx]
             tokens = line.split(":")
             key = tokens[0]
-            if key.strip() == "pages":
-                cur_yaml[idx+1:1] = ref_list
+            if key.strip() == "menus":
+                self.remove_blocks(key, idx)
+            idx += 1
+
+        menu_list = ["menus:", "  - id: default", "    links:"]
+        page_list.insert(0, self.homepage_id)
+        for page in page_list:
+            cur_list = [f"        - id: {page}", "          type: MenuLink", "          properties:",
+                        f"            title: {page.capitalize()}", f"          pageId: {page}"]
+            menu_list.extend(cur_list)
+        self.yaml_list.extend(menu_list)
+        return
+
+    def verify_reference(self, page_list: list[str]):
+        ref_list = [f"  - _ref: {page_name}.yaml" for page_name in page_list]
+        idx = 0
+        flag = False
+        while idx < len(self.yaml_list):
+            line = self.yaml_list[idx]
+            tokens = line.split(":")
+            key = tokens[0]
+            if key == "pages":
+                self.yaml_list[idx+1:1] = ref_list
+                flag = True
+            if flag and key == "  - id":
+                self.homepage_id = tokens[1].strip().split(" ")[0]
                 break
             idx += 1
-        return "\n".join(cur_yaml)
+        return
 
     @staticmethod
     def vector_similarity(x: list[float], y: list[float]) -> float:

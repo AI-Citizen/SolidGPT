@@ -15,7 +15,7 @@ Currently, agents are optimized for software development using tools like Notion
 - (Optional)[Yarn](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable)  - Required if you wish to utilize the SolidPortal
 - [Docker](https://docs.docker.com/engine/install/)
 - [Openai api key](https://openai.com/blog/openai-api)
-- (Optional）[Notion](https://developers.notion.com/) - Create Notion api key and get the Notion page id wihch you want to use as the output AI content
+- (Optional）[Notion](https://developers.notion.com/) - Create Notion api key and get the Notion page id which you want to use as the output AI content
 
 ## **Quick Setup**
 
@@ -77,7 +77,7 @@ easier use private data to make a QA bot or add LLM prompt to do  in-context-lea
 
  provide the embedding and query the private data easily.
 
-### Auto Alignement
+### Auto Alignment
 
 Using few-shot learning and auto-generating principles based on user tasks can allow AI to always follow principles, resulting in a more stable and reliable LLM.
 
@@ -97,9 +97,9 @@ People can build a agents graph, each agent will focus on the specific work and 
 
 We also provide the UI let user build the solid Graph easier and quicker.
 
-## 🏉 Human-AI Deep Colleberation
+## 🏉 Human-AI Deep Collaboration
 
-### Colleberate with AI
+### Collaborate with AI
 
 Agent-created content auto-syncs with Notion, enabling user reviews during the LLM workflow. Subsequent agents use the user-edited result. Users can also establish a fully automated agent workflow.
 

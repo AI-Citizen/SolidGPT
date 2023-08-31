@@ -66,7 +66,7 @@ def generate_node_kanban(node_id: int, input_ids: list[int], output_ids: list[in
 
 def generate_node_main_page(node_id: int, input_ids: list[int], output_ids: list[int]):
     # write hld skill
-    skill: WorkSkill = WriteMainPage()
+    skill: WorkSkill = WriteYAML()
     skill.init_config(
         [
             {
