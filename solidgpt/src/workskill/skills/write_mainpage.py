@@ -38,7 +38,6 @@ class WriteMainPage(WorkSkill):
         ret = []
         prompt = build_gpt_prompt(SDE_FRONTEND_ASSUMPTION, SDE_FRONTEND_OUTPUT_TEMPLATE)
         task_info = self.gpt_manager.create_and_chat_with_model(
-            model="gpt-3.5-turbo",
             prompt=prompt,
             gpt_model_label="find create page tasks",
             input_message=self.kanban_md
@@ -46,7 +45,6 @@ class WriteMainPage(WorkSkill):
         for task in task_info.split("\n"):
             summarize_prompt = "Find one word in the Task Name that best describes the page. Only output a single word."
             page_name = self.gpt_manager.create_and_chat_with_model(
-                model="gpt-3.5-turbo",
                 prompt=summarize_prompt,
                 gpt_model_label="write_yaml",
                 input_message=task
@@ -60,7 +58,6 @@ class WriteMainPage(WorkSkill):
         task_prompt = build_gpt_prompt(SDE_FRONTEND_HOMEPAGE_ASSUMPTION, SDE_FRONTEND_OUTPUT_TEMPLATE)
         page_prompt = build_gpt_prompt(SDE_LOWDEFY_ASSUMPTION, SDE_LOWDEFY_YAML_OUTPUT_TEMPLATE)
         task_info = self.gpt_manager.create_and_chat_with_model(
-            model="gpt-3.5-turbo",
             prompt=task_prompt,
             gpt_model_label="find homepage task",
             input_message=self.kanban_md
@@ -68,7 +65,6 @@ class WriteMainPage(WorkSkill):
         message = f"Task:\nCreate the yaml file that implements the following task in kanban board " \
                   f"with the name lowdefy.yaml\n{task_info}"
         gpt_output = self.gpt_manager.create_and_chat_with_model(
-            model="gpt-3.5-turbo",
             prompt=page_prompt,
             gpt_model_label="write lowdefy yaml",
             input_message=message

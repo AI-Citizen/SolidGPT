@@ -37,7 +37,7 @@ class CustomSkill(WorkSkill):
         self.prompt = build_custom_skill_gpt_prompt(self.role_assumption, self.definition.instruction, self.definition.principles, self.definition.qa_example)
         # Generate final prompt
         return self.gpt_manager.create_model(
-            model="gpt-3.5-turbo",
+            model=self.definition.model_name,
             prompt=self.prompt,
             gpt_model_label="generate custom model",
         )

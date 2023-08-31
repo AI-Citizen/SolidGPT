@@ -1,5 +1,5 @@
 <h1 align="center">🧱 SolidGPT-Time to create your agent team</h1>
-
+[![Twitter Follow](https://img.shields.io/twitter/follow/SolidGPT?style=social)](https://twitter.com/SolidGPT)
 # 🚀 What’s this
 
 SolidGPT is a human-AI collaboration platform. Users can add private data and tailor agent workflows using techniques like embedding finetuning. Our goal: empower AI to work with humans using tools to accomplish business tasks.
@@ -14,7 +14,7 @@ Currently, agents are optimized for software development using tools like Notion
 - (Optional)[Yarn](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable)  - Required if you wish to utilize the SolidPortal
 - [Docker](https://docs.docker.com/engine/install/)
 - [Openai api key](https://openai.com/blog/openai-api)
-- (Optional）[Notion](https://developers.notion.com/) Notion api key and Notion page id
+- (Optional）[Notion](https://developers.notion.com/) - Create Notion api key and get the Notion page id wihch you want to use as the output AI content
 
 ## **Quick Setup**
 
@@ -34,18 +34,19 @@ python3 quickstart.py
 ```
 
 ### **Start Your Own Graph**
-
-1. Create a graph by solidportal [learn more about solidportal](solidportal/Readme.md)
-2. Create a entry point under the solidgpt folder and input the work graph path
-3. Run the code with python3 your_file_name.py
-
+0. (Optional) Customize your own agent and skill [(learn more)](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/customagentskill.md)
+1. Create a graph using Solid Portal or a JSON file. [(learn more)](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/solidporta.md)
+2. Create an entry point located in the solidgpt folder and input the workgraph json file path
 ```python
+# your_file_name.py
 from solidgpt.src.orchestration.orchestration import *
-
+Initializer()
 app = Orchestration()
 app.add_graph("workspace/config/config_data.json", "default graph")
 app.run_graph_with_name("default graph")
 ```
+3. Run the code with python3 your_file_name.py
+
 
 ## ⁉️ What can this help with?
 
@@ -113,3 +114,11 @@ Notion, powered by LLM, can assist users with quickly editing, improving, review
 [Fine-tuning with GPT3.5](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/gptfinetuning.md)
 
 [Fine-tuning with Llama2](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/llama2finetuning.md)
+
+[Deeply Customize Agent Skill](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/customagentskill.md)
+
+## Contact
+If you have any questions or feedback about our project, please don't hesitate to reach out to us. We greatly appreciate your suggestions!
+- Email: aict@ai-citi.com
+- GitHub Issues: For more technical inquiries, you can also create a new issue in our [GitHub repository](https://github.com/AI-Citizen/SolidGPT/issues).
+We will respond to all questions within 2-3 business days.

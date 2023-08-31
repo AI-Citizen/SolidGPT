@@ -30,7 +30,6 @@ class CustomSkillGenerator:
         role_prompt = get_custom_skills_assumption_role_prompt(business)
         prompt = build_gpt_prompt(role_assumption=role_prompt, output_format=CUSTOM_GENERATE_LIST_SKILLS_OUTPUT_FORMAT)
         skill_list : str = self.gpt_manager.create_and_chat_with_model(
-            model="gpt-3.5-turbo",
             prompt=prompt,
             gpt_model_label="list_essential_skill_list",
             input_message="Always use && to separate each skill ",
@@ -47,7 +46,6 @@ class CustomSkillGenerator:
         skill_short_description = self.cache["skill_short_description"]
         logging.info(f"""Explore skill {skill_short_description}""")
         detail = self.gpt_manager.create_and_chat_with_model(
-            model="gpt-3.5-turbo",
             prompt=f"""I want to create the {skill_short_description} AI agent, 
             Can you list more detail about the {skill_short_description}?
             can you give me an input and output format of agent?
@@ -56,7 +54,6 @@ class CustomSkillGenerator:
             input_message=skill_short_description
         )
         qa_example = self.gpt_manager.create_and_chat_with_model(
-            model="gpt-3.5-turbo",
             prompt= f"""Your idea for skill {skill_short_description} is: {detail}. Directly response no extra words """,
             gpt_model_label="get_custom_skills_example",
             input_message="""Can you give a example Input and output base on your idea."""
@@ -70,7 +67,6 @@ class CustomSkillGenerator:
         prompt = build_gpt_prompt(f'''Assuem you are the expert with {self.cache["skill_short_description"]}''',
                                    CUSTOM_GENERATE_PRINCIPLES)
         self.cache['principles'] = self.gpt_manager.create_and_chat_with_model(
-            model="gpt-3.5-turbo",
             prompt=prompt,
             gpt_model_label="generate principles",
             input_message=f'''Task description: {self.cache["skill_short_description"]}\n\n 
@@ -82,7 +78,6 @@ class CustomSkillGenerator:
             logging.error("Please run list_essential_skill_list or get_custom_skill_detail first")
         
         skill_name = self.gpt_manager.create_and_chat_with_model(
-            model="gpt-3.5-turbo",
             prompt=f"""Base on the skill short description, give me short clear Camel Case no space name . 
             For example - Quantitative Analyst, Programming, Write PRD etc.""",
             gpt_model_label="format_custom_skill",
@@ -103,7 +98,7 @@ class CustomSkillGenerator:
         self.cache = {}
         return 
 
-
-GPTManager()
-c = CustomSkillGenerator()
-c.generate_custom_skill("Product Manager")
+# Sample code
+# GPTManager()
+# c = CustomSkillGenerator()
+# c.generate_custom_skill("Product Manager")

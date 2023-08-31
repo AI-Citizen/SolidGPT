@@ -1,116 +1,100 @@
-# Frontend Dev Design Document
+# Frontend Design Document
 
-## Introduction
-The purpose of this document is to outline the frontend design and development plan for the AI Says application. The frontend development team will be responsible for creating a user-friendly and responsive interface that allows Chinese retail investors to access the AI-powered chatbot, analyze stock data, and receive personalized recommendations and alerts. The design principles of user experience, user interface, design considerations, performance, security, testing, and rollout strategy will be followed throughout the development process.
+## Frontend Design Principles:
+1. User Experience (UX):
+- Responsiveness: The frontend design should be mobile-responsive to ensure a seamless experience across different devices.
+- Navigation: The navigation should be intuitive, allowing users to easily navigate between different pages and features.
+- Feedback: Provide feedback to users after key interactions, such as successful submission of forms or completion of actions.
+- Loading Time: Optimize the loading time of the frontend to ensure fast loading times and a smooth user experience.
+- Accessibility: Adhere to accessibility standards to ensure that the frontend is accessible to users with disabilities.
 
-## User Experience (UX)
-### Responsiveness
-The frontend application will be designed to be mobile-responsive, ensuring that users can access and use the AI Says chatbot on various devices, including smartphones and tablets.
+2. User Interface (UI):
+- Homepage: The primary landing page should have a layout that includes a header with the app's title/logo and navigation, a banner with a featured image or slider, a row of feature cards with icons, titles, and descriptions, and a footer with links and secondary navigation.
+- About Page: The layout should include a header consistent with the homepage, a section with company overview text, a team section with team members' photos and bios, and a footer consistent with the homepage.
+- Products Page: The layout should include a header consistent with the homepage, a product list with cards displaying images, titles, descriptions, and prices, filter and sorting options for categories, and a footer consistent with the homepage.
+- Contact Page: The layout should include a header consistent with the homepage, a contact form with fields for name, email, subject, and message, a location map embedded, and a footer consistent with the homepage.
+- Common Components: Include a navigation menu in the header for easy navigation, and styled call to action buttons for key actions.
 
-### Navigation
-The navigation menu will be intuitive and easy to use, allowing users to navigate between different pages and access different features of the application. The menu will be located in the header section of the application and will be consistent across all pages.
+3. Design Considerations:
+- Consistency: Maintain a uniform design language throughout the frontend to provide a cohesive user experience.
+- Modularity: Design reusable components that can be used across different pages to promote code reusability and maintainability.
+- Interactivity: Add subtle animations and transitions to enhance the interactivity and engagement of the frontend.
 
-### Feedback
-The application will provide feedback to users after key interactions, such as submitting a form or receiving a recommendation. This feedback can be in the form of success messages, error messages, or visual indicators to indicate the progress of a task.
+4. Performance:
+- Optimize Images: Compress and size images to reduce the loading time of the frontend.
+- Lazy Loading: Load assets on demand to improve the initial loading time and overall performance.
+- Caching: Implement caching mechanisms to cache frequently accessed data and assets for faster retrieval.
 
-### Loading Time
-Efforts will be made to optimize the loading time of the application, ensuring that it loads quickly and provides a seamless user experience. Techniques such as lazy loading and caching will be implemented to improve performance.
+5. Security:
+- Input Validation: Implement input validation to validate user inputs and prevent malicious inputs.
+- Data Transmission: Use secure data transmission methods, such as HTTPS, to ensure the security of user data during transmission.
+- Cookies and Local Storage: Store encrypted or minimal data in cookies and local storage to enhance security.
 
-### Accessibility
-The frontend application will adhere to accessibility standards, ensuring that it is accessible to users with disabilities. Efforts will be made to provide alternative text for images, use appropriate color contrast, and make the application keyboard navigable.
+6. Testing:
+- Cross-Browser Testing: Test the frontend on different browsers to ensure uniformity and compatibility.
+- Mobile Testing: Test the frontend on different mobile devices to ensure responsiveness and optimal user experience.
+- User Testing: Conduct user testing to gather real user feedback and identify areas for improvement.
 
-## User Interface (UI)
-### Pages & Routing
-The AI Says application will consist of the following pages:
+7. Rollout Strategy:
+- Beta Testing: Release the frontend to a limited audience for beta testing to gather feedback and identify any issues or bugs.
+- Versioning: Implement versioning to easily roll back to stable versions if needed.
+- Feedback Loop: Establish a system for users to provide feedback and suggestions for continuous improvement.
 
-1. Homepage: The primary landing page of the application.
-2. About Page: Provides information about the company or app.
-3. Products Page: Lists the products/services offered by AI Says.
-4. Contact Page: Displays contact information and a contact form.
+## Pages & Routing:
+- Homepage: The primary landing page.
+- About Page: Page with company or app info.
+- Products Page: Page that lists products/services.
+- Contact Page: Page with contact info and contact form.
 
-#### Homepage Layout
-- Header: The header section will contain the app's title/logo and navigation menu.
-- Banner: A featured image or slider will be displayed to attract users' attention.
-- Feature Cards Row: Three cards will be displayed, each containing an icon, title, and description of a key feature of AI Says.
-- Footer: The footer section will contain links and secondary navigation.
+## Homepage Layout:
+- Header: Include the app's title/logo and navigation menu.
+- Banner: Display a featured image or slider.
+- Feature Cards Row: Display three cards with icons, titles, and descriptions.
+- Footer: Include links and secondary navigation.
 
-#### About Page Layout
-- Header: Consistent with the homepage, the header will contain the app's title/logo and navigation menu.
-- Company Overview: A section of text will provide information about the company or app.
-- Team Section: A section will display team members' photos and bios.
-- Footer: Consistent with the homepage, the footer will contain links and secondary navigation.
+## About Page Layout:
+- Header: Consistent with the homepage.
+- Company Overview: Display text about the company.
+- Team Section: Display team members' photos and bios.
+- Footer: Consistent with the homepage.
 
-#### Products Page Layout
-- Header: Consistent with the homepage, the header will contain the app's title/logo and navigation menu.
-- Product List: A list of cards will be displayed, each containing an image, title, description, and price of a product/service offered by AI Says.
-- Filter & Sorting Options: Users will be able to filter the product list by categories or sort the list based on different criteria.
-- Footer: Consistent with the homepage, the footer will contain links and secondary navigation.
+## Products Page Layout:
+- Header: Consistent with the homepage.
+- Product List: Display cards with images, titles, descriptions, and prices.
+- Filter & Sorting Options: Provide options to filter by categories or sort the product list.
+- Footer: Consistent with the homepage.
 
-#### Contact Page Layout
-- Header: Consistent with the homepage, the header will contain the app's title/logo and navigation menu.
-- Contact Form: A form will be displayed, allowing users to enter their name, email, subject, and message.
-- Location Map: An embedded map will be displayed to show the location of the company or app.
-- Footer: Consistent with the homepage, the footer will contain links and secondary navigation.
+## Contact Page Layout:
+- Header: Consistent with the homepage.
+- Contact Form: Include fields for name, email, subject, and message.
+- Location Map: Embed a map to display the location.
+- Footer: Consistent with the homepage.
 
-### Common Components
-#### Navigation Menu
-- The navigation menu will be located in the header section of the application.
-- It will provide links to different pages of the application.
-- The menu will be consistent across all pages.
+## Common Components:
+- Navigation Menu: Include a navigation menu in the header for easy navigation between pages.
+- Call to Action Buttons: Style buttons for key actions to attract user attention.
 
-#### Call to Action Buttons
-- Styled buttons will be used for key actions, such as submitting a form or accessing a specific feature.
-- The buttons will be visually appealing and easily distinguishable from other elements on the page.
+## Additional Design Considerations:
+- Consistency: Maintain a consistent design language throughout the frontend to provide a cohesive user experience.
+- Modularity: Design reusable components that can be easily reused across different pages to promote code reusability and maintainability.
+- Interactivity: Add subtle animations and transitions to enhance the interactivity and engagement of the frontend.
 
-## Design Considerations
-### Consistency
-The frontend application will follow a uniform design language, ensuring that the design elements, colors, and typography are consistent across all pages. This will create a cohesive and visually appealing user interface.
+## Performance Considerations:
+- Optimize Images: Compress and size images to reduce the loading time of the frontend.
+- Lazy Loading: Load assets on demand to improve the initial loading time and overall performance.
+- Caching: Implement caching mechanisms to cache frequently accessed data and assets for faster retrieval.
 
-### Modularity
-Efforts will be made to create reusable components, allowing for easy maintenance and scalability of the application. Components will be designed to be modular and independent, making it easier to add or modify functionality in the future.
+## Security Considerations:
+- Input Validation: Implement input validation to validate user inputs and prevent malicious inputs.
+- Data Transmission: Use secure data transmission methods, such as HTTPS, to ensure the security of user data during transmission.
+- Cookies and Local Storage: Store encrypted or minimal data in cookies and local storage to enhance security.
 
-### Interactivity
-Subtle animations and transitions will be incorporated into the user interface to enhance the interactivity and engagement of the application. These animations will be used sparingly and purposefully to avoid overwhelming the user.
+## Testing Considerations:
+- Cross-Browser Testing: Test the frontend on different browsers to ensure uniformity and compatibility.
+- Mobile Testing: Test the frontend on different mobile devices to ensure responsiveness and optimal user experience.
+- User Testing: Conduct user testing to gather real user feedback and identify areas for improvement.
 
-## Performance
-### Optimize Images
-All images used in the frontend application will be compressed and sized appropriately to minimize the loading time of the application. Efforts will be made to strike a balance between image quality and performance.
-
-### Lazy Loading
-Assets, such as images and scripts, will be loaded on demand to improve the initial loading time of the application. This technique will ensure that only the necessary assets are loaded when needed, reducing the overall load time.
-
-### Caching
-Frequently accessed data and assets will be cached to improve the performance of the application. This will reduce the need for repeated requests to the server and improve the responsiveness of the application.
-
-## Security
-### Input Validation
-User inputs, such as form submissions, will be validated on the frontend to ensure that they meet the required format and prevent any potential security vulnerabilities. Input validation will be implemented using appropriate techniques and libraries.
-
-### Data Transmission
-Secure data transmission methods, such as HTTPS, will be used to protect user data during transmission. This will ensure that sensitive information, such as login credentials or personal details, are encrypted and cannot be intercepted by unauthorized parties.
-
-### Cookies and Local Storage
-Any data stored in cookies or local storage will be encrypted or kept to a minimum to minimize the risk of data breaches. Efforts will be made to follow best practices for data storage and security.
-
-## Testing
-### Cross-Browser Testing
-The frontend application will be tested on different browsers, including Chrome, Firefox, Safari, and Edge, to ensure uniformity and compatibility across all major browsers. Any browser-specific issues will be identified and addressed during the testing phase.
-
-### Mobile Testing
-The application will be tested on different mobile devices, including smartphones and tablets, to ensure that it is responsive and functions correctly on various screen sizes. Any layout or functionality issues specific to mobile devices will be identified and fixed.
-
-### User Testing
-Real users will be involved in the testing process to gather feedback and identify any usability issues or areas of improvement. User feedback will be collected through surveys, interviews, or usability testing sessions. This feedback will be used to make iterative improvements to the frontend application.
-
-## Rollout Strategy
-### Beta Testing
-A limited audience release will be conducted to gather feedback and identify any issues or bugs before the official release. The beta testing phase will involve a selected group of users who will have access to the application and provide feedback on its functionality, usability, and performance.
-
-### Versioning
-A versioning system will be implemented to easily roll back to stable versions in case any issues or bugs are identified after the official release. This will ensure that the application remains stable and reliable for users.
-
-### Feedback Loop
-A system will be put in place to collect and address user feedback after the official release. This feedback loop will allow for continuous improvement of the frontend application based on user needs and preferences. User feedback will be collected through various channels, such as email, support tickets, or a dedicated feedback form on the website.
-
-## Conclusion
-This frontend design document outlines the plan for developing the AI Says application, adhering to the frontend design principles of user experience, user interface, design considerations, performance, security, testing, and rollout strategy. The document provides a detailed overview of the pages, layouts, components, and features of the application, as well as the development milestones and phases. By following this design document, the frontend development team will be able to create a user-friendly and responsive interface that meets the needs of Chinese retail investors and provides them with accurate and reliable stock analysis, trading strategies, and personalized recommendations.
+## Rollout Strategy:
+- Beta Testing: Release the frontend to a limited audience for beta testing to gather feedback and identify any issues or bugs.
+- Versioning: Implement versioning to easily roll back to stable versions if needed.
+- Feedback Loop: Establish a system for users to provide feedback and suggestions for continuous improvement.

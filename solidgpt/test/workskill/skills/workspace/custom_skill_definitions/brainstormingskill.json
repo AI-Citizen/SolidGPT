@@ -5,6 +5,7 @@
     "qa_example": "",
     "principles": "Dive deep",
     "embedding_background_data_list": "TestEmbedding",
+    "model_name": "gpt-4",
     "input_method": "SkillIOParamCategory.PlainText",
     "output_method": "SkillIOParamCategory.PlainText"
 }

@@ -14,16 +14,19 @@ class GPTManager:
     def __init__(self, if_show_reply = True):
         # read api key from config file
         openai.api_key = ConfigReader().get_property("openai_api_key")
+        self.__default_model = ConfigReader().get_property("openai_model")
         self.gpt_models_container = {}
         self.if_show_reply = if_show_reply
 
-    def create_model(self, model, prompt, gpt_model_label, temperature = 1):
-        gpt_model = GPTModel(prompt, model, self.if_show_reply, temperature)
+    def create_model(self, prompt, gpt_model_label, temperature = 1, model = None):
+        if model is None:
+            model = self.__default_model
+        gpt_model = GPTModel(prompt, self.__default_model, self.if_show_reply, temperature)
         self.gpt_models_container[gpt_model_label] = gpt_model
         return gpt_model
     
-    def create_and_chat_with_model(self, model, prompt, gpt_model_label, input_message, temperature = 0.1):
-        gpt_model = self.create_model(model, prompt, gpt_model_label, temperature)
+    def create_and_chat_with_model(self, prompt, gpt_model_label, input_message, temperature = 0.1, model = None):
+        gpt_model = self.create_model(prompt, gpt_model_label, temperature, model)
         return gpt_model.chat_with_model(input_message)
 
     def get_gpt_model(self, gpt_model_label):

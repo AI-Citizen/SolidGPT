@@ -36,7 +36,6 @@ class WriteHLD(WorkSkill):
         logging.info("Running write hld model...")
         prompt = build_gpt_prompt(PE_FRONTEND_ROLE_ASSUPTION, PE_FRONTEND_DESIGN_OUTPUT_TEMPLATE)
         return self.gpt_manager.create_and_chat_with_model(
-            model="gpt-3.5-turbo",
             prompt=prompt,
             gpt_model_label="write_hld",
             input_message=self.prd_md

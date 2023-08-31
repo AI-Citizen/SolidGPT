@@ -36,7 +36,6 @@ class CreateKanBan(WorkSkill):
         logging.info("Running create kanban model...")
         prompt = build_gpt_prompt(PE_ROE_ASSUMPTION, PE_KANBAN_OUTPUT_TEMPLATE)
         return self.gpt_manager.create_and_chat_with_model(
-            model="gpt-3.5-turbo",
             prompt=prompt,
             gpt_model_label="create_kanban",
             input_message=self.input_hld
