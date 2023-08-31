@@ -1,3 +1,4 @@
+from solidgpt.src.diy.custom.customizeskillmanager import CustomizeSkillManager
 from solidgpt.src.manager.embedding.embeddingmanager import EmbeddingManager
 from solidgpt.src.manager.embedding.embeddingmodel import EmbeddingModelParameter
 from solidgpt.src.manager.gptmanager import GPTManager

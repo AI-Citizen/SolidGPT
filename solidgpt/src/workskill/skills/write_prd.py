@@ -69,7 +69,6 @@ class WritePRD(WorkSkill):
         logging.info("Running write brd model...")
         prompt = build_gpt_prompt(PRODUCT_MANAGER_PRD_ROLE_ASSUMPTION, PRODUCT_MANAGER_PRD_OUTPUT_TEMPLATE)
         return self.gpt_manager.create_and_chat_with_model(
-            model="gpt-3.5-turbo",
             prompt=prompt,
             gpt_model_label="write_prd",
             input_message=brain_storm_product_info
@@ -79,7 +78,6 @@ class WritePRD(WorkSkill):
         logging.info("Running product brainstorm model...")
         prompt = build_gpt_prompt(PRODUCT_MANAGER_BRAINSTORM_ROLE_ASSUMPTION, PRODUCT_MANAGER_BRAINSTORM_OUTPUT_TEMPLATE)
         model = self.gpt_manager.create_model(
-            model="gpt-3.5-turbo",
             prompt=prompt,
             gpt_model_label="product_brainstorm",
             temperature=0.01,

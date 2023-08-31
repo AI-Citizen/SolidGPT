@@ -32,7 +32,6 @@ class WriteSubPage(WorkSkill):
         print("Printing page YAML result here...")
         task_prompt = build_gpt_prompt(SDE_FRONTEND_ASSUMPTION, SDE_FRONTEND_OUTPUT_TEMPLATE)
         task_info = self.gpt_manager.create_and_chat_with_model(
-            model="gpt-3.5-turbo",
             prompt=task_prompt,
             gpt_model_label="find homepage task",
             input_message=self.kanban_md
@@ -40,7 +39,6 @@ class WriteSubPage(WorkSkill):
         for task in task_info.split("\n"):
             summarize_prompt = "Find one word in the Task Name that best describes the page. Only output a single word."
             page_name = self.gpt_manager.create_and_chat_with_model(
-                model="gpt-3.5-turbo",
                 prompt=summarize_prompt,
                 gpt_model_label="summarize page name",
                 input_message=task
@@ -67,7 +65,6 @@ class WriteSubPage(WorkSkill):
 
         message = f"Task:\nCreate the yaml file that implements the following tasks in kanban board \n{task}"
         gpt_output = self.gpt_manager.create_and_chat_with_model(
-            model="gpt-3.5-turbo-16k",
             prompt=page_prompt,
             gpt_model_label="write page yaml",
             input_message=message

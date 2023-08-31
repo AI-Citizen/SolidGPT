@@ -49,7 +49,7 @@ app.run_graph_with_name("default graph")
 ```
 
 # Output Json Sample
-'''json
+```JSON
 [
   {
     "node_id": "2cad9739-28d1-492c-ba20-d9a862aa162a",        
@@ -159,5 +159,5 @@ app.run_graph_with_name("default graph")
     ]
   }
 ]
-'''
+```
 

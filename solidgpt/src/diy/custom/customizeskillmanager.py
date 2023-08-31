@@ -8,9 +8,9 @@ from solidgpt.src.workskill.skills.custom_skill import CustomSkill
 class CustomizeSkillManager:
     _instance = None
 
-    def __new__(cls):
+    def __new__(cls, *args, **kwargs):
         if cls._instance is None:
-            cls._instance = super(CustomizeSkillManager, cls).__new__(cls)
+            cls._instance = super().__new__(cls)
             # You can initialize the instance attributes here
         return cls._instance
     
