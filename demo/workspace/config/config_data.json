@@ -88,5 +88,23 @@
                 "id": 4
             }
         ]
+    },
+    {
+        "node_id": 5,
+        "manual_review_result": false,
+        "agent": "Software Developer",
+        "skill": "Host and run web app",
+        "inputs": [
+            {
+                "param_path": "",
+                "loading_method": "SkillInputLoadingMethod.LOAD_FROM_OUTPUT_ID",
+                "load_from_output_id": 3
+            }
+        ],
+        "outputs": [
+            {
+                "id": 5
+            }
+        ]
     }
 ]

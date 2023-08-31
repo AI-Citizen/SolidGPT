@@ -5,6 +5,7 @@
     "qa_example": "Q: What is a variable?\nA: A variable is a named storage location...",
     "principles": "Dive deep",
     "embedding_background_data_list": "",
+    "model_name": "gpt-3.5-turbo-16k",
     "input_method": "SkillIOParamCategory.PlainText",
     "output_method": "SkillIOParamCategory.PlainText"
 }

@@ -7,6 +7,7 @@ import {CustomClickItemsAction} from "./CustomClickItemsAction";
 import {DataClass, Inputs, JsonDataClass, LogicHelper, Outputs} from "./LogicHelper";
 import {CheckboxChangeEvent} from "antd/lib/checkbox";
 import axios from "axios";
+import config from "./config";
 
 export interface BodyWidgetProps {
 	engine: DiagramEngine;
@@ -22,15 +23,16 @@ export class LeftPanelWidget extends React.Component<BodyWidgetProps> {
 			// create a diagram model
 			const model = this.props.model;
 			const [agentValue, setAgentValue] = useState("Software Developer");
-			const [skillValue, setSkillValue] = useState("WritePRD");
-			const [skillListValue, setSkillListValue] = useState(["DebugCode","WriteCode","WritePRD","UseNotion","WriteHLD","CreateKanBan"]);
+			const [skillValue, setSkillValue] = useState("Write Product Requirement Documentation");
+			const [skillListValue, setSkillListValue] = useState(["Debug Code", "Write Code", "Write Product Requirement Documentation",
+				"Use Notion", "Write High Level Design", "Create Kanban Board", "Custom Skill", "Write lowdefy main page YAML", "Write lowdefy subpage YAML", "Host and run web app"]);
 			const [manualReviewResultBool, setManualReviewResultBool] = useState(false);
 			const [file, setFile] = useState(null);
 			const [fileName, setFileName] = useState();
 
 			useEffect(() => {
 				// Fetch the list of files from the server when the component mounts
-				axios.get('http://localhost:3001/listfiles')
+				axios.get(config.uploadApiBaseUrl + '/listfiles')
 					.then((response) => {
 						const customizeSkills = response.data.files
 						customizeSkills.map((item, index) => (
@@ -45,7 +47,7 @@ export class LeftPanelWidget extends React.Component<BodyWidgetProps> {
 
 			const handleFileSelect = async (filename) => {
 				try {
-					const response = await axios.get(`http://localhost:3001/readfile/${filename}`);
+					const response = await axios.get(config.uploadApiBaseUrl +`/readfile/${filename}`);
 					const jsonObject = JSON.parse(response.data.content);
 					setSkillListValue((skillListValue) => [...skillListValue, jsonObject.skill_name]);
 				} catch (error) {
@@ -98,7 +100,7 @@ export class LeftPanelWidget extends React.Component<BodyWidgetProps> {
 				formData.append('file', file);
 
 				try {
-					await axios.post('http://localhost:3001/upload', formData);
+					await axios.post(config.uploadApiBaseUrl +'/upload', formData);
 					console.log('File uploaded successfully!');
 				} catch (error) {
 					console.error('Error uploading file:', error);
@@ -140,7 +142,9 @@ export class LeftPanelWidget extends React.Component<BodyWidgetProps> {
 					value={agentValue}
 					options={[
 						{value: 'Software Developer', label: 'Software Developer'},
+						{value: 'Principal Engineer', label: 'Principal Engineer'},
 						{value: 'Product Manager', label: 'Product Manager'},
+						{value: 'Custom Agent', label: 'Custom Agent'},
 					]}
 				/>
 				<div>select skill:</div>

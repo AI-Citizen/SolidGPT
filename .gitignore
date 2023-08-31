@@ -14,6 +14,7 @@ dist/
 downloads/
 eggs/
 .eggs/
+.idea/
 lib/
 lib64/
 parts/
@@ -161,7 +162,7 @@ cython_debug/
 
 # Mac
 .DS_Store
-solidgpt/.DS_Store
+solidgpt/src/.DS_Store
 
 # vs code
 .vscode/

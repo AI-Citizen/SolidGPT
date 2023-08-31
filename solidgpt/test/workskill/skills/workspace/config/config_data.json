@@ -1,0 +1,20 @@
+[
+    {
+        "node_id": 1,
+        "manual_review_result": false,
+        "agent": "Principal Engineer",
+        "skill": "Create Kanban Board",
+        "inputs": [
+            {
+                "param_path": "/Users/wuqiten/Workplace/solidgpt-workspace/SolidGPT/solidgpt/test/workskill/skills/out/1/Write_HLD_Result_1.md",
+                "loading_method": "SkillInputLoadingMethod.LOAD_FROM_STRING",
+                "load_from_output_id": -1
+            }
+        ],
+        "outputs": [
+            {
+                "id": 2
+            }
+        ]
+    }
+]

@@ -3,12 +3,17 @@ const multer = require('multer');
 const app = express();
 const port = 3001;
 const cors = require('cors');
+const fs = require('fs');
 
 app.use(cors());
 
+const uploadDir = '../../localstorage/user_uploads';
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, '../../localstorage/user_uploads'); // Specify the directory where uploaded files will be saved
+        if (!fs.existsSync(uploadDir)) {
+            fs.mkdirSync(uploadDir);
+        }
+        cb(null, uploadDir); // Specify the directory where uploaded files will be saved
     },
     filename: (req, file, cb) => {
         cb(null, file.originalname); // Use the original filename
@@ -22,7 +27,6 @@ app.post('/upload', upload.single('file'), (req, res) => {
     res.status(200).json({ message: 'File uploaded successfully!' });
 });
 
-const fs = require('fs');
 app.use(express.json());
 // Define a route to list files in a folder
 app.get('/listfiles', (req, res) => {
