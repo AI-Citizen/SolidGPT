@@ -7,7 +7,8 @@ from solidgpt.src.worknode.worknode import WorkNode
 from solidgpt.src.workskill.skills.run_app import RunApp
 from solidgpt.src.workskill.workskill import WorkSkill
 
-def run_test():
+
+def test_execute():
     Initializer()
     app = WorkGraph()
     skill: WorkSkill = RunApp()
@@ -32,11 +33,5 @@ def run_test():
     app.execute()
 
 
-def test_app():
-    run_test()
-
-
 if __name__ == "__main__":
-    test_app()
-
-    # 'C:\\proj\\SolidGPT\\src\\tools\\lowdefy\\runner\\.'
+    test_execute()

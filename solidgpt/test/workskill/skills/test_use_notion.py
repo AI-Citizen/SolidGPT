@@ -5,7 +5,8 @@ from solidgpt.src.workskill.skills.use_notion import UseNotion
 
 TEST_SKILL_WORKSPACE = os.path.join(TEST_DIR, "workskill", "skills", "workspace")
 
-def run_test():
+
+def test_execute():
     Initializer()
     app = WorkGraph()
     skill: WorkSkill = UseNotion()
@@ -30,8 +31,9 @@ def run_test():
     app.save_data(os.path.join(TEST_SKILL_WORKSPACE, "config", "config_data.json"))
     app.execute()
 
+
 # It is durable work, please run with sudo and give the right access of keyboard.
 # example: sudo PYTHONPATH=/Users/wuqiten/Workplace/src-workspace/SolidGPT/ python3 test_skill_usenotion.py
 if __name__ == "__main__":
-    run_test()
+    test_execute()
 

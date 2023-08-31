@@ -1,3 +1,5 @@
+import time
+
 from solidgpt.definitions import ROOT_DIR
 from solidgpt.src.configuration.configreader import ConfigReader
 import os
@@ -17,6 +19,30 @@ class NotionActions:
         self.page = self.notion.pages.retrieve(PAGE_ID)
 
     def process_markdown_and_upload(self, md_file_path: str):
+
+        # clear current notion page
+        for child_block in self.notion.blocks.children.list(self.page):
+            self.notion.blocks.delete(child_block.id)
+
+        # Initialize time variables
+        start_time = time.time()
+        timeout = 20  # 20 seconds
+
+        # Check if all blocks are deleted, with a timeout
+        while True:
+            elapsed_time = time.time() - start_time
+            if elapsed_time > timeout:
+                print("Timeout reached. Exiting loop. Not all blocks have been cleared.")
+                break
+
+            remaining_blocks = self.notion.blocks.children.list(self.page)
+            for block in remaining_blocks:
+                time.sleep(1)
+                continue
+
+            print("All blocks deleted. Exiting loop.")
+            break
+
         with open(md_file_path, "r", encoding="utf-8") as mdFile:
             lastLine = ""
             table = None
