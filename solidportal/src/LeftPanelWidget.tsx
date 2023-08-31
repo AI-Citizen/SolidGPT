@@ -7,6 +7,7 @@ import {CustomClickItemsAction} from "./CustomClickItemsAction";
 import {DataClass, Inputs, JsonDataClass, LogicHelper, Outputs} from "./LogicHelper";
 import {CheckboxChangeEvent} from "antd/lib/checkbox";
 import axios from "axios";
+import config from "./config";
 
 export interface BodyWidgetProps {
 	engine: DiagramEngine;
@@ -31,7 +32,7 @@ export class LeftPanelWidget extends React.Component<BodyWidgetProps> {
 
 			useEffect(() => {
 				// Fetch the list of files from the server when the component mounts
-				axios.get('http://localhost:3001/listfiles')
+				axios.get(config.uploadApiBaseUrl + '/listfiles')
 					.then((response) => {
 						const customizeSkills = response.data.files
 						customizeSkills.map((item, index) => (
@@ -46,7 +47,7 @@ export class LeftPanelWidget extends React.Component<BodyWidgetProps> {
 
 			const handleFileSelect = async (filename) => {
 				try {
-					const response = await axios.get(`http://localhost:3001/readfile/${filename}`);
+					const response = await axios.get(config.uploadApiBaseUrl +`/readfile/${filename}`);
 					const jsonObject = JSON.parse(response.data.content);
 					setSkillListValue((skillListValue) => [...skillListValue, jsonObject.skill_name]);
 				} catch (error) {
@@ -99,7 +100,7 @@ export class LeftPanelWidget extends React.Component<BodyWidgetProps> {
 				formData.append('file', file);
 
 				try {
-					await axios.post('http://localhost:3001/upload', formData);
+					await axios.post(config.uploadApiBaseUrl +'/upload', formData);
 					console.log('File uploaded successfully!');
 				} catch (error) {
 					console.error('Error uploading file:', error);
