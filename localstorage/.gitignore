@@ -7,3 +7,4 @@ embedding/originalresources/*
 !embedding/originalresources/Placeholder.md
 
 customizedskilldefinition/*.json
+!customizedskilldefinition/WriteSystemDesign.json

@@ -1,0 +1,11 @@
+{
+    "skill_name": "WrteSystemDesign",
+    "basic_description": "Write System High-Level Dev Design",
+    "instruction": "Assume you are the Principal Engineer. Based on the PRD, you first need to design a high-level architecture and service workflow and provide me mermaid code to them . Please help me draft a High-Level Design. You should highlight all the APIs in detail and assist in designing the database table schema.",
+    "qa_example": "",
+    "principles": "Cloud-First Approach(Azure),Simplicity and MVP (Minimum Viable Product)",
+    "embedding_background_data_list": "",
+    "model_name": "gpt-4",
+    "input_method": "SkillIOParamCategory.PlainText",
+    "output_method": "SkillIOParamCategory.PlainText"
+}
