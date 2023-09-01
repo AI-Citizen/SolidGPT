@@ -4,9 +4,6 @@ import time
 from solidgpt.src.saveload.saveload import *
 from solidgpt.src.tools.notion.notionactions import NotionActions
 
-# Path to the folder you want to create
-output_folder_path = "out"
-
 
 class WorkGraph:
 
@@ -16,18 +13,23 @@ class WorkGraph:
     output_id_to_node_map: dict[int, WorkNode] = {}
     notion = None
 
-    def __init__(self):
+    def __init__(self, output_directory_path_override: str = ""):
         # need to manually initialize here
         self.nodes = []
         self.node_map = {}
         self.output_map = {}
         self.output_id_to_node_map = {}
-        if not os.path.exists(output_folder_path):
+
+        self.output_directory_path = LOCAL_STORAGE_OUTPUT_DIR
+        if output_directory_path_override:
+            self.output_directory_path = os.path.abspath(output_directory_path_override)
+
+        if not os.path.exists(self.output_directory_path):
             # Create the output folder
-            os.makedirs(output_folder_path)
-            print(f"Folder '{output_folder_path}' created.")
+            os.makedirs(self.output_directory_path)
+            print(f"Directory '{self.output_directory_path}' created.")
         else:
-            print(f"Folder '{output_folder_path}' already exists. You may want to delete it first.")
+            pass
         return
 
     def add_node(self, node: WorkNode):
@@ -45,18 +47,16 @@ class WorkGraph:
             self.node_map[node.node_id] = node
 
             # create directory for node
-            node_folder_path = output_folder_path + "/" + str(node.node_id)
-            if not os.path.exists(node_folder_path):
+            node_directory_path = os.path.join(self.output_directory_path, str(node.node_id))
+            if not os.path.exists(node_directory_path):
                 # Create the output folder
-                os.makedirs(node_folder_path)
-                print(f"Folder '{node_folder_path}' created.")
-            else:
-                print(f"Folder '{node_folder_path}' already exists. You may want to delete it first.")
+                os.makedirs(node_directory_path)
+                print(f"Directory '{node_directory_path}' created.")
 
             # add output to output map
             for o in node.agent.skill.outputs:
                 # initialize output paths
-                o.param_path = node_folder_path + "/" + (o.param_name + " " + str(o.id)).replace(" ", "_")
+                o.param_path = os.path.join(node_directory_path, (o.param_name + " " + str(o.id)).replace(" ", "_"))
                 # output can be consumed by inputs of other nodes
                 if o.id >= 0:
                     self.output_map[o.id] = o
