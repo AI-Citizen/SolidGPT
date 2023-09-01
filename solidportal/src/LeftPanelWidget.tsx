@@ -25,7 +25,7 @@ export class LeftPanelWidget extends React.Component<BodyWidgetProps> {
 			const [agentValue, setAgentValue] = useState("Software Developer");
 			const [skillValue, setSkillValue] = useState("Write Product Requirement Documentation");
 			const [skillListValue, setSkillListValue] = useState(["Debug Code", "Write Code", "Write Product Requirement Documentation",
-				"Use Notion", "Write High Level Design", "Create Kanban Board", "Custom Skill", "Write lowdefy main page YAML", "Write lowdefy subpage YAML", "Host and run web app"]);
+				"Use Notion", "Write High Level Design", "Create Kanban Board", "Custom Skill", "Write lowdefy YAML", "Host and run web app"]);
 			const [manualReviewResultBool, setManualReviewResultBool] = useState(false);
 			const [file, setFile] = useState(null);
 			const [fileName, setFileName] = useState();
