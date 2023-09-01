@@ -1,3 +1,4 @@
+﻿
 # SolidPortal
 Offer a UI tool to design a work graph and save it as a JSON file. SolidGPT can then load and execute the work graph from this JSON file.
 
@@ -15,6 +16,10 @@ run `yarn start` which will also open your browser
 
 cd ..SolidGPT\solidportal\src and run `node uploadServer.js` to start file upload server on local, OR 
 you can manually upload file into SolidGPT\solidportal\src\uploads for Add node with input functions.
+
+### OR
+If you don't want to run it on your local, we have host on our server. It is easier for you to test.
+[SolidPortal](http://154.16.118.231:8080/)   http://154.16.118.231:8080/
 
 # What is Work Graph
 The Work Graph comprises multiple nodes, each representing an agent skill. Every node concentrates on a specific task and shares the results with both the user and other agents.
@@ -36,6 +41,7 @@ When creating a Skill node, two properties require selection:
 - Start the SolidPortal
 - Create a input node and upload the input file(Ignore this step if you don't have input file)
 - Create skill nodes and connect each other according to your business process
+- Select nodes or connections use backspace to remove if you need
 - Save the work graph as json file
 - Load the json file in SolidGPT and run the graph
 Sample code to load the graph and run the graph
@@ -47,6 +53,19 @@ app = Orchestration()
 app.add_graph("your/work/graph/path.json", "default graph")
 app.run_graph_with_name("default graph")
 ```
+
+# Add Customize Skills Json Sample
+	{
+		    "skill_name": "Programming",
+		    "basic_description": "The art of writing computer programs",
+		    "instruction": "Write code to solve problems and create applications",
+		    "qa_example": "Q: What is a variable?\nA: A variable is a named storage location...",
+		    "principles": "Dive deep",
+		    "embedding_background_data_list": "",
+		    "model_name": "gpt-3.5-turbo-16k",
+		    "input_method": "SkillIOParamCategory.PlainText",
+		    "output_method": "SkillIOParamCategory.PlainText"
+		}
 
 # Output Json Sample
 ```JSON
@@ -160,4 +179,3 @@ app.run_graph_with_name("default graph")
   }
 ]
 ```
-
