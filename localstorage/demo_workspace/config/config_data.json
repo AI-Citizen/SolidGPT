@@ -6,7 +6,7 @@
         "skill": "Write Product Requirement Documentation",
         "inputs": [
             {
-                "param_path": "workspace/in/ProductBasicInfo.json",
+                "param_path": "/Users/wuqiten/Workplace/solidgpt-workspace/SolidGPT/solidgpt/../localstorage/demo_workspace/in/ProductBasicInfo.json",
                 "loading_method": "SkillInputLoadingMethod.LOAD_FROM_STRING",
                 "load_from_output_id": -1
             }
@@ -57,7 +57,7 @@
         "node_id": 3,
         "manual_review_result": false,
         "agent": "Software Developer",
-        "skill": "Write lowdefy main page YAML",
+        "skill": "Write lowdefy YAML",
         "inputs": [
             {
                 "param_path": "",
@@ -75,35 +75,17 @@
         "node_id": 4,
         "manual_review_result": false,
         "agent": "Software Developer",
-        "skill": "Write lowdefy subpage YAML",
-        "inputs": [
-            {
-                "param_path": "",
-                "loading_method": "SkillInputLoadingMethod.LOAD_FROM_OUTPUT_ID",
-                "load_from_output_id": 2
-            }
-        ],
-        "outputs": [
-            {
-                "id": 4
-            }
-        ]
-    },
-    {
-        "node_id": 5,
-        "manual_review_result": false,
-        "agent": "Software Developer",
         "skill": "Host and run web app",
         "inputs": [
             {
-                "param_path": "",
-                "loading_method": "SkillInputLoadingMethod.LOAD_FROM_OUTPUT_ID",
+                "param_path": "/Users/wuqiten/Workplace/solidgpt-workspace/SolidGPT/solidgpt/../demo/out/3/Write_YAML_Result_3",
+                "loading_method": "SkillInputLoadingMethod.LOAD_FROM_STRING",
                 "load_from_output_id": 3
             }
         ],
         "outputs": [
             {
-                "id": 5
+                "id": 4
             }
         ]
     }

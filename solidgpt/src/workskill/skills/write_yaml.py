@@ -1,5 +1,5 @@
 from solidgpt.src.manager.gptmanager import GPTManager
-from solidgpt.src.manager.promptresource import SDE_LOWDEFY_ASSUMPTION, SDE_LOWDEFY_YAML_OUTPUT_TEMPLATE, \
+from solidgpt.src.manager.promptresource import SDE_KANBAN_ITEM_TO_LOWDEFY_DESCRIPTION_ASSUMPTION, SDE_LOWDEFY_ASSUMPTION, SDE_LOWDEFY_YAML_OUTPUT_TEMPLATE, \
     SDE_FRONTEND_HOMEPAGE_ASSUMPTION, SDE_FRONTEND_OUTPUT_TEMPLATE, SDE_FRONTEND_ASSUMPTION, build_gpt_prompt, \
     SDE_LOWDEFY_PAGE_ASSUMPTION, SDE_PAGE_YAML_OUTPUT_TEMPLATE, SDE_SUMMARIZE_TASK_ASSUMPTION
 from solidgpt.src.util.util import *
@@ -29,7 +29,8 @@ class WriteYAML(WorkSkill):
 
     def _read_input(self):
         input_path = self.get_input_path(self.skill_input)
-        self.kanban_md = load_from_md(input_path)
+        kanban = load_from_md(input_path)
+        self.kanban_md = self.__kanban_transfer_to_ai_tasks(kanban)
 
     def execution_impl(self):
         logging.info("Printing page YAML result here...")
@@ -96,3 +97,13 @@ class WriteYAML(WorkSkill):
         primitive_yaml = YAMLValidator.parse(gpt_output)
         validator = YAMLValidator(primitive_yaml, page_name, subpages)
         return validator.validate()
+    
+    def __kanban_transfer_to_ai_tasks(self, md_string: str) -> str:
+        gpt_output = self.gpt_manager.create_and_chat_with_model(
+            prompt=SDE_KANBAN_ITEM_TO_LOWDEFY_DESCRIPTION_ASSUMPTION,
+            gpt_model_label="write lowdefy yaml",
+            input_message=md_string
+        )
+        logging.info(f"After transfering to AI tasks, the kanban board is: {gpt_output}")
+        return gpt_output
+
