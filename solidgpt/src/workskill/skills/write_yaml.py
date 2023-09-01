@@ -1,7 +1,9 @@
 from solidgpt.src.manager.gptmanager import GPTManager
-from solidgpt.src.manager.promptresource import SDE_KANBAN_ITEM_TO_LOWDEFY_DESCRIPTION_ASSUMPTION, SDE_LOWDEFY_ASSUMPTION, SDE_LOWDEFY_YAML_OUTPUT_TEMPLATE, \
-    SDE_FRONTEND_HOMEPAGE_ASSUMPTION, SDE_FRONTEND_OUTPUT_TEMPLATE, SDE_FRONTEND_ASSUMPTION, build_gpt_prompt, \
-    SDE_LOWDEFY_PAGE_ASSUMPTION, SDE_PAGE_YAML_OUTPUT_TEMPLATE, SDE_SUMMARIZE_TASK_ASSUMPTION
+from solidgpt.src.manager.promptresource import SDE_KANBAN_ITEM_TO_LOWDEFY_DESCRIPTION_ASSUMPTION, \
+    SDE_LOWDEFY_ASSUMPTION, SDE_LOWDEFY_YAML_OUTPUT_TEMPLATE, \
+    SDE_FRONTEND_HOMEPAGE_ASSUMPTION, build_gpt_prompt, \
+    SDE_LOWDEFY_PAGE_ASSUMPTION, SDE_PAGE_YAML_OUTPUT_TEMPLATE, SDE_SUMMARIZE_TASK_ASSUMPTION, \
+    SDE_AI_TASKS_OUTPUT_TEMPLATE
 from solidgpt.src.util.util import *
 from solidgpt.src.workskill.workskill import *
 from solidgpt.src.tools.lowdefy.validator.yaml_validator import YAMLValidator
@@ -34,18 +36,12 @@ class WriteYAML(WorkSkill):
 
     def execution_impl(self):
         logging.info("Printing page YAML result here...")
-        task_prompt = build_gpt_prompt(SDE_FRONTEND_ASSUMPTION, SDE_FRONTEND_OUTPUT_TEMPLATE)
-        self.task_info = self.gpt_manager.create_and_chat_with_model(
-            prompt=task_prompt,
-            gpt_model_label="find create page task",
-            input_message=self.kanban_md
-        )
 
-        task_prompt = build_gpt_prompt(SDE_FRONTEND_HOMEPAGE_ASSUMPTION, SDE_FRONTEND_OUTPUT_TEMPLATE)
+        task_prompt = build_gpt_prompt(SDE_FRONTEND_HOMEPAGE_ASSUMPTION, SDE_AI_TASKS_OUTPUT_TEMPLATE)
         homepage_info = self.gpt_manager.create_and_chat_with_model(
             prompt=task_prompt,
             gpt_model_label="find homepage task",
-            input_message=self.task_info
+            input_message=self.kanban_md
         )
 
         homepage_name = self.gpt_manager.create_and_chat_with_model(
@@ -55,7 +51,7 @@ class WriteYAML(WorkSkill):
         ).lower()
         page_prompt = build_gpt_prompt(SDE_LOWDEFY_PAGE_ASSUMPTION, SDE_PAGE_YAML_OUTPUT_TEMPLATE)
         homepage_prompt = build_gpt_prompt(SDE_LOWDEFY_ASSUMPTION, SDE_LOWDEFY_YAML_OUTPUT_TEMPLATE)
-        for task in self.task_info.split("\n"):
+        for task in self.kanban_md.split("***New Page***\n"):
             page_name = self.gpt_manager.create_and_chat_with_model(
                 prompt=SDE_SUMMARIZE_TASK_ASSUMPTION,
                 gpt_model_label="summarize page name",
@@ -99,8 +95,9 @@ class WriteYAML(WorkSkill):
         return validator.validate()
     
     def __kanban_transfer_to_ai_tasks(self, md_string: str) -> str:
+        prompt = build_gpt_prompt(SDE_KANBAN_ITEM_TO_LOWDEFY_DESCRIPTION_ASSUMPTION, SDE_AI_TASKS_OUTPUT_TEMPLATE)
         gpt_output = self.gpt_manager.create_and_chat_with_model(
-            prompt=SDE_KANBAN_ITEM_TO_LOWDEFY_DESCRIPTION_ASSUMPTION,
+            prompt=prompt,
             gpt_model_label="write lowdefy yaml",
             input_message=md_string
         )
