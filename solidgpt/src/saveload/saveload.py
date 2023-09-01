@@ -7,7 +7,6 @@ from solidgpt.src.constants import *
 
 SKILL_NAME_TO_CONSTRUCTOR: dict[str, Type[WorkSkill]] = {
     SKILL_NAME_WRITE_PRODUCT_REQUIREMENTS_DOCUMENTATION: WritePRD,
-    SKILL_NAME_USE_NOTION: UseNotion,
     SKILL_NAME_WRITE_HLD: WriteHLD,
     SKILL_NAME_CREATE_KANBAN_BOARD: CreateKanBan,
     SKILL_NAME_WRITE_YAML: WriteYAML,

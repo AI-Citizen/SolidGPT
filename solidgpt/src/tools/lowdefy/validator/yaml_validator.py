@@ -26,7 +26,8 @@ class YAMLValidator:
         :return: Converted valid lowdefy yaml file string
         """
         self.verify_block_type()
-        self.remove_events()
+        self.remove_keys("events")
+        self.remove_keys("requests")
         if len(self.subpages) > 0 and self.filename == "lowdefy":
             self.verify_reference(self.subpages)
             self.verify_menu(self.subpages)
@@ -75,16 +76,17 @@ class YAMLValidator:
             key = tokens[0]
             next_indentation = key.rfind(" ") if "-" not in key else key.rfind("-") - 1
 
-    def remove_events(self):
+    def remove_keys(self, query_key):
         idx = 0
         while idx < len(self.yaml_list):
             line = self.yaml_list[idx]
             tokens = line.split(":")
             key = tokens[0]
-            if key.strip() == "events":
+            if key.strip() == query_key:
                 self.remove_blocks(key, idx)
             idx += 1
         return
+
 
     def verify_menu(self, page_list: list[str]):
         idx = 0

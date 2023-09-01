@@ -93,29 +93,6 @@ Feedback: Feedback after key interactions.
 Loading Time: Fast loading times.
 Accessibility: Adherence to accessibility standards.
 2. User Interface (UI) Always elaberate more details as much as you can for each page in this section. Please include the layout, component, color theme, part of important text, font size, api request, page transition logic, business logic
-Pages & Routing:
-Homepage: Primary landing page.
-About Page: Company or app info.
-Products Page: Lists products/services.
-Contact Page: Contact info & form.
-Homepage Layout:Header: App's title/logo and navigation.
-Banner: Featured image or slider.
-Feature Cards Row: Three cards with icon, title, and description.
-Footer: Links and secondary navigation.
-About Page Layout:Header: Consistent with Homepage.
-Company Overview: Text about company.
-Team Section: Team members' photos and bios.
-Footer: Consistent with Homepage.
-Products Page Layout:Header: Consistent with Homepage.
-Product List: Cards with image, title, description, and price.
-Filter & Sorting Options: Filter by categories or sort.
-Footer: Consistent with Homepage.
-Contact Page Layout:Header: Consistent with Homepage.
-Contact Form: Fields like Name, Email, Subject, and Message.
-Location Map: Embedded map.
-Footer: Consistent with Homepage.
-Common Components:Navigation Menu: In Header.
-Call to Action Buttons: Styled buttons for key actions.
 3. Design Considerations:
 Consistency: Uniform design language.
 Modularity: Reusable components.
@@ -1068,6 +1045,34 @@ areas:
 ```
 '''
 
+SDE_KANBAN_ITEM_TO_LOWDEFY_DESCRIPTION_ASSUMPTION="""Imagine you're a proficient Lowdefy expert and experienced frontend engineer. 
+Summarize the four most significant pages derived from the Kanbanboard items. Subsequently, 
+furnish a detailed description of your approach to implementing these pages using Lowdefy, 
+keeping in mind that a maximum of four pages can be generated. User Interface (UI) Always elaberate more details as much as you can for each page in this section. Please include the layout, component, color theme, part of important text, font size, api request, page transition logic, business logic
+Pages & Routing:
+Homepage: Primary landing page.
+About Page: Company or app info.
+Products Page: Lists products/services.
+Contact Page: Contact info & form.
+Homepage Layout:Header: App's title/logo and navigation.
+Banner: Featured image or slider.
+Feature Cards Row: Three cards with icon, title, and description.
+Footer: Links and secondary navigation.
+About Page Layout:Header: Consistent with Homepage.
+Company Overview: Text about company.
+Team Section: Team members' photos and bios.
+Footer: Consistent with Homepage.
+Products Page Layout:Header: Consistent with Homepage.
+Product List: Cards with image, title, description, and price.
+Filter & Sorting Options: Filter by categories or sort.
+Footer: Consistent with Homepage.
+Contact Page Layout:Header: Consistent with Homepage.
+Contact Form: Fields like Name, Email, Subject, and Message.
+Location Map: Embedded map.
+Footer: Consistent with Homepage.
+Common Components:Navigation Menu: In Header.
+Call to Action Buttons: Styled buttons for key actions."""
+
 SDE_FRONTEND_ASSUMPTION = f"""
 Assume you are a developer who only designs the page layout. 
 Find and only output the tasks of creating pages or designing pages in the kanban board. Do not output the tasks that are not related.
@@ -1147,23 +1152,7 @@ Find and output a single task of creating main page/homepage. Do not output the 
 
 SDE_SUMMARIZE_TASK_ASSUMPTION = f"""
 Find one word in the Task Name that best describes the page. Only output a single word.
-Task:
-|Design homepage layout|Design the layout for the homepage according to the frontend design principles|As a user, I want to see a visually appealing and intuitive homepage|- Homepage includes app title/logo and navigation menu in the header <br> - Homepage features a banner with a featured image or slider <br> - Homepage includes a row of three feature cards with icons, titles, and descriptions <br> - Footer includes links and secondary navigation|
-Answer:
-homepage
-Task:
-|Design about page layout|Design the layout for the about page according to the frontend design principles|As a user, I want to learn more about the company and its team members|- About page includes app title/logo and navigation menu in the header <br> - About page includes company overview <br> - About page includes section for team members' photos and bios <br> - Footer is consistent with the homepage|
-Answer:
-about
-Task:
-|Design products page layout|Design the layout for the products page according to the frontend design principles|As a user, I want to view and filter products/services|- Products page includes app title/logo and navigation menu in the header <br> - Products page includes list of products/services in the form of cards with images, titles, descriptions, and prices <br> - Products page includes filter and sorting options <br> - Footer is consistent with the homepage|
-Answer:
-products
-Task:
-|Design contact page layout|Design the layout for the contact page according to the frontend design principles|As a user, I want to easily contact the company|- Contact page includes app title/logo and navigation menu in the header <br> - Contact page includes contact form with fields like name, email, subject, and message <br> - Contact page includes embedded map to show location <br> - Footer is consistent with the homepage|
-Answer:
-contact
-Task:
+example: homepage, about, product, contact
 """
 
 ### CUSTOM SKILL GENERATOR
