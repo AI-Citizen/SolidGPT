@@ -1,0 +1,16 @@
+{
+    "product_name": "Official Website",
+    "short_description": "A Official website for technology company, include the homepage, product, contact etc page.",
+    "target_audience": "Company employees, potential customers, investors",
+    "business_goal": "Shows the company's products and services, and provides a channel for customers to contact the company",
+    "key_features": [
+        "Show company's products and services",
+        "Give customers a channel to contact the company"
+    ],
+    "project_timeline": {
+        "08.2023": "Development phase",
+        "09.2023": "Add basic company information and let visitor contact company",
+        "12.2023": "Add account management system let visitor login and register",
+        "2024 Q1": "Official release"
+    }
+}

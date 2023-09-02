@@ -3,9 +3,9 @@
 [![Twitter Follow](https://img.shields.io/twitter/follow/SolidGPT?style=social)](https://twitter.com/SolidGPT)
 # 🚀 What’s this
 
-SolidGPT is a human-AI collaboration platform. Users can add private data and tailor agent workflows using techniques like embedding finetuning. Our goal: empower AI to work with humans using tools to accomplish business tasks.
+SolidGPT is a human-AI collaboration framework. Users can add private data and create their own agent workgraph using embedding finetuning and in-context learning simply with our framework. Our goal: empower AI to work with humans using tools to accomplish business tasks.
 
-Currently, agents are optimized for software development using tools like Notion, Lowdefy, and more. From the inception of an idea to the documentation of software development, task division, and eventual task implementation - everything can either be automatically or semi-automatically accomplished within SolidGPT.
+Currently, our framework are optimized for software development using tools Notion, Lowdefy. From the inception of an idea to the documentation of software development, task division, and eventual task implementation - everything can either be automatically or semi-automatically accomplished within SolidGPT.
 
 # 🏁 Quick Start
 
@@ -29,23 +29,33 @@ Currently, agents are optimized for software development using tools like Notion
 
 ## **Run Demo**
 
-```python
-cd demo
-python3 quickstart.py
+Run a acutal real start up project "AI Says" - stock analysis app dev workflow, include the brainstorming, write product requirement, write high level design, create kanban.
+```sh
+cd quickstart
+python3 creategraph.py
+python3 quickstart.py system
 ```
 
-### **Start Your Own Graph**
+Run a webapp dev workflow, include the brainstorming, write product requirement, write high level design, create kanban, generate app code, run web app.
+```sh
+cd quickstart
+python3 creategraph.py
+python3 quickstart.py webapp
+```
+
+## **Start Your Own Graph**
 0. (Optional) Customize your own agent and skill [(learn more)](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/customagentskill.md)
-1. Create a graph using Solid Portal or a JSON file. [(learn more)](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/solidporta.md)
+1. Create a graph using Solid Portal. [(learn more)](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/solidporta.md). You can also create a graph json file by code. Please check `quickstart/creategraph.py` 
 2. Create an entry point located in the solidgpt folder and input the workgraph json file path
 ```python
 # your_file_name.py
 from solidgpt.src.orchestration.orchestration import *
 Initializer()
 app = Orchestration()
-app.add_graph("workspace/config/config_data.json", "default graph")
+app.add_graph("your/graph/config_file.json", "default graph")
 app.run_graph_with_name("default graph")
 ```
+You can check the `quickstart/quickstart.py` as example.
 3. Run the code with python3 your_file_name.py
 
 

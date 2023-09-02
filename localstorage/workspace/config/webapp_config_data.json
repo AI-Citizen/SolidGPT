@@ -1,12 +1,12 @@
 [
     {
-        "node_id": 0,
-        "manual_review_result": false,
+        "node_id": "0",
+        "manual_review_result": true,
         "agent": "Product Manager",
         "skill": "Write Product Requirement Documentation",
         "inputs": [
             {
-                "param_path": "/Users/wuqiten/Workplace/solidgpt-workspace/SolidGPT/solidgpt/../localstorage/demo_workspace/in/ProductBasicInfo.json",
+                "param_path": "/Users/wuqiten/Workplace/solidgpt-workspace/SolidGPT/solidgpt/../localstorage/workspace/in/WebsiteBasicInfo.json",
                 "loading_method": "SkillInputLoadingMethod.LOAD_FROM_STRING",
                 "load_from_output_id": -1
             }
@@ -18,7 +18,7 @@
         ]
     },
     {
-        "node_id": 1,
+        "node_id": "1",
         "manual_review_result": false,
         "agent": "Principal Engineer",
         "skill": "Write High Level Design",
@@ -36,8 +36,8 @@
         ]
     },
     {
-        "node_id": 2,
-        "manual_review_result": false,
+        "node_id": "2",
+        "manual_review_result": true,
         "agent": "Principal Engineer",
         "skill": "Create Kanban Board",
         "inputs": [
@@ -54,7 +54,7 @@
         ]
     },
     {
-        "node_id": 3,
+        "node_id": "3",
         "manual_review_result": false,
         "agent": "Software Developer",
         "skill": "Write lowdefy YAML",
@@ -72,13 +72,13 @@
         ]
     },
     {
-        "node_id": 4,
+        "node_id": "4",
         "manual_review_result": false,
         "agent": "Software Developer",
         "skill": "Host and run web app",
         "inputs": [
             {
-                "param_path": "/Users/wuqiten/Workplace/solidgpt-workspace/SolidGPT/solidgpt/../demo/out/3/Write_YAML_Result_3",
+                "param_path": "/Users/wuqiten/Workplace/solidgpt-workspace/SolidGPT/solidgpt/../localstorage/workspace/out/3/Write_YAML_Result_3",
                 "loading_method": "SkillInputLoadingMethod.LOAD_FROM_STRING",
                 "load_from_output_id": 3
             }

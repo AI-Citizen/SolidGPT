@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class SkillIOParamCategory(Enum):
+class SkillIOParamCategory(int, Enum):
     BusinessRequirementsDocument = 1
     ProductRequirementsDocument = 2
     HighLevelDesignDocument = 3

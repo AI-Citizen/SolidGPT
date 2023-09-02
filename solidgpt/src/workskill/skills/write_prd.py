@@ -39,7 +39,7 @@ class WritePRD(WorkSkill):
         )
         self.add_input(self.input_product_key_info)
         self.output_md = SkillOutput(
-            "Write Brd Model PRD Result",
+            "Write prd Model PRD Result",
             SkillIOParamCategory.ProductRequirementsDocument,
         )
         self.add_output(self.output_md)
@@ -61,12 +61,12 @@ class WritePRD(WorkSkill):
     def execution_impl(self):
         print("Printing PRD result here...")
         brain_storm_product_info = self._run_product_brainstorm_model()
-        prd = self._run_write_brd_model(brain_storm_product_info)
+        prd = self.__run_write_prd_model(brain_storm_product_info)
         save_to_md2(self.output_md.param_path, prd)
         return
     
-    def _run_write_brd_model(self, brain_storm_product_info):
-        logging.info("Running write brd model...")
+    def __run_write_prd_model(self, brain_storm_product_info):
+        logging.info("Running write prd model...")
         prompt = build_gpt_prompt(PRODUCT_MANAGER_PRD_ROLE_ASSUMPTION, PRODUCT_MANAGER_PRD_OUTPUT_TEMPLATE)
         return self.gpt_manager.create_and_chat_with_model(
             prompt=prompt,
