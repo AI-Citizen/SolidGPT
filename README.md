@@ -28,9 +28,11 @@ https://github.com/AI-Citizen/SolidGPT/assets/39673228/342ae7b3-7143-4bbc-a21d-c
 - (Optional）[Notion](https://developers.notion.com/) - Create Notion api key and get the Notion page id which you want to use as the output AI content
 
 ## **Quick Setup**
-
-- git clone the repo
-- pip3 install -r requirements.txt
+```sh
+git clone https://github.com/AI-Citizen/SolidGPT.git
+cd SolidGPT 
+pip3 install -r requirements.txt #installing the env
+```
 - Input api keys at SolidGPT/solidgpt/src/configuration/Configuration.yaml
 
     - input your openai api token 
