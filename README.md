@@ -67,7 +67,7 @@ python3 quickstart.py webapp
 >Default output path is SolidGPT/localstorage/workspace/out/
 ## **Start Your Own Graph**
 0. (Optional) Customize your own agent and skill [(learn more)](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/customagentskill.md)
-1. Create a graph using Solid Portal. [(learn more)](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/solidporta.md). You can also create a graph json file by code. Please check `quickstart/creategraph.py` 
+1. Create a graph using Solid Portal. [(learn more)](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/solidportal.md). You can also create a graph json file by code. Please check `quickstart/creategraph.py` 
 2. Create an entry point located in the solidgpt folder and input the workgraph json file path
 ```python
 # your_file_name.py
@@ -144,11 +144,13 @@ Notion, powered by LLM, can assist users with quickly editing, improving, review
 
 [Solid GPT Infrastructure](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/infrastructure.md)
 
+[Deeply Customize Agent Skill](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/customagentskill.md)
+
+[Embedding with private data](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/embeddingprivatedata.md)
+
 [Fine-tuning with GPT3.5](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/gptfinetuning.md)
 
 [Fine-tuning with Llama2](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/llama2finetuning.md)
-
-[Deeply Customize Agent Skill](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/customagentskill.md)
 
 ## Contact
 If you have any questions or feedback about our project, please don't hesitate to reach out to us. We greatly appreciate your suggestions!
