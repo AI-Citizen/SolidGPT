@@ -7,6 +7,14 @@ SolidGPT is a human-AI collaboration framework. Users can add private data and c
 
 Currently, our framework are optimized for software development using tools Notion, Lowdefy. From the inception of an idea to the documentation of software development, task division, and eventual task implementation - everything can either be automatically or semi-automatically accomplished within SolidGPT.
 
+# 📺 Demo
+
+
+https://github.com/AI-Citizen/SolidGPT/assets/39673228/342ae7b3-7143-4bbc-a21d-ca2afaff89cd
+
+
+(The video's playback speed has been accelerated.)
+
 # 🏁 Quick Start
 
 ## **Prerequisite**
