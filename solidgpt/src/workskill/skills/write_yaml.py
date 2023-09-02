@@ -58,8 +58,7 @@ class WriteYAML(WorkSkill):
                 input_message=task
             ).lower()
 
-            if page_name != homepage_name:
-                print(page_name, homepage_name)
+            if page_name != homepage_name and page_name not in self.reference_list:
                 error_count = 0
                 while error_count < 5:
                     try:
