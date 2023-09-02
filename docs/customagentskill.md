@@ -21,12 +21,12 @@ You can customize agent skills in two ways:
 
   - **skill_name:** Input what agent skill you want to build
   - **basic_description:** Briefly describe the nature of the task (recommended under 100 words)
-  - **instruction:**Furnish a comprehensive set of instructions for performing the task.
+  - **instruction:** Furnish a comprehensive set of instructions for performing the task.
   - **(Optional)qa_example:** Present an illustrative example of input and corresponding output for this Skill.
   - **(Optional)principles:** Offer some guiding principles for undertaking the task
-  - **(Optional)embedding_background_data_list:**Proivde your embedding resource folder here. If you have multiple resource folders, list their paths here separated by commas. [Learn more about embedding private data](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/embeddingprivatedata.md)
-  - **(Optional)model_name:**Specify the OpenAI model to be used; you can input your fine-tuned model here.
-  - **input_method/output_method:**Currently, only plain text input and output are supported; no need to modify
+  - **(Optional)embedding_background_data_list:** Proivde your embedding resource folder here. If you have multiple resource folders, list their paths here separated by commas. [Learn more about embedding private data](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/embeddingprivatedata.md)
+  - **(Optional)model_name:** Specify the OpenAI model to be used; you can input your fine-tuned model here.
+  - **input_method/output_method:** Currently, only plain text input and output are supported; no need to modify
 }
 
 2. Save the Agent Skill JSON file as .json
