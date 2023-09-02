@@ -13,7 +13,7 @@ Currently, our framework are optimized for software development using tools Noti
 https://github.com/AI-Citizen/SolidGPT/assets/39673228/342ae7b3-7143-4bbc-a21d-ca2afaff89cd
 
 
-(The video's playback speed has been accelerated.)
+(The video's playback speed has been accelerated)
 
 # 🏁 Quick Start
 
