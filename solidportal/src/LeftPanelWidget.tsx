@@ -169,7 +169,7 @@ export class LeftPanelWidget extends React.Component<BodyWidgetProps> {
 						const nodeNew = new JSCustomNodeModel({color: 'rgb(38,39,42)'});
 						dataStorage.setData(nodeNew.getOptions().id, new DataClass(
 							new JsonDataClass(nodeNew.getOptions().id, manualReviewResultBool, agentValue, skillValue, [new Inputs("","SkillInputLoadingMethod.LOAD_FROM_OUTPUT_ID","")],
-								[new Outputs(nodeNew.getPort("out").getID())]), nodeNew));
+								[new Outputs(Date.now() + Math.floor(Math.random()*9))]), nodeNew));
 						addNewNode(nodeNew);
 
 					}}>
@@ -186,7 +186,7 @@ export class LeftPanelWidget extends React.Component<BodyWidgetProps> {
 								const nodeNew = new JSCustomNodeModel({color: 'rgb(38,39,42)'});
 								dataStorage.setData(nodeNew.getOptions().id, new DataClass(
 									new JsonDataClass(nodeNew.getOptions().id, manualReviewResultBool, agentValue, skillValue, [new Inputs(fileName,"SkillInputLoadingMethod.LOAD_FROM_STRING","")],
-										[new Outputs(nodeNew.getPort("out").getID())]), nodeNew));
+										[new Outputs(Date.now() + Math.floor(Math.random()*9))]), nodeNew));
 								addNewNode(nodeNew);
 
 								}
