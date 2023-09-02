@@ -56,7 +56,7 @@ cd quickstart
 python3 creategraph.py
 python3 quickstart.py webapp
 ```
->Default output path
+>Default output path is SolidGPT/localstorage/workspace/out/
 ## **Start Your Own Graph**
 0. (Optional) Customize your own agent and skill [(learn more)](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/customagentskill.md)
 1. Create a graph using Solid Portal. [(learn more)](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/solidporta.md). You can also create a graph json file by code. Please check `quickstart/creategraph.py` 
