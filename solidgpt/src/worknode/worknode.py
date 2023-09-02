@@ -5,7 +5,7 @@ from solidgpt.src.util.util import *
 class WorkNode:
     node_id: str = 0
     agent: WorkAgent = None
-    next_node_ids: set[int] = []
+    next_node_ids: set[str] = []
     output_id_dependencies: set[int] = []
     manual_review_result: bool = False
 

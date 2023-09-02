@@ -8,7 +8,7 @@ from solidgpt.src.tools.notion.notionactions import NotionActions
 class WorkGraph:
 
     nodes: list[WorkNode] = []
-    node_map: dict[int, WorkNode] = {}
+    node_map: dict[str, WorkNode] = {}
     output_map: dict[int, SkillOutput] = {}
     output_id_to_node_map: dict[int, WorkNode] = {}
     notion = None

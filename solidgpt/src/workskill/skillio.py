@@ -79,7 +79,10 @@ class SkillInput:
         self.config = config
         self.param_path = config["param_path"]
         self.loading_method = string_to_skill_input_loading_method(config["loading_method"])
-        self.load_from_output_id = config["load_from_output_id"]
+        if "load_from_output_id" in config:
+            self.load_from_output_id = config["load_from_output_id"]
+        else:
+            self.load_from_output_id = -1
 
     def get_input_path(self):
         if self.loading_method == SkillInputLoadingMethod.LOAD_FROM_STRING:
