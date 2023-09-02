@@ -14,9 +14,12 @@ class YAMLValidator:
         self.subpages = subpages
         self.yaml_list = self.yaml.split("\n")
         self.homepage_id = None
-        self.container_df = pd.read_csv(os.path.join(ROOT_DIR, "src", "tools", "lowdefy", "embedding", "container_block_embedding.csv"))
-        self.input_df = pd.read_csv(os.path.join(ROOT_DIR, "src", "tools", "lowdefy", "embedding", "input_block_embedding.csv"))
-        self.display_df = pd.read_csv(os.path.join(ROOT_DIR, "src", "tools", "lowdefy", "embedding", "display_block_embedding.csv"))
+        self.container_df = pd.read_csv(
+            os.path.join(ROOT_DIR, "src", "tools", "lowdefy", "embedding", "container_block_embedding.csv"))
+        self.input_df = pd.read_csv(
+            os.path.join(ROOT_DIR, "src", "tools", "lowdefy", "embedding", "input_block_embedding.csv"))
+        self.display_df = pd.read_csv(
+            os.path.join(ROOT_DIR, "src", "tools", "lowdefy", "embedding", "display_block_embedding.csv"))
         self.all_embedding_df = pd.concat([self.container_df, self.input_df, self.display_df], axis=1)
         openai.api_key = ConfigReader().get_property("openai_api_key")
 
@@ -28,6 +31,7 @@ class YAMLValidator:
         self.verify_block_type()
         self.remove_keys("events")
         self.remove_keys("requests")
+        self.verify_duplicate_keys()
         if len(self.subpages) > 0 and self.filename == "lowdefy":
             self.verify_reference(self.subpages)
             self.verify_menu(self.subpages)
@@ -36,7 +40,6 @@ class YAMLValidator:
     def verify_block_type(self):
         """
         Using embedding to convert random block types to valid lowdefy block
-        :param yaml_str: Original yaml file string
         :return: Converted yaml file string
         """
         idx = 0
@@ -47,7 +50,6 @@ class YAMLValidator:
             if key == "id":
                 self.yaml_list[idx] = f"{key}: {self.filename}"
             elif key.strip() == "type":
-                # indent_level = key.rindex(" ") + 1
                 query_type = tokens[1].strip().split(" ")[0]
                 all_types = self.all_embedding_df.columns.values.tolist()
                 cache = {}
@@ -87,6 +89,31 @@ class YAMLValidator:
             idx += 1
         return
 
+    def verify_duplicate_keys(self):
+        seen_keys = set()
+        cur_path_list = []
+        idx = 0
+        while idx < len(self.yaml_list):
+            line = self.yaml_list[idx]
+            if line == "":
+                self.yaml_list.pop(idx)
+                continue
+            tokens = line.split(":")
+            key = tokens[0]
+            indentation = key.rfind(" ") if "-" not in key else key.rfind("-") - 1
+            indent_level = indentation // 2 if indentation >= 0 else 0
+            if len(cur_path_list) <= indent_level:
+                cur_path_list.append(line.strip())
+            else:
+                while len(cur_path_list) > indent_level:
+                    cur_path_list.pop()
+                cur_path_list.append(line.strip())
+            cur_path = tuple(cur_path_list)
+            if cur_path in seen_keys:
+                self.remove_blocks(key, idx)
+            seen_keys.add(cur_path)
+            idx += 1
+        return
 
     def verify_menu(self, page_list: list[str]):
         idx = 0
@@ -116,7 +143,7 @@ class YAMLValidator:
             tokens = line.split(":")
             key = tokens[0]
             if key == "pages":
-                self.yaml_list[idx+1:1] = ref_list
+                self.yaml_list[idx + 1:1] = ref_list
                 flag = True
             if flag and key == "  - id":
                 self.homepage_id = tokens[1].strip().split(" ")[0]
