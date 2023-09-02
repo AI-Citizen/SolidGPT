@@ -7,42 +7,64 @@ SolidGPT is a human-AI collaboration framework. Users can add private data and c
 
 Currently, our framework are optimized for software development using tools Notion, Lowdefy. From the inception of an idea to the documentation of software development, task division, and eventual task implementation - everything can either be automatically or semi-automatically accomplished within SolidGPT.
 
+# 📺 Demo
+
+
+https://github.com/AI-Citizen/SolidGPT/assets/39673228/342ae7b3-7143-4bbc-a21d-ca2afaff89cd
+
+
+(The video's playback speed has been accelerated)
+
 # 🏁 Quick Start
 
 ## **Prerequisite**
 
-- python3.7 or above
+- python3.8 or above
 - (Optional)[Yarn](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable)  - Required if you wish to utilize the SolidPortal
-- [Docker](https://docs.docker.com/engine/install/)
+- [pnpm](https://pnpm.io/installation) - Install pnpm and making activating Corepack `corepack enable`
 - [Openai api key](https://openai.com/blog/openai-api)
 - (Optional）[Notion](https://developers.notion.com/) - Create Notion api key and get the Notion page id which you want to use as the output AI content
 
 ## **Quick Setup**
 
 - git clone the repo
-- pip3 install -r requirements
-- Input api keys at solidgpt/configuration/Configuration.yaml
+- pip3 install -r requirements.txt
+- Input api keys at SolidGPT/solidgpt/src/configuration/Configuration.yaml
 
     - input your openai api token 
 
     - (optional)input your notion token and page id
+- Set project root folder as python path
+  Linux/Mac
+  ```sh
+  export PYTHONPATH=$PYTHONPATH:$(git rev-parse --show-toplevel)/
+  ```
+  Windows
+  Run in cmd
+  ```cmd
+  for /f %%i in ('git rev-parse --show-toplevel') do set PYTHONPATH=%PYTHONPATH%;%%i\
+  ```
+  or setup manually
+
 
 ## **Run Demo**
 
-Run a acutal real start up project "AI Says" - stock analysis app dev workflow, include the brainstorming, write product requirement, write high level design, create kanban.
+**Acutal real start up project "AI Says" - stock analysis app dev workflow**
+include the brainstorming, write product requirement, write high level design, create kanban.
 ```sh
 cd quickstart
 python3 creategraph.py
 python3 quickstart.py system
 ```
 
-Run a webapp dev workflow, include the brainstorming, write product requirement, write high level design, create kanban, generate app code, run web app.
+**webapp dev workflow**
+-include the brainstorming, write product requirement, write high level design, create kanban, generate app code(beta test), run web app.
 ```sh
 cd quickstart
 python3 creategraph.py
 python3 quickstart.py webapp
 ```
-
+>Default output path is SolidGPT/localstorage/workspace/out/
 ## **Start Your Own Graph**
 0. (Optional) Customize your own agent and skill [(learn more)](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/customagentskill.md)
 1. Create a graph using Solid Portal. [(learn more)](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/solidporta.md). You can also create a graph json file by code. Please check `quickstart/creategraph.py` 
