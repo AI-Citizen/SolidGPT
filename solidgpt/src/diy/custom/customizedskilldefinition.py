@@ -15,8 +15,8 @@ class CustomizedSkillDefinition:
         self.principles : str = principles
         self.embedding_background_data_list : str = embedding_background_data_list
         self.model_name : str = model_name
-        self.input_method : str = input_method
-        self.output_method : str = output_method
+        self.input_method : SkillIOParamCategory = input_method
+        self.output_method : SkillIOParamCategory = output_method
 
     def toDict(self):
         return {

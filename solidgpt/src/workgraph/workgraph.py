@@ -152,15 +152,17 @@ class WorkGraph:
                             first_output = skill_outputs[0]
                             category = first_output.param_category
                             output_path = first_output.param_path
+                            print(f"!!!!!!!{type(category)} {category}")
                             if category == SkillIOParamCategory.ProductRequirementsDocument or \
                                     category == SkillIOParamCategory.BusinessRequirementsDocument or \
                                     category == SkillIOParamCategory.HighLevelDesignDocument or \
+                                    category == SkillIOParamCategory.PlainText or \
                                     category == SkillIOParamCategory.KanbanBoard:
 
                                 output_md_filepath = add_extension_if_not_exist(output_path, ".md")
                                 self.notion.process_markdown_and_upload(output_md_filepath)
                             else:
-                                print("Notion does not support current output.")
+                                print(f"Notion does not support {SkillIOParamCategory.PlainText} output.")
                                 continue
                         else:
                             print("Notion does not support skill with no outputs.")
@@ -178,6 +180,7 @@ class WorkGraph:
                         if category == SkillIOParamCategory.ProductRequirementsDocument or \
                                 category == SkillIOParamCategory.BusinessRequirementsDocument or \
                                 category == SkillIOParamCategory.HighLevelDesignDocument or \
+                                category == SkillIOParamCategory.PlainText or \
                                 category == SkillIOParamCategory.KanbanBoard:
                             output_md_file_dir = os.path.dirname(output_path)
                             output_md_file_name = os.path.basename(output_path)

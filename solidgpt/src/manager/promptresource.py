@@ -1114,6 +1114,7 @@ CUSTOM_GENERATE_SKILL_JSON_OUTPUT_FORMAT = '''{
     "instruction": "How to do what's the tenant, and what's the step by step instructions",
     "qa_example": "give one or two, input output example",
     "background_data_path": "", (Don't need to change this)
+    "model_name": "gpt-4", (Don't need to change this)
     "input_method": "SkillIOParamCategory.PlainText", (Don't need to change this)
     "output_method": "SkillIOParamCategory.PlainText" (Don't need to change this)
 }'''
@@ -1130,7 +1131,7 @@ def build_gpt_standard_prompt(role_assumption: str, description: str, output_for
 
 def build_custom_skill_gpt_prompt(role_assumption: str, instruction: str, principles: str, few_shots: str):
     return f'''{role_assumption}\n\n 
-    Here are instruction, always get the answer from instruction first 
-    and if no suitable content then response base on your professional knowledge. instruction: {instruction}\n\n
-    Here are principles you need to always follow: {principles}\n\n 
-    Here are the prompt and completion examples: {few_shots}'''
+    Here are instruction, always response follow the instruction: {instruction}\n\n
+    Here are principles you need to always follow when give the response: {principles}\n\n 
+    Here are the prompt and completion examples: {few_shots}
+    If no suitable content then response base on your professional knowledge. '''

@@ -3,13 +3,13 @@ from solidgpt.src.util.util import *
 
 
 class WorkNode:
-    node_id: int = 0
+    node_id: str = 0
     agent: WorkAgent = None
     next_node_ids: set[int] = []
     output_id_dependencies: set[int] = []
     manual_review_result: bool = False
 
-    def __init__(self, node_id: int, work_agent: WorkAgent, manual_review_result: bool = False):
+    def __init__(self, node_id: str, work_agent: WorkAgent, manual_review_result: bool = False):
         # Initialization
         self.node_id = node_id
         self.agent = work_agent

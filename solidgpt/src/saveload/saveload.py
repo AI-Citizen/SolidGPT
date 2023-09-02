@@ -83,10 +83,12 @@ def load_save_data_to_nodes(loaded_data):
         skill_constructor = SKILL_NAME_TO_CONSTRUCTOR.get(skill_name, None)
         if skill_constructor is not None:
             skill: WorkSkill = skill_constructor()
-            if skill is None:
-                skill = CustomizeSkillManager._instance.get_customzied_skill(skill_name)
+        else:
+            skill = CustomizeSkillManager._instance.get_customzied_skill(skill_name)
+        if skill is not None:
             skill.init_config(inputs_data, outputs_data)
             agent = AGENT_NAME_TO_CONSTRUCTOR.get(agent_name)(skill)
             node = WorkNode(node_data["node_id"], agent, node_data["manual_review_result"])
             nodes.append(node)
     return nodes
+

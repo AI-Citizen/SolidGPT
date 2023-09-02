@@ -9,18 +9,25 @@ from solidgpt.src.workskill.workskill import *
 
 class CustomSkill(WorkSkill):
 
+    __skill_io_str_map = {
+        "SkillIOParamCategory.PlainText": SkillIOParamCategory.PlainText ,
+        "SkillIOParamCategory.ProductRequirementsDocument": SkillIOParamCategory.ProductRequirementsDocument,
+        "SkillIOParamCategory.BusinessRequirementsDocument": SkillIOParamCategory.BusinessRequirementsDocument,
+        "SkillIOParamCategory.HighLevelDesignDocument": SkillIOParamCategory.HighLevelDesignDocument,
+    }
+
     def __init__(self, definition : CustomizedSkillDefinition):
         super().__init__()
         self.name = definition.skill_name
         self.definition = definition
         self.skill_input = SkillInput(
             "Custom Skill Input",
-            definition.input_method,
+            self.__skill_io_str_map[definition.input_method],
         )
         self.add_input(self.skill_input)
         self.skill_output = SkillOutput(
             "Custom Skill Output",
-            definition.output_method,
+            self.__skill_io_str_map[definition.output_method],
         )
         self.add_output(self.skill_output)
         self.gpt_manager = GPTManager()
@@ -42,6 +49,16 @@ class CustomSkill(WorkSkill):
             gpt_model_label="generate custom model",
         )
     
+    def __improve_output_content(self, content: str) -> str:
+        prompt = f"""{self.role_assumption} Enhance the content 
+        I provide by adding more details base on your expert knowledge about {self.definition.basic_description}"""
+        return self.gpt_manager.create_and_chat_with_model(
+            model=self.definition.model_name,
+            prompt=prompt,
+            input_message=content,
+            gpt_model_label="impove output content",
+        )
+
     def _read_input(self):
         self.input = load_from_md(self.get_input_path(self.skill_input))
         if self.embedding_model_label_list is not None and len(self.embedding_model_label_list) > 0:
@@ -53,7 +70,9 @@ class CustomSkill(WorkSkill):
         
 
     def execution_impl(self):
-        model_output = self.model.chat_with_model(self.input)
+        draft = self.model.chat_with_model(self.input)
+        logging.info(f"""Skill: {self.definition.skill_name} Output: {draft}""")
+        model_output = self.__improve_output_content(draft)
         if self.definition.output_method == SkillIOParamCategory.PlainText:
             logging.info(model_output)
         else:

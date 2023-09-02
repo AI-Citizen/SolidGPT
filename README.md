@@ -3,49 +3,81 @@
 [![Twitter Follow](https://img.shields.io/twitter/follow/SolidGPT?style=social)](https://twitter.com/SolidGPT)
 # 🚀 What’s this
 
-SolidGPT is a human-AI collaboration platform. Users can add private data and tailor agent workflows using techniques like embedding finetuning. Our goal: empower AI to work with humans using tools to accomplish business tasks.
+SolidGPT is a human-AI collaboration framework. Users can add private data and create their own agent workgraph using embedding finetuning and in-context learning simply with our framework. Our goal: empower AI to work with humans using tools to accomplish business tasks.
 
-Currently, agents are optimized for software development using tools like Notion, Lowdefy, and more. From the inception of an idea to the documentation of software development, task division, and eventual task implementation - everything can either be automatically or semi-automatically accomplished within SolidGPT.
+Currently, our framework are optimized for software development using tools Notion, Lowdefy. From the inception of an idea to the documentation of software development, task division, and eventual task implementation - everything can either be automatically or semi-automatically accomplished within SolidGPT.
+
+# 📺 Demo
+
+
+https://github.com/AI-Citizen/SolidGPT/assets/39673228/342ae7b3-7143-4bbc-a21d-ca2afaff89cd
+
+
+(The video's playback speed has been accelerated)
 
 # 🏁 Quick Start
 
 ## **Prerequisite**
 
-- python3.7 or above
+- python3.8 or above
 - (Optional)[Yarn](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable)  - Required if you wish to utilize the SolidPortal
-- [Docker](https://docs.docker.com/engine/install/)
+- [pnpm](https://pnpm.io/installation) - Install pnpm and making activating Corepack `corepack enable`
 - [Openai api key](https://openai.com/blog/openai-api)
 - (Optional）[Notion](https://developers.notion.com/) - Create Notion api key and get the Notion page id which you want to use as the output AI content
 
 ## **Quick Setup**
 
 - git clone the repo
-- pip3 install -r requirements
-- Input api keys at solidgpt/configuration/Configuration.yaml
+- pip3 install -r requirements.txt
+- Input api keys at SolidGPT/solidgpt/src/configuration/Configuration.yaml
 
     - input your openai api token 
 
     - (optional)input your notion token and page id
+- Set project root folder as python path
+  Linux/Mac
+  ```sh
+  export PYTHONPATH=$PYTHONPATH:$(git rev-parse --show-toplevel)/
+  ```
+  Windows
+  Run in cmd
+  ```cmd
+  for /f %%i in ('git rev-parse --show-toplevel') do set PYTHONPATH=%PYTHONPATH%;%%i\
+  ```
+  or setup manually
+
 
 ## **Run Demo**
 
-```python
-cd demo
-python3 quickstart.py
+**Acutal real start up project "AI Says" - stock analysis app dev workflow**
+include the brainstorming, write product requirement, write high level design, create kanban.
+```sh
+cd quickstart
+python3 creategraph.py
+python3 quickstart.py system
 ```
 
-### **Start Your Own Graph**
+**webapp dev workflow**
+-include the brainstorming, write product requirement, write high level design, create kanban, generate app code(beta test), run web app.
+```sh
+cd quickstart
+python3 creategraph.py
+python3 quickstart.py webapp
+```
+>Default output path is SolidGPT/localstorage/workspace/out/
+## **Start Your Own Graph**
 0. (Optional) Customize your own agent and skill [(learn more)](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/customagentskill.md)
-1. Create a graph using Solid Portal or a JSON file. [(learn more)](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/solidporta.md)
+1. Create a graph using Solid Portal. [(learn more)](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/solidportal.md). You can also create a graph json file by code. Please check `quickstart/creategraph.py` 
 2. Create an entry point located in the solidgpt folder and input the workgraph json file path
 ```python
 # your_file_name.py
 from solidgpt.src.orchestration.orchestration import *
 Initializer()
 app = Orchestration()
-app.add_graph("workspace/config/config_data.json", "default graph")
+app.add_graph("your/graph/config_file.json", "default graph")
 app.run_graph_with_name("default graph")
 ```
+You can check the `quickstart/quickstart.py` as example.
 3. Run the code with python3 your_file_name.py
 
 
@@ -112,11 +144,13 @@ Notion, powered by LLM, can assist users with quickly editing, improving, review
 
 [Solid GPT Infrastructure](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/infrastructure.md)
 
+[Deeply Customize Agent Skill](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/customagentskill.md)
+
+[Embedding with private data](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/embeddingprivatedata.md)
+
 [Fine-tuning with GPT3.5](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/gptfinetuning.md)
 
 [Fine-tuning with Llama2](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/llama2finetuning.md)
-
-[Deeply Customize Agent Skill](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/customagentskill.md)
 
 ## Contact
 If you have any questions or feedback about our project, please don't hesitate to reach out to us. We greatly appreciate your suggestions!
