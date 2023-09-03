@@ -40,7 +40,8 @@ class WorkGraph:
             self.node_map[node.node_id] = node
 
             # create directory for node
-            node_directory_path = os.path.join(self.output_directory_path, str(node.node_id))
+            node_directory_path = os.path.join(self.output_directory_path,
+                                               (node.agent.skill.name + "_" + str(node.node_id)).replace(" ", "_"))
             if not os.path.exists(node_directory_path):
                 # Create the output folder
                 os.makedirs(node_directory_path)
