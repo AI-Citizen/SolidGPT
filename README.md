@@ -52,7 +52,6 @@ pip3 install -r requirements.txt #installing the env
 
 
 ## **Run Demo**
-
 **Acutal real start up project "AI Says" - stock analysis app dev workflow**
 include the brainstorming, write product requirement, write high level design, create kanban.
 ```sh
@@ -68,11 +67,15 @@ cd quickstart
 python3 creategraph.py webapp
 python3 quickstart.py webapp
 ```
->Default output path is SolidGPT/localstorage/workspace/out/<time - e.g. 202009011234>
+>The default initial iutput path is set to `SolidGPT/localstorage/workspace/in`. As part of the Demo, we have included two idea inputs in this location.
+
+>The default output path is set to `SolidGPT/localstorage/workspace/out/<time - e.g. 202009011234>`
 ## **Start Your Own Graph**
-0. (Optional) Customize your own agent and skill [(learn more)](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/customagentskill.md)
-1. Create a graph using Solid Portal. [(learn more)](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/solidportal.md). You can also create a graph json file by code. Please check `quickstart/creategraph.py` 
-2. Create an entry point located in the solidgpt folder and input the workgraph json file path
+0. (Optional) Customize your own agent and skill [(Learn more)](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/customagentskill.md)
+1. Create a graph using Solid Portal. [(Learn more)](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/solidportal.md).
+   You can also create a graph json file by code. Please check `quickstart/creategraph.py`
+1. Add your initial business idea into the input folder e.g. `SolidGPT/localstorage/workspace/in/your_initial_input_file.json`. Make sure the initial input folder path same with the graph first node input.param_path.
+1. Create an entry point located in the solidgpt folder and input the workgraph json file path
 ```python
 # your_file_name.py
 from solidgpt.src.orchestration.orchestration import *
