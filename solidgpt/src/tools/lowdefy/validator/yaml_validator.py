@@ -35,8 +35,8 @@ class YAMLValidator:
         if len(self.subpages) > 0 and self.filename == "lowdefy":
             self.verify_reference(self.subpages)
             self.verify_menu(self.subpages)
-            for page in self.subpages:
-                self.remove_key_values(f"  - id: {page}")
+            # for page in self.subpages:
+            #     self.remove_key_values(f"  - id: {page}")
         return "\n".join(self.yaml_list)
 
     def verify_block_type(self):
