@@ -93,15 +93,17 @@ class YAMLValidator:
     def verify_duplicate_pages(self):
         idx = 0
         page_flag = False
+        page_indentation = float("inf")
         while idx < len(self.yaml_list):
             line = self.yaml_list[idx]
             tokens = line.split(":")
             key = tokens[0]
             indentation = key.rfind(" ") if "-" not in key else key.rfind("-") - 1
-            if page_flag and indentation < 0:
+            if page_flag and indentation <= page_indentation:
                 page_flag = False
             if key.strip() == "pages":
                 page_flag = True
+                page_indentation = indentation
             if len(tokens) > 0:
                 # print(key == "  - id")
                 if page_flag and key == "  - id" and tokens[1].strip().split(" ")[0] in self.subpages:
