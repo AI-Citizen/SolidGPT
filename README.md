@@ -1,5 +1,4 @@
-![IMG_4502](https://github.com/AI-Citizen/SolidGPT/assets/39673228/ff1f29a0-41d3-4984-b724-b73ad962abdf)
-
+![IMG_4502](https://github.com/AI-Citizen/SolidGPT/assets/39673228/347a6be2-93d6-42e9-99e2-f8b7b1ea96de)
 <h1 align="center">🧱 SolidGPT-Time to create your agent team</h1>
 
 [![Twitter Follow](https://img.shields.io/twitter/follow/SolidGPT?style=social)](https://twitter.com/SolidGPT)
