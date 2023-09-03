@@ -10,5 +10,7 @@ class WebAppRunner:
     def build_run_webapp(self):
         # Command to run
         command = ["pnpx", "lowdefy@rc", "dev"]
+        if os.name == 'nt':
+            command = ["cmd.exe", "/c", "pnpx", "lowdefy@rc", "dev"]
         # Change the current working directory to the absolute path
         subprocess.run(command, cwd=self.project_folder)
