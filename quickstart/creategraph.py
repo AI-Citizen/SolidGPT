@@ -110,8 +110,8 @@ def generate_node_run_app(node_id: str, input_ids: list[int], output_ids: list[i
     skill.init_config(
         [
             {
-                "param_path": os.path.join(LOCAL_STORAGE_OUTPUT_DIR , f"{input_ids[0]}/Write_YAML_Result_3"),  # Manually input the generate node page output path
-                "loading_method": "SkillInputLoadingMethod.LOAD_FROM_STRING",
+                "param_path": "",  # Manually input the generate node page output path
+                "loading_method": "SkillInputLoadingMethod.LOAD_FROM_OUTPUT_ID",
                 "load_from_output_id": input_ids[0]
             },
         ],
@@ -134,7 +134,6 @@ def run_system_dev_graph():
                                    manual_review_result=True))
     app.add_node(generate_node_custom_system_design("1", input_ids=[0], output_ids=[1], manual_review_result=True))
     app.add_node(generate_node_kanban("2", input_ids=[1], output_ids=[2], manual_review_result=True))
-    app.init_node_dependencies()
     app.save_data(os.path.join(LOCAL_STORAGE_DIR, "workspace", "config", "system_config_data.json"))
 
 def run_webapp_dev_graph():
@@ -149,9 +148,21 @@ def run_webapp_dev_graph():
     app.add_node(generate_node_kanban("2", input_ids=[1], output_ids=[2], manual_review_result=True))
     app.add_node(generate_node_page("3", input_ids=[2], output_ids=[3]))
     app.add_node(generate_node_run_app("4", input_ids=[3], output_ids=[4]))
-    app.init_node_dependencies()
     app.save_data(os.path.join(LOCAL_STORAGE_DIR, "workspace", "config", "webapp_config_data.json"))
 
+def main():
+    # Check if the correct number of arguments are provided
+    if len(sys.argv) <2 or sys.argv[1] not in ["system", "webapp"]:  # Adjust this number based on the number of arguments you expect
+        logging.info("Usage: python3 creategraph.py system (or webapp)")
+        sys.exit(1)
+    param = sys.argv[1]
+    if param == "system":
+        run_system_dev_graph()
+    elif param == "webapp":
+        run_webapp_dev_graph()
+    else:
+        logging.warn("Usage: python3 creategraph.py system (or webapp)")
+        sys.exit(1)
+
 if __name__ == "__main__":
-    run_system_dev_graph()
-    run_webapp_dev_graph()
+    main()

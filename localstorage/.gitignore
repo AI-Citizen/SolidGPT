@@ -8,3 +8,5 @@ embedding/originalresources/*
 
 customizedskilldefinition/*.json
 !customizedskilldefinition/WriteSystemDesign.json
+
+workspace/config/*

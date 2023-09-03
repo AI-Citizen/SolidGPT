@@ -23,9 +23,9 @@ https://github.com/AI-Citizen/SolidGPT/assets/39673228/342ae7b3-7143-4bbc-a21d-c
 
 - python3.8 or above
 - (Optional)[Yarn](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable)  - Required if you wish to utilize the SolidPortal
-- [pnpm](https://pnpm.io/installation) - Install pnpm and making activating Corepack `corepack enable`
+- [pnpm](https://pnpm.io/installation) - Install pnpm and making activating Corepack `corepack enable`. This is required for Lowdefy webapp to run.
 - [Openai api key](https://openai.com/blog/openai-api)
-- (Optional）[Notion](https://developers.notion.com/) - Create Notion api key and get the Notion page id which you want to use as the output AI content
+- (Optional）[Notion](https://developers.notion.com/) - Create Notion api key and get the Notion page id which you want to use as the output AI content.
 
 ## **Quick Setup**
 ```sh
@@ -57,7 +57,7 @@ pip3 install -r requirements.txt #installing the env
 include the brainstorming, write product requirement, write high level design, create kanban.
 ```sh
 cd quickstart
-python3 creategraph.py
+python3 creategraph.py system
 python3 quickstart.py system
 ```
 
@@ -65,10 +65,10 @@ python3 quickstart.py system
 -include the brainstorming, write product requirement, write high level design, create kanban, generate app code(beta test), run web app.
 ```sh
 cd quickstart
-python3 creategraph.py
+python3 creategraph.py webapp
 python3 quickstart.py webapp
 ```
->Default output path is SolidGPT/localstorage/workspace/out/
+>Default output path is SolidGPT/localstorage/workspace/out/<time - e.g. 202009011234>
 ## **Start Your Own Graph**
 0. (Optional) Customize your own agent and skill [(learn more)](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/customagentskill.md)
 1. Create a graph using Solid Portal. [(learn more)](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/solidportal.md). You can also create a graph json file by code. Please check `quickstart/creategraph.py` 
