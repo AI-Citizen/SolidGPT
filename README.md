@@ -10,9 +10,7 @@ Currently, our framework are optimized for software development using tools Noti
 
 # 📺 Demo
 
-
-https://github.com/AI-Citizen/SolidGPT/assets/39673228/342ae7b3-7143-4bbc-a21d-ca2afaff89cd
-
+https://github.com/AI-Citizen/SolidGPT/assets/39673228/3c547894-c34b-4117-b895-dfa55f3afe1e
 
 (The video's playback speed has been accelerated)
 
