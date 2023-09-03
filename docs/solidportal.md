@@ -17,7 +17,7 @@ run `yarn start` which will also open your browser
 cd ..SolidGPT\solidportal\src and run `node uploadServer.js` to start file upload server on local, OR 
 you can manually upload file into SolidGPT\solidportal\src\uploads for Add node with input functions.
 
-### Using our server(Beta Test)
+### Using our Server(Beta Test)
 If you don't want to run it on your local, we have host on our server. It is easier for you to test.
 [SolidPortal](http://154.16.118.231:8080/)   http://154.16.118.231:8080/(Beta test)
 
