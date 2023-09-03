@@ -17,10 +17,18 @@ run `yarn start` which will also open your browser
 cd ..SolidGPT\solidportal\src and run `node uploadServer.js` to start file upload server on local, OR 
 you can manually upload file into SolidGPT\solidportal\src\uploads for Add node with input functions.
 
-### OR
+### Use our Server
 If you don't want to run it on your local, we have host on our server. It is easier for you to test.
 [SolidPortal](http://154.16.118.231:8080/)   http://154.16.118.231:8080/(Beta test)
-Note: All users' customized skills will be shown in the Beta version. Make sure you have the json on your local for your customized skills. Basic skills are "Debug Code", "Write Code", "Write Product Requirement Documentation","Use Notion", "Write High Level Design", "Create Kanban Board", "Custom Skill", "Write lowdefy YAML", "Host and run web app".
+‼️ Note: All user-customized skills will be visible on the server. However, you can only employ both the basic skill and any custom skill if you possess the corresponding custom skill definition JSON file, located in your `localstorage/customizedskilldefinition` directory.
+Basic skills are 
+- "Debug Code"
+- "Write Code"
+- "Write Product Requirement Documentation","Use Notion"
+- "Write High Level Design", "Create Kanban Board"
+- "Custom Skill"
+- "Write lowdefy YAML"
+- "Host and run web app"
 
 # What is Work Graph
 The Work Graph comprises multiple nodes, each representing an agent skill. Every node concentrates on a specific task and shares the results with both the user and other agents.
