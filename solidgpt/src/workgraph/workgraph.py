@@ -20,16 +20,9 @@ class WorkGraph:
         self.output_map = {}
         self.output_id_to_node_map = {}
 
-        self.output_directory_path = LOCAL_STORAGE_OUTPUT_DIR
+        self.output_directory_path = os.path.join(LOCAL_STORAGE_OUTPUT_DIR, time.strftime("%Y%m%d%H%M%S"))
         if output_directory_path_override:
             self.output_directory_path = os.path.abspath(output_directory_path_override)
-
-        if not os.path.exists(self.output_directory_path):
-            # Create the output folder
-            os.makedirs(self.output_directory_path)
-            print(f"Directory '{self.output_directory_path}' created.")
-        else:
-            pass
         return
 
     def add_node(self, node: WorkNode):
@@ -90,7 +83,7 @@ class WorkGraph:
         return
 
     def execute(self):
-        print("Executing SolidGPT...")
+        logging.info("Executing SolidGPT...")
         first_nodes = []
         for node in self.nodes:
             if len(node.output_id_dependencies) == 0:
@@ -101,6 +94,8 @@ class WorkGraph:
 
         for node in first_nodes:
             self.__execute_node(node)
+        logging.info(f"SolidGPT execution completed. All results are saved in {self.output_directory_path}")
+        
 
     def __execute_node(self, node: WorkNode):
         if node.can_execute():
