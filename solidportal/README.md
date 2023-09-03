@@ -17,7 +17,7 @@ run `yarn start` which will also open your browser
 cd ..SolidGPT\solidportal\src and run `node uploadServer.js` to start file upload server on local, OR 
 you can manually upload file into SolidGPT\solidportal\src\uploads for Add node with input functions.
 
-### Use our Server
+### Use our Server(Beta Test)
 If you don't want to run it on your local, we have host on our server. It is easier for you to test.
 [SolidPortal](http://154.16.118.231:8080/)   http://154.16.118.231:8080/(Beta test)
 ‼️ Note: All user-customized skills will be visible on the server. However, you can only employ both the basic skill and any custom skill if you possess the corresponding custom skill definition JSON file, located in your `localstorage/customizedskilldefinition` directory.
