@@ -1,7 +1,6 @@
 ![IMG_4502](https://github.com/AI-Citizen/SolidGPT/assets/39673228/347a6be2-93d6-42e9-99e2-f8b7b1ea96de)
-<h1 align="center">🧱 SolidGPT-Time to create your agent team</h1>
+<h1 align="center">🧱 SolidGPT-Human-AI collaboration framework</h1>
 
-<a href="https://discord.gg/SkqUPnfE"><img src="https://dcbadge.vercel.app/api/server/wCp6Q3fsAk?compact=true&style=flat" alt="Discord Follow"></a>
 [![Twitter Follow](https://img.shields.io/twitter/follow/SolidGPT?style=social)](https://twitter.com/SolidGPT)
 # 🚀 What’s this
 
@@ -159,7 +158,6 @@ Notion, powered by LLM, can assist users with quickly editing, improving, review
 
 ## Contact
 If you have any questions or feedback about our project, please don't hesitate to reach out to us. We greatly appreciate your suggestions!
-- Discord: https://discord.gg/SkqUPnfE
 - Email: aict@ai-citi.com
 - GitHub Issues: For more technical inquiries, you can also create a new issue in our [GitHub repository](https://github.com/AI-Citizen/SolidGPT/issues).
 We will respond to all questions within 2-3 business days.
