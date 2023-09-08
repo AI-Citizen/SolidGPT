@@ -1,7 +1,6 @@
 ![IMG_4502](https://github.com/AI-Citizen/SolidGPT/assets/39673228/347a6be2-93d6-42e9-99e2-f8b7b1ea96de)
 <h1 align="center">🧱 SolidGPT-Human-AI collaboration framework</h1>
 
-[![Twitter Follow](https://img.shields.io/twitter/follow/SolidGPT?style=social)](https://twitter.com/SolidGP)
 <a href="docs/Introduction_CN.md"><img src="https://img.shields.io/badge/文档-中文版-blue.svg" alt="CN doc"></a>
 
 # 🚀 What’s this
