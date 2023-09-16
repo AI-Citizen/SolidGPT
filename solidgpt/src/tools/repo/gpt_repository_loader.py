@@ -57,5 +57,5 @@ class GitToTextConverter:
         print(f"Repository contents written to {self.output_file_path}.")
 
 if __name__ == "__main__":
-    converter = GitToTextConverter(os.path.join(ROOT_DIR, '..', '..', 'Flask-Blogging'),  output_file_path='output.txt')
+    converter = GitToTextConverter(os.path.join(ROOT_DIR, '..', '..', 'textbase', 'textbase'),  output_file_path='output.txt')
     converter.convert()

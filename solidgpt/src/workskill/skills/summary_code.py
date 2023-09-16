@@ -42,23 +42,26 @@ class SummaryCode(WorkSkill):
     
     def __summary_repo_schema(self):
         schema = self.__extract_lines_after_sequence()
-        self.gpt_manager.create_and_chat_with_model(
+        schema_summary = self.gpt_manager.create_and_chat_with_model(
             prompt=SUMMARY_CODE_SUMMARY_SCHEMA,
             gpt_model_label="repo_schema",
             input_message=schema
         )
         self.graph_cache[self.Cache_Label_Summary_Repo_Schema] = schema
-        logging.log(f"Schema of repo: {schema}")
+        logging.info(f"Schema of repo: {schema_summary}")
 
     def __summary_readme(self):
         readme = self.__extract_readme_content()
+        if readme is None:
+            logging.warn("No readme file found")
+            return
         readme_summary = self.gpt_manager.create_and_chat_with_model(
             prompt=SUMMARY_CODE_SUMMARY_README,
             gpt_model_label="summary_readme",
             input_message=readme
         )
         self.graph_cache[self.Cache_Label_Summary_Readme] = readme_summary
-        logging.log(f"Summary of readme file: {readme_summary}")    
+        logging.info(f"Summary of readme file: {readme_summary}")    
 
     def __extract_lines_after_sequence(self) -> str:
         lines = self.repo_txt.split('\n')
@@ -67,6 +70,7 @@ class SummaryCode(WorkSkill):
         for line in lines:
             if capture:
                 captured_lines.append(line)
+                capture = False
             if self.Seperator in line:
                 capture = True
         return '\n'.join(captured_lines)
