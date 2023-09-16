@@ -14,6 +14,7 @@ class SkillIOParamCategory(int, Enum):
 class SkillInputLoadingMethod(Enum):
     LOAD_FROM_OUTPUT_ID = 1
     LOAD_FROM_STRING = 2
+    FROM_INPUT_STRING = 3
 
 
 STRING_TO_SKILL_INPUT_LOADING_METHOD_DICT: dict[str, SkillInputLoadingMethod] = {
@@ -59,6 +60,7 @@ class SkillInput:
     loading_method: SkillInputLoadingMethod = SkillInputLoadingMethod.LOAD_FROM_STRING
     load_from_output_id: int = -1
     skill_output: SkillOutput = None
+    content: str = ""
 
     def __init__(self,
                  param_name: str,
@@ -83,6 +85,8 @@ class SkillInput:
             self.load_from_output_id = config["load_from_output_id"]
         else:
             self.load_from_output_id = -1
+        if self.loading_method == SkillInputLoadingMethod.FROM_INPUT_STRING:
+            self.content = config["content"]
 
     def get_input_path(self):
         if self.loading_method == SkillInputLoadingMethod.LOAD_FROM_STRING:

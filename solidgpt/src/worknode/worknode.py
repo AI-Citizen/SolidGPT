@@ -8,12 +8,13 @@ class WorkNode:
     next_node_ids: set[str] = []
     output_id_dependencies: set[int] = []
     manual_review_result: bool = False
+    graph_cache: dict = {}
 
     def __init__(self, node_id: str, work_agent: WorkAgent, manual_review_result: bool = False):
         # Initialization
         self.node_id = node_id
+        work_agent.graph_cache = self.graph_cache
         self.agent = work_agent
-        self.agent.node = self
         self.next_node_ids = set([])
         self.output_id_dependencies = set([])
         self.manual_review_result = manual_review_result

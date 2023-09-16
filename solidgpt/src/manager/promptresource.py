@@ -1119,6 +1119,10 @@ CUSTOM_GENERATE_SKILL_JSON_OUTPUT_FORMAT = '''{
     "output_method": "SkillIOParamCategory.PlainText" (Don't need to change this)
 }'''
 
+SUMMARY_CODE_SUMMARY_README = '''Summary the readme file of the repo into 100 words. The readme file is as below:'''
+
+SUMMARY_CODE_SUMMARY_SCHEMA = '''Format the schema of the repo. The schema is as below:'''
+
 def get_custom_skills_assumption_role_prompt(question_subject):
     return f"""Assume you are the expert of {question_subject}. 
 I want to know the list of top 5 essential actual hard skills (no softskill) for the {question_subject}. Can you please list them for me and use && sign to seperate them?"""

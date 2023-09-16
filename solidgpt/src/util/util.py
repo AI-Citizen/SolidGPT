@@ -56,9 +56,9 @@ def create_directories_if_not_exist(filepath: str):
     return
 
 
-def load_from_md(filename, path = "") -> str:
+def load_from_text(filename, path = "", extension = ".md") -> str:
     full_path = os.path.join(path, filename)
-    full_path = add_extension_if_not_exist(full_path, ".md")
+    full_path = add_extension_if_not_exist(full_path, extension)
     with open(full_path, "r") as md_file:
         content = md_file.read()
     logging.info(f"Information loaded from {full_path}")
