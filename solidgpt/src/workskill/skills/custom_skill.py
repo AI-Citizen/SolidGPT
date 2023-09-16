@@ -3,7 +3,7 @@ from solidgpt.src.diy.custom.customizedskilldefinition import CustomizedSkillDef
 from solidgpt.src.manager.embedding.embeddingmanager import EmbeddingManager
 from solidgpt.src.manager.gptmanager import GPTManager, GPTModel
 from solidgpt.src.manager.promptresource import build_custom_skill_gpt_prompt
-from solidgpt.src.util.util import load_from_md, save_to_md2
+from solidgpt.src.util.util import load_from_text, save_to_md2
 from solidgpt.src.workskill.workskill import *
 
 
@@ -60,7 +60,7 @@ class CustomSkill(WorkSkill):
         )
 
     def _read_input(self):
-        self.input = load_from_md(self.get_input_path(self.skill_input))
+        self.input = load_from_text(self.get_input_path(self.skill_input))
         if self.embedding_model_label_list is not None and len(self.embedding_model_label_list) > 0:
             embedding_info = self.__get_embedding_resource_message(f"""{self.prompt}\n{self.input}""")
             self.input = f"""{self.input}\n When responding, 

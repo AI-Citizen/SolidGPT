@@ -7,6 +7,8 @@ class WorkSkill:
     inputs: list[SkillInput] = []
     outputs: list[SkillOutput] = []
     action: str = ""
+    # Setup by agent
+    graph_cache: dict = {}
 
     def __init__(self):
         self.name = ""

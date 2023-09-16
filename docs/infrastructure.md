@@ -116,7 +116,7 @@ def _read_input(self):
         input_path = self.get_input_path(self.skill_input)
 
         # load input for current skill, some existing loading methods can be found in util.py
-        self.prd_md = load_from_md(input_path)
+        self.prd_md = load_from_text(input_path)
 ```
 
 Execution:

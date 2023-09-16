@@ -12,6 +12,7 @@ class WorkGraph:
     output_map: dict[int, SkillOutput] = {}
     output_id_to_node_map: dict[int, WorkNode] = {}
     notion = None
+    cache = {}
 
     def __init__(self, output_directory_path_override: str = ""):
         # need to manually initialize here
@@ -26,6 +27,7 @@ class WorkGraph:
         return
 
     def add_node(self, node: WorkNode):
+        node.graph_cache = self.cache
         self.nodes.append(node)
 
     def init_node_dependencies(self):

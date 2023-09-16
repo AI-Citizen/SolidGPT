@@ -24,7 +24,7 @@ class CreateKanBan(WorkSkill):
 
     def _read_input(self):
         input_path = self.get_input_path(self.skill_input)
-        self.input_hld = load_from_md(input_path)
+        self.input_hld = load_from_text(input_path)
 
     def execution_impl(self):
         print("Printing Kanban result here...")
