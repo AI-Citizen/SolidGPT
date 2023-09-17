@@ -1,9 +1,3 @@
-"""Agent Names"""
-AGENT_NAME_SOFTWARE_DEVELOPER = "Software Developer"
-AGENT_NAME_PRINCIPAL_ENGINEER = "Principal Engineer"
-AGENT_NAME_PRODUCT_MANAGER = "Product Manager"
-AGENT_NAME_CUSTOM_AGENT = "Custom Agent"
-
 """Skill Names"""
 SKILL_NAME_WRITE_PRODUCT_REQUIREMENTS_DOCUMENTATION = "Write Product Requirement Documentation"
 SKILL_NAME_WRITE_HLD = "Write High Level Design"

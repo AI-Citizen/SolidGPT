@@ -14,13 +14,6 @@ SKILL_NAME_TO_CONSTRUCTOR: dict[str, Type[WorkSkill]] = {
 }
 
 
-AGENT_NAME_TO_CONSTRUCTOR: dict[str, Type[WorkAgent]] = {
-    AGENT_NAME_SOFTWARE_DEVELOPER: AgentSoftwareDeveloper,
-    AGENT_NAME_PRODUCT_MANAGER: AgentProductManager,
-    AGENT_NAME_PRINCIPAL_ENGINEER: AgentPrincipalEngineer,
-}
-
-
 def generate_save_data_from_nodes(nodes: list[WorkNode], generate_debug_info: bool = False):
     save_data = []
     for node in nodes:
@@ -33,12 +26,7 @@ def generate_save_data_from_nodes(nodes: list[WorkNode], generate_debug_info: bo
             node_data["next_node_ids"] = list(node.next_node_ids)
             node_data["output_id_dependencies"] = list(node.output_id_dependencies)
 
-        agent = node.agent
-        node_data["agent"] = agent.name
-        if generate_debug_info:
-            node_data["skills_available"] = agent.skills_available
-
-        skill = agent.skill
+        skill = node.skill
         node_data["skill"] = skill.name
         node_data["inputs"] = []
         node_data["outputs"] = []
@@ -76,7 +64,6 @@ def generate_save_data_from_nodes(nodes: list[WorkNode], generate_debug_info: bo
 def load_save_data_to_nodes(loaded_data):
     nodes: list[WorkNode] = []
     for node_data in loaded_data:
-        agent_name = node_data["agent"]
         skill_name = node_data["skill"]
         inputs_data = node_data["inputs"]
         outputs_data = node_data["outputs"]
@@ -87,8 +74,7 @@ def load_save_data_to_nodes(loaded_data):
             skill = CustomizeSkillManager._instance.get_customzied_skill(skill_name)
         if skill is not None:
             skill.init_config(inputs_data, outputs_data)
-            agent = AGENT_NAME_TO_CONSTRUCTOR.get(agent_name)(skill)
-            node = WorkNode(node_data["node_id"], agent, node_data["manual_review_result"])
+            node = WorkNode(node_data["node_id"], skill, node_data["manual_review_result"])
             nodes.append(node)
     return nodes
 

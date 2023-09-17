@@ -3,7 +3,6 @@ from solidgpt.src.manager.embedding.embeddingmanager import EmbeddingManager
 from solidgpt.src.manager.embedding.embeddingmodel import EmbeddingModelParameter
 from solidgpt.src.manager.gptmanager import GPTManager
 from solidgpt.src.workgraph.workgraph import *
-from solidgpt.src.workagent.agents.agent_principalengineer import AgentPrincipalEngineer
 
 
 TEST_SKILL_WORKSPACE = os.path.join(TEST_DIR, "workskill", "skills", "workspace")
@@ -38,8 +37,7 @@ def run_test():
                 "id": 2
             } 
         ])
-    agent = AgentPrincipalEngineer(skill)
-    node = WorkNode(2, agent)
+    node = WorkNode("2", skill)
     app.add_node(node)
     app.init_node_dependencies()
     app.execute()
