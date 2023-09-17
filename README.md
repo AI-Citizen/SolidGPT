@@ -2,6 +2,7 @@
 <h1 align="center">🧱 SolidGPT-Human-AI collaboration framework</h1>
 
 <a href="docs/Introduction_CN.md"><img src="https://img.shields.io/badge/文档-中文版-blue.svg" alt="CN doc"></a>
+[![Twitter Follow](https://img.shields.io/twitter/follow/SolidGPT?style=social)](https://twitter.com/SolidGPT)
 
 # 🚀 What’s this
 
