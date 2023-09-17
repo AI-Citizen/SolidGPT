@@ -18,8 +18,7 @@ def run_test():
                 "id": 1
             }
         ])
-    agent: WorkAgent = AgentProductManager(skill)
-    node: WorkNode = WorkNode(0, agent)
+    node: WorkNode = WorkNode("0", skill)
     app.add_node(node)
     app.init_node_dependencies()
     app.save_data("config/config_data.json")

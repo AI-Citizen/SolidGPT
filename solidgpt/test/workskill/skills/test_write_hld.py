@@ -1,6 +1,5 @@
 from solidgpt.src.manager.initializer import Initializer
 from solidgpt.src.workgraph.workgraph import *
-from solidgpt.src.workagent.agents.agent_principalengineer import AgentPrincipalEngineer
 from solidgpt.src.workskill.skills.write_hld import WriteHLD
 
 TEST_SKILL_WORKSPACE = os.path.join(TEST_DIR, "workskill", "skills", "workspace")
@@ -23,8 +22,7 @@ def run_test():
                 "id": 1
             } 
         ])
-    agent = AgentPrincipalEngineer(skill)
-    node = WorkNode(1, agent)
+    node = WorkNode("1", skill)
     app.add_node(node)
     app.init_node_dependencies()
     # app.save_data(os.path.join(TEST_SKILL_WORKSPACE, "config", "config_data.json"))

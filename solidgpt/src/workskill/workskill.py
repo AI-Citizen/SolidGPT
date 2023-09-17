@@ -7,7 +7,7 @@ class WorkSkill:
     inputs: list[SkillInput] = []
     outputs: list[SkillOutput] = []
     action: str = ""
-    # Setup by agent
+    # Setup by node
     graph_cache: dict = {}
 
     def __init__(self):
@@ -47,12 +47,12 @@ class WorkSkill:
         pass
 
     def begin_execution(self):
-        print("Agent begins " + str(self.name) + " task...")
+        print("Node begins " + str(self.name) + " task...")
         self._read_input()
         pass
 
     def finish_execution(self):
-        print("Agent finishes " + str(self.name) + " task...")
+        print("Node finishes " + str(self.name) + " task...")
         return
 
     def _read_input(self):

@@ -2,7 +2,6 @@
     {
         "node_id": 1,
         "manual_review_result": true,
-        "agent": "Product Manager",
         "skill": "Write Product Requirement Documentation",
         "inputs": [
             {
@@ -20,7 +19,6 @@
     {
         "node_id": 0,
         "manual_review_result": false,
-        "agent": "Product Manager",
         "skill": "Use Notion",
         "inputs": [
             {
