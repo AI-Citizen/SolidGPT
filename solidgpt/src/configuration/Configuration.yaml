@@ -1,7 +1,7 @@
 # config.yaml
 openai_api_key: 
 # gpt-3.5-turbo-16k/gpt-4/<fine-tune model>/...
-openai_model: gpt-4
+openai_model: gpt-3.5-turbo-16k
 # notion
 notion_api_key : 
 notion_page_id :

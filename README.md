@@ -44,7 +44,7 @@ pip3 install -r requirements.txt #installing the env
 ## 🔥 **Run**
 
 
-**Generate Technical Solution** - base on your requirement and deeply interact with your private project code 
+**Generate Technical Solution** - deeply integrate with your private project code to resolve your problem
 
 ```sh
 cd quickstart
@@ -52,7 +52,9 @@ python3 start_solution.py -r "your requiremennt" -c "/your/code/file/path"
 ```
 
 
-**Generate PRD** - base on your requirement and deeply interact with your private project information
+**Generate PRD** - deeply integrate with your private project inforamtion to generate the Product Requirement Document
+
+***Default ouput path is SolidGPT/quickstart***
 
 ```sh
 cd quickstart
