@@ -2,7 +2,6 @@
   {
     "node_id": "041d8393-0df9-44cb-aa15-3c3a38009365",
     "manual_review_result": true,
-    "agent": "Software Developer",
     "skill": "",
     "inputs": [
       {
@@ -20,7 +19,6 @@
   {
     "node_id": "343e832e-8659-445c-9958-aeb49742dadb",
     "manual_review_result": true,
-    "agent": "Product Manager",
     "skill": "",
     "inputs": [
       {
@@ -38,7 +36,6 @@
   {
     "node_id": "213c64b4-c6ce-45ea-93b7-a6b2bfb5e461",
     "manual_review_result": true,
-    "agent": "Product Manager",
     "skill": "",
     "inputs": [
       {

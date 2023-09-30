@@ -1,3 +1,4 @@
+import logging
 from solidgpt.src.workskill.skillio import *
 from solidgpt.src.constants import *
 
@@ -7,6 +8,8 @@ class WorkSkill:
     inputs: list[SkillInput] = []
     outputs: list[SkillOutput] = []
     action: str = ""
+    # Setup by node
+    graph_cache: dict = {}
 
     def __init__(self):
         self.name = ""
@@ -23,11 +26,11 @@ class WorkSkill:
 
     def init_config(self, input_config, output_config):
         if len(input_config) != len(self.inputs):
-            print("Skill %s: Input config is not correct, expected number of input: %d, actual number of input: %d."
+            logging.error("Skill %s: Input config is not correct, expected number of input: %d, actual number of input: %d."
                   % (self.name, len(self.inputs), len(input_config)))
             return
         if len(output_config) != len(self.outputs):
-            print("Skill %s: Output config is not correct, expected number of output: %d, actual number of output: %d."
+            logging.error("Skill %s: Output config is not correct, expected number of output: %d, actual number of output: %d."
                   % (self.name, len(self.outputs), len(output_config)))
             return
         for i in range(len(input_config)):
@@ -45,12 +48,12 @@ class WorkSkill:
         pass
 
     def begin_execution(self):
-        print("Agent begins " + str(self.name) + " task...")
+        print("Node begins " + str(self.name) + " task...")
         self._read_input()
         pass
 
     def finish_execution(self):
-        print("Agent finishes " + str(self.name) + " task...")
+        print("Node finishes " + str(self.name) + " task...")
         return
 
     def _read_input(self):
@@ -58,3 +61,12 @@ class WorkSkill:
 
     def get_input_path(self, skill_input: SkillInput):
         return skill_input.get_input_path()
+    
+    def _get_graph_cached_content(self, label):
+        if label not in self.graph_cache:
+            return None
+        return self.graph_cache[label]
+    
+    def _set_graph_cached_content(self, label, content):
+        self.graph_cache[label] = content
+        return

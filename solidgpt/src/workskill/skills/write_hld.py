@@ -24,7 +24,7 @@ class WriteHLD(WorkSkill):
 
     def _read_input(self):
         input_path = self.get_input_path(self.skill_input)
-        self.prd_md = load_from_md(input_path)
+        self.prd_md = load_from_text(input_path)
 
     def execution_impl(self):
         print("Printing HLD result here...")

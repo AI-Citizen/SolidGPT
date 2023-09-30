@@ -1,7 +1,6 @@
 import os
 from solidgpt.definitions import TEST_SKILL_WORKSPACE
 from solidgpt.src.manager.initializer import Initializer
-from solidgpt.src.workagent.agents.agent_softwaredeveloper import AgentSoftwareDeveloper
 from solidgpt.src.workgraph.workgraph import WorkGraph
 from solidgpt.src.worknode.worknode import WorkNode
 from solidgpt.src.workskill.skills.write_yaml import WriteYAML
@@ -61,8 +60,7 @@ def run_test():
                 "id": 1
             } 
         ])
-    agent = AgentSoftwareDeveloper(skill)
-    node = WorkNode(1, agent)
+    node = WorkNode("1", skill)
     app.add_node(node)
     app.init_node_dependencies()
     app.execute()
