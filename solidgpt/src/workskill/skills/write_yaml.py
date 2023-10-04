@@ -31,7 +31,7 @@ class WriteYAML(WorkSkill):
 
     def _read_input(self):
         input_path = self.get_input_path(self.skill_input)
-        kanban = load_from_md(input_path)
+        kanban = load_from_text(input_path)
         self.kanban_md = self.__kanban_transfer_to_ai_tasks(kanban)
 
     def execution_impl(self):

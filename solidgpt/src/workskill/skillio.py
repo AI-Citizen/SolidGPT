@@ -9,16 +9,18 @@ class SkillIOParamCategory(int, Enum):
     PlainText = 5
     KanbanBoard = 6
     YAML = 7
-
+    CODE_PLAIN_TEXT = 8
 
 class SkillInputLoadingMethod(Enum):
     LOAD_FROM_OUTPUT_ID = 1
     LOAD_FROM_STRING = 2
+    LOAD_FROM_CACHE_STRING = 3
 
 
 STRING_TO_SKILL_INPUT_LOADING_METHOD_DICT: dict[str, SkillInputLoadingMethod] = {
     str(SkillInputLoadingMethod.LOAD_FROM_OUTPUT_ID): SkillInputLoadingMethod.LOAD_FROM_OUTPUT_ID,
     str(SkillInputLoadingMethod.LOAD_FROM_STRING): SkillInputLoadingMethod.LOAD_FROM_STRING,
+    str(SkillInputLoadingMethod.LOAD_FROM_CACHE_STRING): SkillInputLoadingMethod.LOAD_FROM_CACHE_STRING,
 }
 
 
@@ -49,7 +51,6 @@ class SkillOutput:
         self.config = config
         self.id = config["id"]
 
-
 class SkillInput:
     config: dict = None
     param_name: str = ""
@@ -59,6 +60,7 @@ class SkillInput:
     loading_method: SkillInputLoadingMethod = SkillInputLoadingMethod.LOAD_FROM_STRING
     load_from_output_id: int = -1
     skill_output: SkillOutput = None
+    content: str = ""
 
     def __init__(self,
                  param_name: str,
@@ -83,6 +85,8 @@ class SkillInput:
             self.load_from_output_id = config["load_from_output_id"]
         else:
             self.load_from_output_id = -1
+        if self.loading_method == SkillInputLoadingMethod.LOAD_FROM_CACHE_STRING:
+            self.content = config["content"]
 
     def get_input_path(self):
         if self.loading_method == SkillInputLoadingMethod.LOAD_FROM_STRING:
@@ -90,3 +94,18 @@ class SkillInput:
         elif self.loading_method == SkillInputLoadingMethod.LOAD_FROM_OUTPUT_ID:
             return self.skill_output.param_path
         return ""
+    
+class SkillInputConfig:
+    def __init__(self, param_path: str, loading_method: SkillInputLoadingMethod, load_from_output_id: int, content: str = None):
+        self.param_path = param_path
+        self.loading_method = loading_method
+        self.load_from_output_id = load_from_output_id
+        self.content = content
+    
+    def to_dict(self):
+        return {
+            "param_path": self.param_path,
+            "loading_method": str(self.loading_method),
+            "load_from_output_id": self.load_from_output_id,
+            "content": self.content
+        }

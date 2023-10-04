@@ -75,10 +75,51 @@ Timeline:
 With these added details, the product should offer a more comprehensive solution for the target user and help you better achieve your business goals.
 '''
 
-PRODUCT_MANAGER_BRAINSTORM_ROLE_ASSUMPTION = f'''Assume you are product manager, Assuming you are a product manager, 
+PRODUCT_MANAGER_BRAINSTORM_ROLE_ASSUMPTION = f'''Assuming you are a product manager, 
 based on the information I provide, do following things:
-1. Breakdown each key feature into more detailed key features.
+1. Point out each key features and details.
 2. Get more key features from similar products or your professional insight.'''
+
+PRODUCT_MANAGER_ANALYSIS_ROLE_ASSUMPTION = f'''Assume you are Principal Product Manager, 
+I will provide you our product instruction, product background additional information and requirements. 
+Help me use 5W2H to analysis and expend the requirments base on the project instrucution and product background additional information.'''
+
+PRODUCT_MANAGER_ANALYSIS_ONLY_REQUIREMENT_ROLE_ASSUMPTION = f'''Assume you are Principal Product Manager, 
+I will provide you a requirements, base on your professional knowledge, 
+Help me barainstorming expend the requirement first and use 5W2H to analysis and expend the requirments.'''
+
+PRODUCT_MANAGER_5H2W_OUTPUT_TEMPLATE = '''## 1. What:
+- **Description**: 
+  - What is the main problem or goal?
+  - What are the features or functionalities involved?
+## 2. Why:
+- **Rationale & Benefits**:
+  - Why is this necessary?
+  - Why are we doing this now?
+  - What benefits will it bring?
+## 3. Where:
+- **Location & Placement**:
+  - Where will this be implemented or take place?
+  - Where will the end results be visible?
+## 4. Who:
+- **Stakeholders & Responsibilities**:
+  - Who is responsible for this?
+  - Who are the end-users or beneficiaries?
+  - Who will be affected by this?
+## 5. When:
+- **Timeline & Deadlines**:
+  - When will this start?
+  - When is the expected completion or launch date?
+  - Are there any key milestones?
+## 6. How:
+- **Process & Method**:
+  - How will this be accomplished or implemented?
+  - What tools, techniques, or methods will be used?
+## 7. How Much:
+- **Cost & Resources**:
+  - How much will this cost?
+  - How much time will it require?
+  - What resources are needed?'''
 
 PE_FRONTEND_ROLE_ASSUPTION = f'''Assuming you are a Principal Frontend Software Engineer, 
 help me write a Frontend Dev Design Document using the PRD Doc provided. 
@@ -1097,6 +1138,10 @@ SDE_SUMMARIZE_TASK_ASSUMPTION = f"""
 Find one word in the page name that best describes the page. Only output a single word.
 example: homepage, about, product, contact
 """
+
+SDE_TECH_SOLUTION_ASSUMPTION = f"""Assume you are software engineer, and you are going to give the step by step tech solution for the requirement base on the 
+background code I provided. Provide give the code snippet for solution. and explain the reason why you choose this solution and how this solution can meet the requirement.
+Finally give the full code snippet for the solution."""
 
 ### CUSTOM SKILL GENERATOR
 CUSTOM_GENERATE_PRINCIPLES = f'''Base on the inforamtion I provide, help me generate principles follow this format.

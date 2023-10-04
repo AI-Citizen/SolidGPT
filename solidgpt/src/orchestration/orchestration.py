@@ -1,3 +1,4 @@
+from solidgpt.src.workgraph.graph_helper import GraphStatus, GraphType
 from solidgpt.src.manager.initializer import Initializer
 from solidgpt.src.workgraph.workgraph import *
 
@@ -5,10 +6,19 @@ from solidgpt.src.workgraph.workgraph import *
 class GraphInfo:
     __graph: WorkGraph = None
     __graph_name: str = ""
+    graph_id: str
+    graph_type: GraphType
+    graph_status: GraphStatus
 
     def __init__(self, graph_name):
         self.__graph = WorkGraph()
         self.__graph_name = graph_name
+
+    def __init__(self, init_graph: WorkGraph, init_graph_id: str, graph_type: GraphType = None, graph_status: GraphStatus = None):
+        self.__graph = init_graph
+        self.graph_type = graph_type
+        self.graph_status = graph_status
+        self.graph_id = init_graph_id
 
     def get_graph(self):
         return self.__graph
@@ -18,8 +28,18 @@ class GraphInfo:
 
 
 class Orchestration:
-
+    _instance = None
     __graphs: list[GraphInfo] = []
+
+    # Using a dict to monitor the status of each graph, always update the status of the graph in the dict
+    # When the graph is completed and expired (e.g. 1 hour), remove the graph from the dict
+    graph_monitor: dict[str, GraphInfo] = {}
+
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super(Orchestration, cls).__new__(cls)
+            # You can initialize the instance attributes here
+        return cls._instance
 
     def __init__(self):
         Initializer()
@@ -42,6 +62,27 @@ class Orchestration:
         #     return
 
         self.__graphs.append(temp_graph)
+        return
+    
+    def add_graph(self, init_graph: WorkGraph, init_graph_id: str, graph_type: GraphType):
+        graph_info = GraphInfo(init_graph, init_graph_id, graph_type=graph_type, graph_status=GraphStatus.NotStarted)
+        self.graph_monitor[init_graph_id] = graph_info
+        return init_graph_id
+
+    def get_graph_status(self, graph_id: str) -> GraphStatus:
+        if graph_id not in self.graph_monitor:
+            return GraphStatus.NotStarted
+        return self.graph_monitor.get(graph_id).graph_status
+    
+    def run_graph_with_id(self, graph_id: str):
+        if graph_id not in self.graph_monitor:
+            logging.error("Cannot run graph, invalid graph id.")
+            return
+        self.graph_monitor[graph_id].graph_status = GraphStatus.Running
+        graph = self.graph_monitor[graph_id].get_graph()
+        graph.init_node_dependencies()
+        graph.execute()
+        self.graph_monitor[graph_id].graph_status = GraphStatus.Completed
         return
 
     def run_graph_with_index(self, graph_index: int):
@@ -79,3 +120,12 @@ class Orchestration:
             graph_str += str(idx) + ": " + graph.get_name() + "\n"
             idx += 1
         print(graph_str)
+
+
+# Running sample
+if __name__ == "__main__":
+    orchestration = Orchestration()
+    # onborading API call will trigger the following code
+    graph = build_onboarding_graph(os.path.join(TEST_SKILL_WORKSPACE, "in", "repo"), True)
+    graph_id = orchestration.add_graph(graph, GraphType.OnboardingGraph)
+    orchestration.run_graph_with_id(graph_id)
