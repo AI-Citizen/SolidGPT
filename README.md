@@ -8,7 +8,7 @@
 **V0.2.0:** Help you generate Product Requirement Document and Code Solution base on your private project with one line command.
 
 # 🔥New Release: [SolidGPT Cloud Service](https://calm-flower-017281610.3.azurestaticapps.net/)
-Just launched 🚀! Our Cloud Service lets you seamlessly integrate with your private backend. Design, tech, and PRD solutions for your project - all with a simple click! 
+Just launched 🚀! Our Cloud Service lets you seamlessly integrate with your private project. Design, tech, and PRD solutions for your project - all with a simple click! 
 Get a personal AI for everyone! Boost your work like never before
 
 
