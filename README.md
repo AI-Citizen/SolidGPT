@@ -16,6 +16,10 @@ Get a personal AI for everyone! Boost your work like never before
 
 >SolidGPT is a human-AI collaboration framework. Users can add private data and create their own agent workgraph using embedding finetuning and in-context learning simply with our framework. Our goal: empower AI to work with humans using tools to accomplish business tasks.
 
+### 📺 Demo
+![copy_FD8819CE-0A56-4E9C-A018-FA90700E7605](https://github.com/AI-Citizen/SolidGPT/assets/39673228/8ef57ba1-093e-4cc5-a07d-45b5c2dea850)
+
+
 # 🏁 Quick Start
 
 ## 🧱 **Prerequisite**
