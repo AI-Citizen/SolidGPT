@@ -1,0 +1,92 @@
+
+.continueactiobutton {
+  border-radius: var(--br-3xs);
+  background-color: var(--color-orange);
+  width: 18%;
+  height: 48.63px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 10px;
+  text-align: center;
+  vertical-align: middle;
+}
+.continueactiobutton:hover{
+  background-color: white; /* Change this to your desired hover color */
+}
+.actionbuttons {
+  position: absolute;
+  top: 90vh;
+  width: 100%;
+  height: 5vh;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 49px;
+}
+
+.node {
+  position: relative;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  width: 100%;
+  height: 41px;
+}
+.statusnodelist {
+  position: absolute;
+  top: -0.5px;
+  left: -0.5px;
+  width: 100%;
+  height: 4.5vh;
+}
+.statusnodelist {
+  top: 82vh;
+  left: 20px;
+  width: 93%;
+  height: 41px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 25px;
+}
+.markdownEditor {
+  position: relative;
+  line-height: 30px;
+  font-weight: 300;
+}
+.markdowneditor {
+  position: absolute;
+  top: 15px;
+  left: 8px;
+  border-radius: 5px;
+  width: 98%;
+  height:79vh;
+  display: flex;
+  flex-direction: column;
+  padding: 9px 9px;
+  box-sizing: border-box;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.mainview,
+.solidportal {
+  position: relative;
+  height: 100vh;
+}
+.mainview {
+  background-color: var(--color-mainview-background);
+  width: 100%;
+}
+.solidportal {
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  text-align: center;
+  font-size: var(--font-size-mini);
+  color: var(--color-black);
+  font-family: var(--font-inter);
+}

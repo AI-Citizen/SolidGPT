@@ -1,0 +1,160 @@
+.solidgpt {
+  position: relative;
+  left: 5%;
+  line-height: 30px;
+}
+.producttitlecomponent {
+  background-color: var(--color-orange);
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.35);
+  width: 100%;
+  min-height: 50px;
+  padding: 15px var(--padding-mini);
+  display: flex;
+  align-items: flex-start; /* changed from align-items: left; */
+  justify-content: flex-start; /* changed from justify-content: left; */
+  font-size: var(--font-size-5xl);
+  color: var(--color-whitesmoke);
+}
+
+.repofolderpath,
+.notionkey,
+.openaikey,
+.graphtype,
+.requirement,
+.productInfo,
+.startbutton {
+  margin-top: 20px; /* This adds spacing between elements */
+  background-color: var(--color-palegoldenrod);
+  width: 90%;
+  padding: 0 var(--padding-smi) 0 var(--padding-2xl);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-right: auto;
+  margin-left: auto;
+  padding-left: 5px;
+  border-radius: 5px;
+}
+
+.mostrecentrepoid {
+  margin-top: 20px; /* This adds spacing between elements */
+  background-color: var(--color-whitesmoke);
+  width: 90%;
+  padding: 0 var(--padding-smi) 0 var(--padding-2xl);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-right: auto;
+  margin-left: auto;
+  padding-left: 5px;
+}
+
+/* You can still differentiate some elements by height or other styles if necessary */
+.repofolderpath,
+.notionkey,
+.mostrecentrepoid,
+.openaikey,
+.graphtype,
+.startbutton {
+  height: 95px;
+}
+
+.notionkey,
+.mostrecentrepoid,
+.openaikey,
+.graphtype,
+.startbutton {
+  height: 50px;
+}
+.notionkey,
+.mostrecentrepoid,
+.openaikey,
+.graphtype,
+.startbutton {
+  top: 272px;
+  height: 50px;
+}
+.notionkey,
+.openaikey,
+.graphtype,
+.startbutton {
+  top: 216px;
+}
+.openaikey,
+.graphtype,
+.startbutton {
+  top: 160px;
+}
+.graphtype{
+  top: 104px;
+  border: none;
+  box-shadow: none;
+}
+.startbutton {
+  top: 90%;
+  border-radius: var(--br-3xs);
+  background-color: var(--color-orange);
+  width: 90%;
+  flex-direction: column;
+  text-align: left;
+  vertical-align: middle;
+  padding: 15px;
+  color: var(--color-black);
+}
+.startbutton:hover{
+  background-color: white; /* Change this to your desired hover color */
+}
+
+.userinputview {
+  background-color: var(--color-userinputview-background);
+  width: 32%;
+  height: 100vh;
+  overflow-y: auto; /* In case the content overflows */
+  text-align: left;
+  font-size: var(--font-size-mini);
+  color: var(--color-dimgray);
+  font-family: var(--font-inter);
+  border-top-right-radius: 5px;     /* Adjust the value as needed */
+  border-bottom-right-radius: 5px;  /* Adjust the value as needed */
+  box-shadow: 10px 0 15px -5px rgba(0, 0, 0, 0.3);
+}
+
+.repofolderpath,
+.mostrecentrepoid,
+.openaikey,
+.requirement,
+.productInfo {
+  border: 0.5px solid black;
+}
+
+.repofolderpath {
+  padding: 0 0 0 20px;
+}
+
+@media screen and (max-width: 500px) {
+  .userinputview {
+    width: 1000vh;
+  }
+}
+
+@media screen and (min-width: 500px) {
+  .userinputview {
+    width: 150%;
+  }
+}
+
+@media screen and (min-width: 600px) {
+  .userinputview {
+    width: 80%;
+  }
+}
+
+@media screen and (min-width: 750px) {
+  .userinputview {
+    width: 32%;
+  }
+}

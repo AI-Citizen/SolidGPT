@@ -70,6 +70,7 @@ class WriteYAML(WorkSkill):
                         error_count += 1
                         continue
                     save_to_yaml(os.path.join(self.skill_output.param_path, page_name), yaml)
+                    self._save_to_result_cache(self.skill_output, yaml)
                     self.reference_list.append(page_name)
                     break
 

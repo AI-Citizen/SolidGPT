@@ -34,6 +34,7 @@ class WritePRD(WorkSkill):
         print("Printing PRD result here...")
         brain_storm_product_info = self._run_product_brainstorm_model()
         prd = self.__run_write_prd_model(brain_storm_product_info)
+        self._save_to_result_cache(self.output_md, prd)
         save_to_md2(self.output_md.param_path, prd)
         return
     

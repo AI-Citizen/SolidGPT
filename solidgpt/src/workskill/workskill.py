@@ -1,4 +1,6 @@
 import logging
+
+from solidgpt.src.workgraph.displayresult import DisplayResult
 from solidgpt.src.workskill.skillio import *
 from solidgpt.src.constants import *
 
@@ -10,12 +12,16 @@ class WorkSkill:
     action: str = ""
     # Setup by node
     graph_cache: dict = {}
+    display_result: DisplayResult = None
+    callback_func = None
 
     def __init__(self):
         self.name = ""
         self.inputs = []
         self.outputs = []
         self.action = ""
+        self.display_result = DisplayResult()
+        self.callback_func = None
         return
 
     def add_input(self, skill_input: SkillInput):
@@ -46,6 +52,10 @@ class WorkSkill:
 
     def execution_impl(self):
         pass
+
+    def _save_to_result_cache(self, skill_output: SkillOutput, content: str):
+        if skill_output is not None and skill_output.to_display and content is not None:
+            self.display_result.set_result(content)
 
     def begin_execution(self):
         print("Node begins " + str(self.name) + " task...")
