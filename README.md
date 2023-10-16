@@ -49,8 +49,10 @@ pip3 install -r requirements.txt #installing the env
       sh StartServer.sh
       ```
     - Windows
-
+        
         ```
+        Note: redis server needs to be installed before running below commands
+        
         uvicorn solidgpt.src.api.api:app --reload
 
         celery -A solidgpt.src.api.celery_tasks worker --loglevel=info -P eventlet
