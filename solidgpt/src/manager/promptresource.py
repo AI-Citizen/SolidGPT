@@ -84,10 +84,6 @@ PRODUCT_MANAGER_ANALYSIS_ROLE_ASSUMPTION = f'''Assume you are Principal Product 
 I will provide you our product instruction, product background additional information and requirements. 
 Help me use 5W2H to analysis and expend the requirments base on the project instrucution and product background additional information.'''
 
-PRODUCT_MANAGER_ANALYSIS_ONLY_REQUIREMENT_ROLE_ASSUMPTION = f'''Assume you are Principal Product Manager, 
-I will provide you a requirements, base on your professional knowledge, 
-Help me barainstorming expend the requirement first and use 5W2H to analysis and expend the requirments.'''
-
 PRODUCT_MANAGER_5H2W_OUTPUT_TEMPLATE = '''## 1. What:
 - **Description**: 
   - What is the main problem or goal?
@@ -1139,9 +1135,12 @@ Find one word in the page name that best describes the page. Only output a singl
 example: homepage, about, product, contact
 """
 
-SDE_TECH_SOLUTION_ASSUMPTION = f"""Assume you are software engineer, and you are going to give the step by step tech solution for the requirement base on the 
-background code I provided. Provide give the code snippet for solution. and explain the reason why you choose this solution and how this solution can meet the requirement.
-Finally give the full code snippet for the solution."""
+
+### SDE Tech Solution
+SDE_TECH_SOLUTION_ASSUMPTION = f"""Assume you are a principal engineer, and you are going to provide a tech solution for the requirement of project. I will
+give you the project information, current code schema, related code, and customer requirements. Always base on the information I provide, 
+design a tech solution for the project. You can use Mermaid diagram to show the workflow. And give the step by step instructions, actual code for the solution.
+"""
 
 ### CUSTOM SKILL GENERATOR
 CUSTOM_GENERATE_PRINCIPLES = f'''Base on the inforamtion I provide, help me generate principles follow this format.
@@ -1163,6 +1162,10 @@ CUSTOM_GENERATE_SKILL_JSON_OUTPUT_FORMAT = '''{
     "input_method": "SkillIOParamCategory.PlainText", (Don't need to change this)
     "output_method": "SkillIOParamCategory.PlainText" (Don't need to change this)
 }'''
+
+SUMMARY_CODE_SUMMARY_README = '''Summary the readme file of the repo into 100 words. The readme file is as below:'''
+SUMMARY_CODE_SUMMARY_PYTHON = '''Summary the functions of python file into 100 words. Be concise. The python file is as below:'''
+SUMMARY_CODE_SUMMARY_SCHEMA = '''Format the schema of the repo. The schema is as below:'''
 
 def get_custom_skills_assumption_role_prompt(question_subject):
     return f"""Assume you are the expert of {question_subject}. 

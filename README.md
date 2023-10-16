@@ -5,19 +5,16 @@
 [![Twitter Follow](https://img.shields.io/twitter/follow/SolidGPT?style=social)](https://twitter.com/SolidGPT)
 
 # 🚀 What’s this
-**V0.2.0:** Help you generate Product Requirement Document and Code Solution base on your private project with one line command.
+Help you generate Product Requirement Document and Code Solution base on your private code repository.
 
-# 🔥New Release: [SolidGPT Cloud Service](https://calm-flower-017281610.3.azurestaticapps.net/)
-Just launched 🚀! Our Cloud Service lets you seamlessly integrate with your private project. Design, tech, and PRD solutions for your project - all with a simple click! 
-Get a personal AI for everyone! Boost your work like never before
-
-
-### 🔥🔥 [Click to try SolidGPT Cloud Service!](https://calm-flower-017281610.3.azurestaticapps.net/)
-
->SolidGPT is a human-AI collaboration framework. Users can add private data and create their own agent workgraph using embedding finetuning and in-context learning simply with our framework. Our goal: empower AI to work with humans using tools to accomplish business tasks.
+**V0.2.5:** Enable users to host the whole features of SolidGPT service locally while ensuring data privacy.
 
 ### 📺 Demo
 ![copy_FD8819CE-0A56-4E9C-A018-FA90700E7605](https://github.com/AI-Citizen/SolidGPT/assets/39673228/8ef57ba1-093e-4cc5-a07d-45b5c2dea850)
+
+### 🔥🔥 [Click to try official host SolidGPT](https://calm-flower-017281610.3.azurestaticapps.net/)
+
+If you like our work, please give us a 🌟 star. Your support serves as a great encouragement for us. Thank you! 😊
 
 
 # 🏁 Quick Start
@@ -25,7 +22,8 @@ Get a personal AI for everyone! Boost your work like never before
 ## 🧱 **Prerequisite**
 
 - python3.8 or above
-- [Openai api key](https://openai.com/blog/openai-api)
+- [OpenAI api key](https://openai.com/blog/openai-api)
+- [Install npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
 
 ## 🔧 **Setup**
 ```sh
@@ -33,11 +31,6 @@ git clone https://github.com/AI-Citizen/SolidGPT.git
 cd SolidGPT 
 pip3 install -r requirements.txt #installing the env
 ```
-- Input api keys at SolidGPT/solidgpt/src/configuration/Configuration.yaml
-
-    - input your openai api token 
-
-    - (optional)input your notion token and page id
 - Set project root folder as python path
   - Linux/Mac
       ```sh
@@ -49,42 +42,58 @@ pip3 install -r requirements.txt #installing the env
       ```cmd
       set PYTHONPATH=path\to\directory
       ```
+- ### Start Server
+    cd to the project root folder(SolidGPT)
+    - Linux/Mac/WSL2
+      ```sh
+      sh StartServer.sh
+      ```
+    - Windows
+    
+        Install the [WSL2](https://learn.microsoft.com/en-us/windows/wsl/install) and start the server from WSL2
+        ```sh
+        wsl --install
+        wsl2
+        sh StartServer.sh
+        ```
+    - Docker
+        ```sh
+        docker buildx build -t solidgptlocalhost .
+        docker run -p 8000:8000 solidgptlocalhost
+        ```
+- ### Start UI portal
+  - You'll need to install npm, and we recommend using version 9.8.1 or higher.
+
+    ```sh
+    # From the project root folder
+    cd solidportal/panel  
+    npm i && npm start
+    ```
 
 
-## 🔥 **Run**
 
+# 🏠 Introduction
+- SolidGPT first learns from your repository in the `Onboard Project` phase. 
 
-**Generate Technical Solution** - deeply integrate with your private project code to resolve your problem
+- After this, choose Generate PRD or Get Tech Solution for customized solutions based on the onboarded project.
 
-```sh
-cd quickstart
-python3 start_solution.py -r "your requiremennt" -c "/your/code/file/path"
-```
+## 📖 Onborading your project
 
+1. Choose `Onboard Project` from the top left dropdown.
+1. Enter your OpenAI API key.
+1. Upload your project folder.（All files will be save in your localstorage `SolidGPT/localstorage/...`）
+1. ❗️Note: After completing the Onboard Project, an Onboard ID will be generated. If you remain in the same browser session, it will be automatically applied to subsequent actions. Alternatively, you can save it and manually input it in the future to bypass onboarding.
 
-**Generate PRD** - deeply integrate with your private project inforamtion to generate the Product Requirement Document
+## 🧮 Get Technical Solution
+1. Choose `Get Tech Solution` from the top left dropdown.
+1. Enter your OpenAI API key.
+1. Input your problem/Requirement.
 
-***Default ouput path is SolidGPT/quickstart***
-
-```sh
-cd quickstart
-python3 start_prd.py -r "your requiremennt" -a <your project background>(optional) -b </your/project/wiki/file/path>(optional)
-```
-### Samples
-***Generate Technical Solutions Sample***
-```sh
-
-python3 start_solution.py -r "Help me integrate donate api with paypal api" -c /your/relateived/code/file/path
-```
-***Generate PRD Samples***
-```sh
-
-# No private data writing PRD
-python3 start_prd.py -r "Help me write a blog plateform prd"
-# Adding Private data into the consideration 
-python3 start_prd.py -r "Adding donate feature to my blog" -b /my/project/wiki/file/path.md
-python3 start_prd.py -r "Adding donate feature to my blog" -a "I am pleased to introduce our specialized U.S. stock blogging platform. This platform not only enables users to register and submit insightful articles but also allows readers to comment, share their trading perspectives, and keep abreast of breaking financial news. It has been thoughtfully designed to cultivate a robust exchange of ideas and information amongst financial enthusiasts."
-python3 start_prd.py -r "Adding donate feature to my blog" -b /my/project/wiki/file/path.md -a "I am pleased to introduce our specialized U.S. stock blogging platform. This platform not only enables users to register and submit insightful articles but also allows readers to comment, share their trading perspectives, and keep abreast of breaking financial news. It has been thoughtfully designed to cultivate a robust exchange of ideas and information amongst financial enthusiasts."
+Note: We currently support Python, JavaScript, and TypeScript projects. Support for more languages is on the way.
+## 📁 Generate Product Requirement Document
+1. Choose `Generate RPD` from the top left dropdown.
+1. input your requirement (suggest short and clear)
+1. input additional info or your project, SolidGPT will use both summary from repository and additional info you provided (optinoal)
 ```
 
 ## 🖇️ Document

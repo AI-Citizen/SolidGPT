@@ -3,6 +3,7 @@ import os
 import time
 from solidgpt.src.saveload.saveload import *
 from solidgpt.src.tools.notion.notionactions import NotionActions
+from solidgpt.src.workgraph.displayresult import DisplayResult
 
 
 class WorkGraph:
@@ -11,8 +12,10 @@ class WorkGraph:
     node_map: dict[str, WorkNode] = {}
     output_map: dict[int, SkillOutput] = {}
     output_id_to_node_map: dict[int, WorkNode] = {}
+    display_result: DisplayResult
     notion = None
     cache = {}
+    callback_map: dict = {}
 
     def __init__(self, output_directory_path_override: str = "", output_id = None):
         # need to manually initialize here
@@ -20,6 +23,8 @@ class WorkGraph:
         self.node_map = {}
         self.output_map = {}
         self.output_id_to_node_map = {}
+        self.callback_map = {}
+        self.display_result = DisplayResult()
         self.output_directory_path = os.path.join(LOCAL_STORAGE_OUTPUT_DIR, output_id or time.strftime("%Y%m%d%H%M%S"))
         if output_directory_path_override:
             self.output_directory_path = os.path.abspath(output_directory_path_override)
@@ -39,6 +44,14 @@ class WorkGraph:
         for node in self.nodes:
             # add node to node map
             self.node_map[node.node_id] = node
+
+            # initialize display_result for children
+            node.display_result = self.display_result
+            node.skill.display_result = self.display_result
+
+            # intialize callback func for skills
+            if node.skill.name in self.callback_map:
+                node.skill.callback_func = self.callback_map.get(node.skill.name, None)
 
             # create directory for node
             node_directory_path = os.path.join(self.output_directory_path,

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Folder Upload</title>
+</head>
+<body>
+    <label for="serverURL">Server URL: </label>
+    <input type="text" id="serverURL" value="https://www.example.com/">
+    <br>
+    <label for="openaiKey">openai_key: </label>
+    <input type="text" id="openaiKey" value="00000">
+    <br>
+    <label for="uploadId">upload_id: </label>
+    <input type="text" id="uploadId" value="00000">
+    <br>
+    <label for="onboardId">onboarding_id: </label>
+    <input type="text" id="onboardId" value="00000">
+    <br>
+    <label for="graphId">current graph_id: </label>
+    <input type="text" id="graphId" value="00000">
+    <br>
+    <label for="requirement">requirement: </label>
+    <input type="text" id="requirement" value="00000">
+    <br>
+    <label for="edit_content">edit_content: </label>
+    <input type="text" id="edit_content" value="00000">
+    <br>
+    <label for="project_additional_info">project_additional_info: </label>
+    <input type="text" id="project_additional_info" value="00000">
+
+
+    <br><br>
+    <button onclick="testGet()">Test Get</button>
+    <button onclick="testPost()">Test Post</button>
+    <br><br><br><br>
+    <input type="file" id="folderInput" webkitdirectory directory multiple />
+<!--    <button onclick="uploadFiles()">Upload</button>-->
+    <button onclick="onboardRepo()">Onboard Repo</button>
+    <button onclick="uploadAllFiles()">Upload All Files</button>
+    <button onclick="removeAllFiles()">Remove All Files</button>
+    <br><br>
+    <button onclick="runPrdGraph()">Run PRD Graph</button>
+    <br><br>
+    <button onclick="runTechSolutionGraph()">Run Tech Solution Graph</button>
+    <br><br><br><br>
+    <button onclick="getGraphStatus()">Graph Status</button>
+    <button onclick="getUploadStatus()">Upload Status</button>
+    <!-- Link the external JavaScript file -->
+    <script src="pagescript.js"></script>
+</body>
+</html>

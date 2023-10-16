@@ -34,6 +34,7 @@ class SkillOutput:
     param_category: SkillIOParamCategory = SkillIOParamCategory.BusinessRequirementsDocument
     param_path: str = ""
     id: int = -1
+    to_display: bool = False
 
     def __init__(self,
                  param_name: str,
@@ -44,12 +45,15 @@ class SkillOutput:
         self.param_category = param_category
         self.param_path = ""
         self.id = -1
+        self.to_display = False
 
     def apply_config(self, config):
         if config is None:
             return
         self.config = config
         self.id = config["id"]
+        self.to_display = config.get("to_display", False)
+
 
 class SkillInput:
     config: dict = None

@@ -21,3 +21,15 @@ numpy==1.24.0
 pandas==2.1.1
 notional==0.8.0
 notion2md==2.8.3
+azure-storage-blob==12.18.1
+langchain==0.0.292
+langsmith==0.0.38
+qdrant_client==1.5.4
+fastapi==0.103.1
+python-multipart==0.0.6
+uvicorn==0.23.2
+celery~=5.3.4
+redis==4.6.0
+rq==1.15.1
+eventlet==0.33.3
+tiktoken==0.5.1

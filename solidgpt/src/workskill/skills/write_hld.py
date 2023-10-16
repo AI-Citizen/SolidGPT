@@ -30,6 +30,7 @@ class WriteHLD(WorkSkill):
         print("Printing HLD result here...")
         hld_md = self.__run_write_hld_model()
         save_to_md2(self.skill_output.param_path, hld_md)
+        self._save_to_result_cache(self.skill_output, hld_md)
         return
     
     def __run_write_hld_model(self,):

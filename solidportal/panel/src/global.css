@@ -1,0 +1,35 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;700&display=swap");
+body {
+  margin: 0;
+  line-height: normal;
+}
+:root {
+  /* fonts */
+  --font-inter: Inter;
+
+  /* font sizes */
+  --font-size-mini: 15px;
+  --font-size-5xl: 24px;
+
+  /* Colors */
+  --color-white: #fff;
+  --color-ivory: #fffbeb;
+  --color-black: #000;
+  --color-orange: #ff870a;
+  --color-palegoldenrod: #ffeca9;
+  --color-dimgray: #595959;
+  --color-whitesmoke: #eee;
+  --color-userinputview-background: rgb(255, 255, 255);
+  --color-mainview-background: rgb(233, 233, 233);
+
+  /* Paddings */
+  --padding-6xs: 7px;
+  --padding-123xl: 142px;
+  --padding-smi: 13px;
+  --padding-2xl: 21px;
+  --padding-mini: 15px;
+
+  /* Border radiuses */
+  --br-3xs: 10px;
+  --br-mini: 15px;
+}
