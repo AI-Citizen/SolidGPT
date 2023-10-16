@@ -49,8 +49,14 @@ pip3 install -r requirements.txt #installing the env
       sh StartServer.sh
       ```
     - Windows
+
+        ```
+        uvicorn solidgpt.src.api.api:app --reload
+
+        celery -A solidgpt.src.api.celery_tasks worker --loglevel=info -P eventlet
+        ```
     
-        Install the [WSL2](https://learn.microsoft.com/en-us/windows/wsl/install) and start the server from WSL2
+        Or install the [WSL2](https://learn.microsoft.com/en-us/windows/wsl/install) and start the server from WSL2
         ```sh
         wsl --install
         wsl2
@@ -94,7 +100,7 @@ Note: We currently support Python, JavaScript, and TypeScript projects. Support 
 1. Choose `Generate RPD` from the top left dropdown.
 1. input your requirement (suggest short and clear)
 1. input additional info or your project, SolidGPT will use both summary from repository and additional info you provided (optinoal)
-```
+
 
 ## 🖇️ Document
 [Explore SolidGPT](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/READMEv1.md)
