@@ -49,12 +49,22 @@ pip3 install -r requirements.txt #installing the env
       sh StartServer.sh
       ```
     - Windows
-    
+
         Install the [WSL2](https://learn.microsoft.com/en-us/windows/wsl/install) and start the server from WSL2
         ```sh
         wsl --install
         wsl2
         sh StartServer.sh
+        ```
+        
+        Or install directly on Windows [Not Recommended]
+        
+        Note: redis server needs to be installed before running below commands:
+        https://github.com/microsoftarchive/redis/releases
+        ```
+        uvicorn solidgpt.src.api.api:app --reload
+
+        celery -A solidgpt.src.api.celery_tasks worker --loglevel=info -P eventlet
         ```
     - Docker
         ```sh
@@ -94,7 +104,7 @@ Note: We currently support Python, JavaScript, and TypeScript projects. Support 
 1. Choose `Generate RPD` from the top left dropdown.
 1. input your requirement (suggest short and clear)
 1. input additional info or your project, SolidGPT will use both summary from repository and additional info you provided (optinoal)
-```
+
 
 ## 🖇️ Document
 [Explore SolidGPT](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/READMEv1.md)
