@@ -49,20 +49,22 @@ pip3 install -r requirements.txt #installing the env
       sh StartServer.sh
       ```
     - Windows
-        
-        ```
-        Note: redis server needs to be installed before running below commands
-        
-        uvicorn solidgpt.src.api.api:app --reload
 
-        celery -A solidgpt.src.api.celery_tasks worker --loglevel=info -P eventlet
-        ```
-    
-        Or install the [WSL2](https://learn.microsoft.com/en-us/windows/wsl/install) and start the server from WSL2
+        Install the [WSL2](https://learn.microsoft.com/en-us/windows/wsl/install) and start the server from WSL2
         ```sh
         wsl --install
         wsl2
         sh StartServer.sh
+        ```
+        
+        Or install directly on Windows [Not Recommended]
+        
+        Note: redis server needs to be installed before running below commands:
+        https://github.com/microsoftarchive/redis/releases
+        ```
+        uvicorn solidgpt.src.api.api:app --reload
+
+        celery -A solidgpt.src.api.celery_tasks worker --loglevel=info -P eventlet
         ```
     - Docker
         ```sh
