@@ -94,7 +94,7 @@ Note: We currently support Python, JavaScript, and TypeScript projects. Support 
 1. Choose `Generate RPD` from the top left dropdown.
 1. input your requirement (suggest short and clear)
 1. input additional info or your project, SolidGPT will use both summary from repository and additional info you provided (optinoal)
-```
+
 
 ## 🖇️ Document
 [Explore SolidGPT](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/READMEv1.md)
