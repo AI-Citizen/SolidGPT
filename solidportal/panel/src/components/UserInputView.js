@@ -405,11 +405,11 @@ const UserInputView = ({   showView,
                 </option> */}
                 <option value={stringConstant.OnboardProject} style={{fontSize: '13px'}}>{stringConstant.OnboardProject}
                 </option>
+                <option value={GraphType.RepoChat} style={{fontSize: '13px'}}>{GraphType.RepoChat}
+                </option>
                 <option value={stringConstant.GeneratePRD} style={{fontSize: '13px'}}>{stringConstant.GeneratePRD}
                 </option>
                 <option value={stringConstant.TechSolution} style={{fontSize: '13px'}}>{stringConstant.TechSolution}
-                </option>
-                <option value={GraphType.RepoChat} style={{fontSize: '13px'}}>{GraphType.RepoChat}
                 </option>
         </select>
         {selectedGraphType === stringConstant.OnboardProject && <div className={styles.repofolderpath}>
@@ -473,7 +473,9 @@ const UserInputView = ({   showView,
             <Button className={styles.startbutton}
                     onClick={startClicked}
                     disabled={selectedGraphType === "" || disableStart.current}
-            >Start</Button>
+            >
+                {selectedGraphType === GraphType.RepoChat ? "Send" : "Start"}
+            </Button>
         </div>
         {localStorage.getItem(config.GraphId) !== '' &&
             <div className={styles.mostrecentrepoid}>
