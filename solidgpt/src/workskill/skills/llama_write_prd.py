@@ -3,8 +3,7 @@ from solidgpt.src.manager.promptresource import PRODUCT_MANAGER_BRAINSTORM_OUTPU
 from solidgpt.src.util.util import *
 from solidgpt.src.workskill.workskill import *
 
-class WritePRD(WorkSkill):
-
+class WritePRDLlama(WorkSkill):
     def __init__(self):
         super().__init__()
         self.llm_manager = LLAManager._instance

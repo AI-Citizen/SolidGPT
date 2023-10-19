@@ -3,13 +3,7 @@ from solidgpt.src.manager.promptresource import PRODUCT_MANAGER_5H2W_OUTPUT_TEMP
 from solidgpt.src.util.util import *
 from solidgpt.src.workskill.workskill import *
 
-Cache_Label_Repos_Summary = "ReposSummary"
-Cache_Label_Repos_Schema = "ReposSchema"
-Cache_Label_Requirements = "Requirements"
-Cache_Label_Product_Analysis = "ProductAnalysis"
-
-class ProductAnalysis(WorkSkill):
-
+class ProductAnalysisLlama(WorkSkill):
     def __init__(self):
         super().__init__()
         self.llm_manager = LLAManager._instance
@@ -39,7 +33,6 @@ class ProductAnalysis(WorkSkill):
         self.requirements_content = None
 
     def _read_input(self):
-        # Get from cache or read from file
         if self.additional_info is None:
             self.additional_info_content = self.additional_info.content
         if self.repo_summary_content is None:
