@@ -238,6 +238,7 @@ const SolidPortal = () => {
                             previewOptions={{
                                 rehypePlugins: [[rehypeSanitize]],
                             }}
+                            preview={selectedGraphType === stringConstant.GeneratePRD ? 'live' : 'preview'}
                         />
                     </div>
                 </div>

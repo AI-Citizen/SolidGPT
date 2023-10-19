@@ -5,12 +5,12 @@
 [![Twitter Follow](https://img.shields.io/twitter/follow/SolidGPT?style=social)](https://twitter.com/SolidGPT)
 
 # 🚀 What’s this
-Help you generate Product Requirement Document and Code Solution base on your private code repository.
+Chat everything with your code repository, ask repository level code questions, and discuss your requirements. AI Scan and learning your code repository, and utilize your repository to seek code advice, develop coding plans, and generate a product requirement document using the information it holds.
 
-**V0.2.5:** Enable users to host the whole features of SolidGPT service locally while ensuring data privacy.
+***Chat with Your Code Repository (Beta) Published***
+Chat everything with your code repository, ask repository level code questions, and discuss your requirements.
+<img width="1506" alt="Screen Shot 2023-10-18 at 11 10 47 PM" src="https://github.com/AI-Citizen/SolidGPT/assets/39673228/3164a280-755a-4f05-8848-ec61c570a420">
 
-### 📺 Demo
-![copy_FD8819CE-0A56-4E9C-A018-FA90700E7605](https://github.com/AI-Citizen/SolidGPT/assets/39673228/8ef57ba1-093e-4cc5-a07d-45b5c2dea850)
 
 ### 🔥🔥 [Click to try official host SolidGPT](https://calm-flower-017281610.3.azurestaticapps.net/)
 
@@ -105,6 +105,8 @@ Note: We currently support Python, JavaScript, and TypeScript projects. Support 
 1. input your requirement (suggest short and clear)
 1. input additional info or your project, SolidGPT will use both summary from repository and additional info you provided (optinoal)
 
+### 📺 Demo(v0.2.5)
+![copy_FD8819CE-0A56-4E9C-A018-FA90700E7605](https://github.com/AI-Citizen/SolidGPT/assets/39673228/8ef57ba1-093e-4cc5-a07d-45b5c2dea850)
 
 ## 🖇️ Document
 [Explore SolidGPT](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/READMEv1.md)

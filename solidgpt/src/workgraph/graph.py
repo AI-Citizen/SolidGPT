@@ -3,12 +3,14 @@ import glob
 import openai
 from solidgpt.definitions import LOCAL_STORAGE_OUTPUT_DIR, TEST_SKILL_WORKSPACE
 from solidgpt.src.manager.gptmanager import GPTManager
+from solidgpt.src.util.util import save_to_json
 from solidgpt.src.workgraph.workgraph import WorkGraph
 from solidgpt.src.worknode.worknode import WorkNode
 from solidgpt.src.workskill.skillio import SkillInputConfig, SkillInputLoadingMethod
 from solidgpt.src.workskill.skills.analysis import ProductAnalysis
 from solidgpt.src.workskill.skills.load_repo import LoadRepo
 from solidgpt.src.workskill.skills.query_code_local import QueryCodeLocal
+from solidgpt.src.workskill.skills.repo_chat import RepoChat
 from solidgpt.src.workskill.skills.summarize_file import SummaryFile
 from solidgpt.src.workskill.skills.summary_file_local import SummaryFileLocal
 from solidgpt.src.workskill.skills.summary_project import SummaryProject
@@ -120,6 +122,42 @@ def build_tech_solution_graph(requirement: str, onboarding_graph_id: str, output
                                                           SkillInputConfig(code_shema_path, SkillInputLoadingMethod.LOAD_FROM_STRING, -1),
                                                           SkillInputConfig(code_summary_path, SkillInputLoadingMethod.LOAD_FROM_STRING, -1),
                                                           SkillInputConfig("", SkillInputLoadingMethod.LOAD_FROM_CACHE_STRING, -1, requirement)
+                                                      ],
+                                                      [
+                                                          {"id": 1, "to_display": True}
+                                                      ])
+    
+    graph.add_node(query_code)
+    graph.add_node(tech_solution)
+    return graph
+
+def build_repo_chat_graph(requirement: str, onboarding_graph_id: str, output_id: str):
+    graph = WorkGraph(output_id=output_id)
+    onboarding_folder_path = os.path.join(LOCAL_STORAGE_OUTPUT_DIR, onboarding_graph_id)
+    code_shema_path = glob.glob(os.path.join(onboarding_folder_path, 'Summary_project_*', "Code_Schema_*"))[0]
+    code_summary_path = glob.glob(os.path.join(onboarding_folder_path, 'Summary_project_*', "Code_Summary_*"))[0]
+    history_context_path = os.path.join(onboarding_folder_path, f'{onboarding_graph_id}_repochat.json')
+    # Create history context json file if not exist
+    # Define the path to the JSON file
+    history_context_path = os.path.join(onboarding_folder_path, f'{onboarding_graph_id}_repochat.json')
+
+    # Check if the file already exists
+    if not os.path.exists(history_context_path):
+        # Create a default JSON data structure if the file doesn't exist
+        default_data = {"HistoryContent": []}
+        save_to_json(default_data, history_context_path)
+    
+    query_code = generate_node("0", QueryCodeLocal(),
+                                 [
+                                    SkillInputConfig("", SkillInputLoadingMethod.LOAD_FROM_CACHE_STRING, -1, onboarding_graph_id),
+                                    SkillInputConfig("", SkillInputLoadingMethod.LOAD_FROM_CACHE_STRING, -1, requirement),
+                                 ], output_ids=[0])
+    tech_solution = generate_node_with_output_configs("1", RepoChat(),
+                                                      [
+                                                          SkillInputConfig(code_shema_path, SkillInputLoadingMethod.LOAD_FROM_STRING, -1),
+                                                          SkillInputConfig(code_summary_path, SkillInputLoadingMethod.LOAD_FROM_STRING, -1),
+                                                          SkillInputConfig("", SkillInputLoadingMethod.LOAD_FROM_CACHE_STRING, -1, requirement),
+                                                          SkillInputConfig(history_context_path, SkillInputLoadingMethod.LOAD_FROM_STRING, -1),
                                                       ],
                                                       [
                                                           {"id": 1, "to_display": True}

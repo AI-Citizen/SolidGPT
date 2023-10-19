@@ -7,7 +7,7 @@ def save_to_json(data, filename="data.json"):
     create_directories_if_not_exist(filename)
     # Save data to a JSON file
     with open(filename, "w") as json_file:
-        json.dump(data, json_file, indent=4)
+        print(json.dump(data, json_file, indent=4))
 
 
 def load_from_json(filename="data.json"):

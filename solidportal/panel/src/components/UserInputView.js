@@ -5,6 +5,7 @@ import {useRef, useEffect, useState} from "react";
 import axios from "axios";
 import config from "../config/config";
 import stringConstant from "../config/stringConstant";
+import GraphType from "../config/graphType";
 
 
 const UserInputView = ({   showView,
@@ -189,6 +190,15 @@ const UserInputView = ({   showView,
                 return true
             }
         }
+        else if(graphType === GraphType.RepoChat) {
+            if (openAIKeyRef.current === "" || userRequirementRef.current === "" || (onboardIdRef.current === "" && recentOnboardId === "")) {
+                disableStart.current = true
+                return false
+            } else {
+                disableStart.current = false
+                return true
+            }
+        }
     }
     const uploadFiles = async () => {
         if (repoRootFolder) {
@@ -278,6 +288,13 @@ const UserInputView = ({   showView,
                 ])
                 setCurrentRunningSubgraphName("Step1: Generating Technical Solution")
             }
+        } else if (selectedGraphType === GraphType.RepoChat) {
+            if(await RepoChat()) {
+                setTotalSubgraph([
+                    "Chat with your repository",
+                ])
+                setCurrentRunningSubgraphName("Chat with your repository")
+            }
         }
     }
 
@@ -339,6 +356,33 @@ const UserInputView = ({   showView,
         }
     }
 
+    const RepoChat = async () => {
+        disableStart.current = true
+        const requestBody = JSON.stringify({
+            openai_key: openAIKey,
+            onboarding_id: localStorage.getItem(config.GraphId),
+            requirement: userRequirement,
+        })
+        setSaveMdEditorValue(stringConstant.WaitHint)
+        try {
+            const response = await axios.post(config.ApiBaseUrl + '/repochat', requestBody, {
+                headers: config.CustomHeaders,
+            });
+            if (response.status === 200) {
+                localStorage.setItem(config.CurrentGraphId, response.data.graph_id)
+                setGetStatusCall(true)
+                return true
+            } else {
+                setSaveMdEditorValue(stringConstant.APIFail)
+            }
+        } catch (error) {
+            setSaveMdEditorValue(error.message)
+            console.error('Error:', error);
+            window.alert(error);
+            return false
+        }
+    }
+
     const onboardRepo = async () => {
         if (openAIKey === null || openAIKey === '') {
             window.alert(stringConstant.OpenAIKeyAlert);
@@ -360,6 +404,8 @@ const UserInputView = ({   showView,
                     Select An Action To Start
                 </option> */}
                 <option value={stringConstant.OnboardProject} style={{fontSize: '13px'}}>{stringConstant.OnboardProject}
+                </option>
+                <option value={GraphType.RepoChat} style={{fontSize: '13px'}}>{GraphType.RepoChat}
                 </option>
                 <option value={stringConstant.GeneratePRD} style={{fontSize: '13px'}}>{stringConstant.GeneratePRD}
                 </option>
@@ -391,6 +437,17 @@ const UserInputView = ({   showView,
                     />
                 </div>
             </div>}
+        {(selectedGraphType === GraphType.RepoChat)
+        && <div>
+            <div>
+                <TextArea className={styles.requirement} bordered={false}
+                        value={userRequirement}
+                        onChange={handleUserRequirementInputChange}
+                        autoSize={{minRows: 8, maxRows: 8}}
+                        allowClear placeholder="Send a message"
+                />
+            </div>
+        </div>}
         {selectedGraphType === stringConstant.GeneratePRD && <div>
             <div>
                 <TextArea className={styles.productInfo} bordered={false}
@@ -416,7 +473,9 @@ const UserInputView = ({   showView,
             <Button className={styles.startbutton}
                     onClick={startClicked}
                     disabled={selectedGraphType === "" || disableStart.current}
-            >Start</Button>
+            >
+                {selectedGraphType === GraphType.RepoChat ? "Send" : "Start"}
+            </Button>
         </div>
         {localStorage.getItem(config.GraphId) !== '' &&
             <div className={styles.mostrecentrepoid}>

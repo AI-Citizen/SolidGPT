@@ -1,4 +1,4 @@
-const stringConstant = {
+export const stringConstant = {
     UploadStatus: "Upload Status: ",
     Current: "Current:",
     Total: "Total:",

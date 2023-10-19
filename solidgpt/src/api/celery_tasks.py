@@ -103,3 +103,13 @@ def celery_task_tech_solution_graph(openai_key, requirement, onboarding_id, grap
     g.execute()
     text_result = g.display_result.get_result()
     return text_result
+
+@app.task
+def celery_task_repo_chat_graph(openai_key, requirement, onboarding_id, graph_id):
+    logging.info("celery task: tech solution graph")
+    openai.api_key = openai_key
+    g = build_repo_chat_graph(requirement, onboarding_id, graph_id)
+    g.init_node_dependencies()
+    g.execute()
+    text_result = g.display_result.get_result()
+    return text_result
