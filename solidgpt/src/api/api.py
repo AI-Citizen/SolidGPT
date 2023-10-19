@@ -168,6 +168,26 @@ async def generate_tech_solution(body: dict = Body(...)):
         "current_work_name": "tech solution"
     }, status_code=200)
 
+@app.post("/repochat")
+async def repo_chat(body: dict = Body(...)):
+    # Enqueue the background task: tech solution
+    logging.info("celery task: repo chat graph")
+    graph_id = str(uuid.uuid4())
+    onboarding_id = body['onboarding_id']
+    openai_key = body['openai_key']
+    requirement = body['requirement']
+    result = celery_task_repo_chat_graph.apply_async(args=[
+        openai_key, requirement, onboarding_id, graph_id])
+    graph_result = GraphResult(result, "Repo chat Graph")
+    graph_result_map[graph_id] = graph_result
+
+    return JSONResponse(content={
+        "message": f"Running repo chat graph...",
+        "graph_id": graph_id,
+        "is_final": True,
+        "current_work_name": "repo chat"
+    }, status_code=200)
+
 
 @app.post("/uploadrepo")
 async def upload_repo(body: dict = Body(...)):
