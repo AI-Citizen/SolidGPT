@@ -7,3 +7,7 @@ notion_api_key :
 notion_page_id :
 
 azure_blob_connection_string:
+
+#Huggingface API
+HF_API_LLAMA2_BASE : 
+HF_API_KEY : 
