@@ -1,6 +1,6 @@
 from solidgpt.src.manager.initializer import Initializer
 from solidgpt.src.workgraph.workgraph import *
-from solidgpt.src.workskill.skills.llama_analysis import ProductAnalysis
+from solidgpt.src.workskill.skills.llama_analysis import ProductAnalysisLlama
 
 
 TEST_SKILL_WORKSPACE = os.path.join(TEST_DIR, "workskill", "skills", "workspace")
@@ -8,7 +8,7 @@ TEST_SKILL_WORKSPACE = os.path.join(TEST_DIR, "workskill", "skills", "workspace"
 def run_test():
     Initializer()
     app = WorkGraph()
-    skill: WorkSkill = ProductAnalysis()
+    skill: WorkSkill = ProductAnalysisLlama()
     requirement_input_path = os.path.join(TEST_SKILL_WORKSPACE, "in", "ProductRequirements.txt")
     schema_input_path = os.path.join(TEST_SKILL_WORKSPACE, "in", "RepoSchema.txt")
     introduction_input_path = os.path.join(TEST_SKILL_WORKSPACE, "in", "ProductIntroduction.txt")
