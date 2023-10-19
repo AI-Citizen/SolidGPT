@@ -9,6 +9,8 @@ Chat everything with your code repository, ask repository level code questions, 
 
 ***Chat with Your Code Repository (Beta) Published***
 Chat everything with your code repository, ask repository level code questions, and discuss your requirements.
+<img width="1506" alt="Screen Shot 2023-10-18 at 11 10 47 PM" src="https://github.com/AI-Citizen/SolidGPT/assets/39673228/3164a280-755a-4f05-8848-ec61c570a420">
+
 
 ### 🔥🔥 [Click to try official host SolidGPT](https://calm-flower-017281610.3.azurestaticapps.net/)
 
