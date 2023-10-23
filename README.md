@@ -5,10 +5,10 @@
 [![Twitter Follow](https://img.shields.io/twitter/follow/SolidGPT?style=social)](https://twitter.com/SolidGPT)
 
 # 🚀 What’s this
-Chat everything with your code repository, ask repository level code questions, and discuss your requirements. AI Scan and learning your code repository, and utilize your repository to seek code advice, develop coding plans, and generate a product requirement document using the information it holds.
+Chat everything with your code repository, ask repository level code questions, and discuss your requirements. AI scans and learns from your code to seek coding advice, develop coding plans, and generate a product requirement documents using the information in the repository.
 
 ***Chat with Your Code Repository (Beta) Published***
-Chat everything with your code repository, ask repository level code questions, and discuss your requirements.
+Chat with everything with your code repository, ask repository level code questions, and discuss your requirements.
 <img width="1506" alt="Screen Shot 2023-10-18 at 11 10 47 PM" src="https://github.com/AI-Citizen/SolidGPT/assets/39673228/3164a280-755a-4f05-8848-ec61c570a420">
 
 
@@ -31,7 +31,7 @@ git clone https://github.com/AI-Citizen/SolidGPT.git
 cd SolidGPT 
 pip3 install -r requirements.txt #installing the env
 ```
-- Set project root folder as python path
+- Set the project root folder as python path
   - Linux/Mac
       ```sh
       export PYTHONPATH=$PYTHONPATH:$(git rev-parse --show-toplevel)/
@@ -43,7 +43,7 @@ pip3 install -r requirements.txt #installing the env
       set PYTHONPATH=path\to\directory
       ```
 - ### Start Server
-    cd to the project root folder(SolidGPT)
+    cd into the project root folder(SolidGPT)
     - Linux/Mac/WSL2
       ```sh
       sh StartServer.sh
@@ -87,7 +87,7 @@ pip3 install -r requirements.txt #installing the env
 
 - After this, choose Generate PRD or Get Tech Solution for customized solutions based on the onboarded project.
 
-## 📖 Onborading your project
+## 📖 Onboarding your project
 
 1. Choose `Onboard Project` from the top left dropdown.
 1. Enter your OpenAI API key.
@@ -102,8 +102,8 @@ pip3 install -r requirements.txt #installing the env
 Note: We currently support Python, JavaScript, and TypeScript projects. Support for more languages is on the way.
 ## 📁 Generate Product Requirement Document
 1. Choose `Generate RPD` from the top left dropdown.
-1. input your requirement (suggest short and clear)
-1. input additional info or your project, SolidGPT will use both summary from repository and additional info you provided (optinoal)
+1. Input your requirement (suggest short and clear)
+1. Input additional info or your project, SolidGPT will both use a summary from the repository and additional info you provide (optional)
 
 ### 📺 Demo(v0.2.5)
 ![copy_FD8819CE-0A56-4E9C-A018-FA90700E7605](https://github.com/AI-Citizen/SolidGPT/assets/39673228/8ef57ba1-093e-4cc5-a07d-45b5c2dea850)
