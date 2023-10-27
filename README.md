@@ -24,7 +24,7 @@ If you like our work, please give us a 🌟 star. Your support serves as a great
 - python3.8 or above
 - [OpenAI api key](https://openai.com/blog/openai-api)
 - [Install npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
-- [Install & run redis (Mac)](https://redis.io/docs/install/install-redis/install-redis-on-mac-os/)
+- [Install & run redis](https://redis.io/docs/install/install-redis/install-redis-on-mac-os/)
 ## 🔧 **Setup**
 ```sh
 git clone https://github.com/AI-Citizen/SolidGPT.git
