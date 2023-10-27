@@ -5,10 +5,12 @@ import {Button, FloatButton} from "antd";
 import {CloseCircleOutlined, RightCircleOutlined} from "@ant-design/icons";
 import MDEditor from '@uiw/react-md-editor';
 import rehypeSanitize from "rehype-sanitize";
-import axios from "axios";
 import config from "../config/config";
 import stringConstant from "../config/stringConstant";
 import Cookies from 'js-cookie';
+import GraphType from "../config/graphType";
+import {ApiHelper} from "../utils/ApiHelper";
+import endPoint from "../config/endPoint";
 
 
 const SolidPortal = () => {
@@ -37,7 +39,7 @@ const SolidPortal = () => {
     const saveProductInfo = (productInfo) => {
         setProductInfo(productInfo)
     }
-    const [selectedGraphType, setSelectedGraphType] = useState(stringConstant.OnboardProject);
+    const [selectedGraphType, setSelectedGraphType] = useState(GraphType.OnboardProject);
     const saveSelectedGraphType = (selectedGraphType) => {
         setSelectedGraphType(selectedGraphType)
     }
@@ -65,7 +67,7 @@ const SolidPortal = () => {
         if (status) {
             const intervalId = setInterval(async () => {
                 try {
-                    const response = await axios.post(config.ApiBaseUrl + '/status/graph', requestBody, {
+                    const response = await ApiHelper.postRequest(endPoint.StatusGraph, requestBody, {
                         headers: config.CustomHeaders,
                     });
 
@@ -94,7 +96,7 @@ const SolidPortal = () => {
 
                         }
                         else if (response.data.status === 2) {
-                            if (selectedGraphType === stringConstant.OnboardProject) {
+                            if (selectedGraphType === GraphType.OnboardProject) {
                                 setMdEditorValue(stringConstant.OnboardFinishHint + response.data.result)
                             } 
                             else {
@@ -161,7 +163,7 @@ const SolidPortal = () => {
             return
         }
         setMdEditorValue("Continue running...")
-        if (selectedGraphType === stringConstant.GeneratePRD) {
+        if (selectedGraphType === GraphType.GeneratePRD) {
             await writePRD()
             setIsFinal(true)
             saveCurrentRunningSubgraphName("Step2: Generating PRD")
@@ -177,7 +179,7 @@ const SolidPortal = () => {
             edit_content: mdEditorValue,
             project_additional_info: productInfo
         })
-        const response = await axios.post(config.ApiBaseUrl + '/prd', requestBody, {
+        const response = await ApiHelper.postRequest(endPoint.Prd, requestBody, {
             headers: config.CustomHeaders,
         });
         if (response.status === 200) {
@@ -238,7 +240,7 @@ const SolidPortal = () => {
                             previewOptions={{
                                 rehypePlugins: [[rehypeSanitize]],
                             }}
-                            preview={selectedGraphType === stringConstant.GeneratePRD ? 'live' : 'preview'}
+                            preview={selectedGraphType === GraphType.GeneratePRD ? 'live' : 'preview'}
                         />
                     </div>
                 </div>

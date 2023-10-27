@@ -2,10 +2,11 @@ import styles from "./UserInputView.module.css";
 import {Button} from "antd";
 import TextArea from "antd/es/input/TextArea";
 import {useRef, useEffect, useState} from "react";
-import axios from "axios";
 import config from "../config/config";
 import stringConstant from "../config/stringConstant";
 import GraphType from "../config/graphType";
+import {ApiHelper} from "../utils/ApiHelper";
+import endPoint from "../config/endPoint";
 
 
 const UserInputView = ({   showView,
@@ -20,7 +21,7 @@ const UserInputView = ({   showView,
                            setSaveProductInfo,
                            setSaveSelectedGraphType
                        }) => {
-    const [selectedGraphType, setSelectedGraphType] = useState(stringConstant.OnboardProject);
+    const [selectedGraphType, setSelectedGraphType] = useState(GraphType.OnboardProject);
     const [openAIKey, setOpenAIKey] = useState("");
     const [recentOnboardId, setRecentOnboardId] = useState(localStorage.getItem(config.GraphId));
     const [repoRootFolder, setRepoRootFolder] = useState(null);
@@ -43,7 +44,7 @@ const UserInputView = ({   showView,
                     upload_id: localStorage.getItem(config.UploadId)
                 })
                 try {
-                    const uploadStatusResponse = await axios.post(config.ApiBaseUrl + '/status/upload', uploadStatusRequestBody, {
+                    const uploadStatusResponse = await ApiHelper.postRequest(endPoint.StatusUpload, uploadStatusRequestBody, {
                             headers: config.CustomHeaders,
                         }
                     );
@@ -62,14 +63,8 @@ const UserInputView = ({   showView,
                                 openai_key: openAIKey,
                                 upload_id: localStorage.getItem(config.UploadId)
                             })
-                            const response = await fetch(joinAndNormalizeUrl(config.ApiBaseUrl, '/onboardrepo/'), {
-                                method: 'POST',
-                                body: requestBody,
-                                headers: {
-                                    'Content-Type': 'application/json', // Set the appropriate content type
-                                },
-                            });
-                            const data = await response.json();
+                            const response = await ApiHelper.postRequest(endPoint.OnboardRepo, requestBody)
+                            const data = response.data;
                             if (response.status === 200) {
                                 console.log(data)
                                 localStorage.setItem(config.GraphId, data.graph_id)
@@ -100,12 +95,6 @@ const UserInputView = ({   showView,
         }
     }, [uploadStatus, pollingInterval]);
 
-    function joinAndNormalizeUrl(base, ...parts) {
-        return [base, ...parts]
-          .map(part => part.trim().replace(/(^\/+|\/+$)/g, ''))
-          .filter(part => part.length > 0)
-          .join('/');
-    }
 
     const handleGraphTypeSelectChange = (e) => {
         setSelectedGraphType(e.target.value);
@@ -162,7 +151,7 @@ const UserInputView = ({   showView,
         if (graphType === null) {
             graphType = selectedGraphType
         }
-        if(graphType === stringConstant.OnboardProject) {
+        if(graphType === GraphType.OnboardProject) {
             if (openAIKeyRef.current === "" || repoRootFolderRef.current === null) {
                 disableStart.current = true
                 return false
@@ -172,7 +161,7 @@ const UserInputView = ({   showView,
                 return true
             }
         }
-        else if(graphType === stringConstant.GeneratePRD) {
+        else if(graphType === GraphType.GeneratePRD) {
             if (openAIKeyRef.current === "" || userRequirementRef.current === "" || (onboardIdRef.current === "" && recentOnboardId === "")) {
                 disableStart.current = true
                 return false
@@ -181,7 +170,7 @@ const UserInputView = ({   showView,
                 return true
             }
         }
-        else if(graphType === stringConstant.TechSolution) {
+        else if(graphType === GraphType.TechSolution) {
             if (openAIKeyRef.current === "" || userRequirementRef.current === "" || (onboardIdRef.current === "" && recentOnboardId === "")) {
                 disableStart.current = true
                 return false
@@ -216,17 +205,8 @@ const UserInputView = ({   showView,
                 file_names: filenames
             })
             try {
-                // const response = await axios.post(config.ApiBaseUrl + '/uploadrepo/', requestBody, {
-                //     headers: config.CustomHeaders,
-                // });
-                const response = await fetch(joinAndNormalizeUrl(config.ApiBaseUrl, '/uploadrepo/'), {
-                    method: 'POST',
-                    body: requestBody,
-                    headers: {
-                        'Content-Type': 'application/json', // Set the appropriate content type
-                    },
-                });
-                const data = await response.json();
+                const response = await ApiHelper.postRequest(endPoint.UploadRepo, requestBody);
+                const data = response.data;
                 if (response.status === 200) {
                     setUploadStatus(true)
                     setSaveMdEditorValue(stringConstant.UploadHint)
@@ -266,14 +246,14 @@ const UserInputView = ({   showView,
     }
 
     const startClicked = async () => {
-        if (selectedGraphType === stringConstant.OnboardProject) {
+        if (selectedGraphType === GraphType.OnboardProject) {
             if(await onboardRepo()) {
                 setTotalSubgraph([
                     "Onboarding your project",
                 ])
                 setCurrentRunningSubgraphName("Onboarding your project")
             }
-        } else if (selectedGraphType === stringConstant.GeneratePRD) {
+        } else if (selectedGraphType === GraphType.GeneratePRD) {
             if(await writePRD()){
                 setTotalSubgraph([
                     "Step1: Analyzing your requirement",
@@ -281,7 +261,7 @@ const UserInputView = ({   showView,
                 ])
                 setCurrentRunningSubgraphName("Step1: Analyzing your requirement")
             }
-        } else if (selectedGraphType === stringConstant.TechSolution) {
+        } else if (selectedGraphType === GraphType.TechSolution) {
             if(await techSolution()) {
                 setTotalSubgraph([
                     "Step1: Generating Technical Solution",
@@ -309,7 +289,7 @@ const UserInputView = ({   showView,
             project_additional_info: productInfo
         })
         try {
-            const response = await axios.post(config.ApiBaseUrl + '/prd', requestBody, {
+            const response = await ApiHelper.postRequest(endPoint.Prd, requestBody, {
                 headers: config.CustomHeaders,
             });
             setSaveMdEditorValue(stringConstant.WaitHint)
@@ -338,7 +318,7 @@ const UserInputView = ({   showView,
         })
         setSaveMdEditorValue(stringConstant.WaitHint)
         try {
-            const response = await axios.post(config.ApiBaseUrl + '/techsolution', requestBody, {
+            const response = await ApiHelper.postRequest(endPoint.TechSolution, requestBody, {
                 headers: config.CustomHeaders,
             });
             if (response.status === 200) {
@@ -365,7 +345,7 @@ const UserInputView = ({   showView,
         })
         setSaveMdEditorValue(stringConstant.WaitHint)
         try {
-            const response = await axios.post(config.ApiBaseUrl + '/repochat', requestBody, {
+            const response = await ApiHelper.postRequest(endPoint.RepoChat, requestBody, {
                 headers: config.CustomHeaders,
             });
             if (response.status === 200) {
@@ -390,7 +370,7 @@ const UserInputView = ({   showView,
         }
         disableStart.current = true
         setSaveMdEditorValue(stringConstant.WaitHint)
-        await uploadFiles()
+        return await uploadFiles()
     }
 
     return (<div className={styles.userinputview}
@@ -403,16 +383,16 @@ const UserInputView = ({   showView,
                 {/* <option style={{fontSize: '13px'}} value="" disabled hidden>
                     Select An Action To Start
                 </option> */}
-                <option value={stringConstant.OnboardProject} style={{fontSize: '13px'}}>{stringConstant.OnboardProject}
+                <option value={GraphType.OnboardProject} style={{fontSize: '13px'}}>{GraphType.OnboardProject}
                 </option>
                 <option value={GraphType.RepoChat} style={{fontSize: '13px'}}>{GraphType.RepoChat}
                 </option>
-                <option value={stringConstant.GeneratePRD} style={{fontSize: '13px'}}>{stringConstant.GeneratePRD}
+                <option value={GraphType.GeneratePRD} style={{fontSize: '13px'}}>{GraphType.GeneratePRD}
                 </option>
-                <option value={stringConstant.TechSolution} style={{fontSize: '13px'}}>{stringConstant.TechSolution}
+                <option value={GraphType.TechSolution} style={{fontSize: '13px'}}>{GraphType.TechSolution}
                 </option>
         </select>
-        {selectedGraphType === stringConstant.OnboardProject && <div className={styles.repofolderpath}>
+        {selectedGraphType === GraphType.OnboardProject && <div className={styles.repofolderpath}>
                 <div style={{fontSize: '12px', fontWeight: 'bold'}}>{'Repository (<50mb:)'}</div>
                 <input type="file" directory="" webkitdirectory=""
                        onChange={handleFileChange}/>
@@ -425,8 +405,8 @@ const UserInputView = ({   showView,
                           onChange={handleOpenAIKeyInputChange}
                           autoSize={{minRows: 1, maxRows: 1}} placeholder="OpenAI API Key:"/>
         </div>
-        {(selectedGraphType === stringConstant.GeneratePRD ||
-                selectedGraphType === stringConstant.TechSolution)
+        {(selectedGraphType === GraphType.GeneratePRD ||
+                selectedGraphType === GraphType.TechSolution)
             && <div>
                 <div>
                     <TextArea className={styles.requirement} bordered={false}
@@ -448,7 +428,7 @@ const UserInputView = ({   showView,
                 />
             </div>
         </div>}
-        {selectedGraphType === stringConstant.GeneratePRD && <div>
+        {selectedGraphType === GraphType.GeneratePRD && <div>
             <div>
                 <TextArea className={styles.productInfo} bordered={false}
                           value={productInfo}
