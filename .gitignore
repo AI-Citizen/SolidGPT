@@ -169,3 +169,9 @@ solidgpt/src/.DS_Store
 
 # Portal
 node_modules
+
+# Local storage and workspace files
+localstorage/
+workspace/out/
+solidgpt/src/tools/qdrant/embeddings/
+solidgpt/src/tools/qdrant/embedding/
