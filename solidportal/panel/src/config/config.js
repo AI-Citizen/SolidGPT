@@ -5,7 +5,8 @@ const config = {
     CurrentGraphId: "CURRENT_GRAPH_ID",
     CustomHeaders:  {
         'Content-Type': 'application/json', // Set the appropriate content type
-    }
+    },
+    UploadFilesSizeLimit: 1024 * 1024 * 50 //50MB
 };
 
 export default config;
