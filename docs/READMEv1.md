@@ -51,7 +51,7 @@ pip3 install -r requirements.txt #installing the env
 
 
 ## **Run Demo**
-**Acutal real start up project "AI Says" - stock analysis app dev workflow**
+**Actual real start up project "AI Says" - stock analysis app dev workflow**
 include the brainstorming, write product requirement, write high level design, create kanban.
 ```sh
 cd quickstart
@@ -66,7 +66,7 @@ cd quickstart
 python3 creategraph.py webapp
 python3 quickstart.py webapp
 ```
->The default initial iutput path is set to `SolidGPT/localstorage/workspace/in`. As part of the Demo, we have included two idea inputs in this location.
+>The default initial input path is set to `SolidGPT/localstorage/workspace/in`. As part of the Demo, we have included two idea inputs in this location.
 
 >The default output path is set to `SolidGPT/localstorage/workspace/out/<time - e.g. 202009011234>`
 ## **Start Your Own Graph**
@@ -121,7 +121,7 @@ Using few-shot learning and auto-generating principles based on user tasks can a
 
 ### Dynamic Agent Skill
 
-Automatically generate the customized agent skills base on the key word. And make up user’s business agents team
+Automatically generate the customized agent skills based on the key word. And make up user’s business agents team
 
 ## 🕸️ Solid Graph
 
