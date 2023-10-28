@@ -66,7 +66,7 @@ cd quickstart
 python3 creategraph.py webapp
 python3 quickstart.py webapp
 ```
->The default initial input path is set to `SolidGPT/localstorage/workspace/in`. As part of the Demo, we have included two idea inputs in this location.
+>The default initial output path is set to `SolidGPT/localstorage/workspace/in`. As part of the Demo, we have included two idea inputs in this location.
 
 >The default output path is set to `SolidGPT/localstorage/workspace/out/<time - e.g. 202009011234>`
 ## **Start Your Own Graph**
