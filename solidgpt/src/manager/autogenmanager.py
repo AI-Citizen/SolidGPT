@@ -1,14 +1,46 @@
 import autogen
 import openai
 from solidgpt.src.configuration.configreader import ConfigReader
+from typing import Callable, Dict, Optional, Union
+
+from solidgpt.src.manager.promptresource import DEFAULT_SYSTEM_MESSAGE, ASSISTANT_SYSTEM_MESSAGE
 
 
 class SolidUserProxyAgent(autogen.UserProxyAgent):
+
+    def __init__(
+            self,
+            name: str,
+            is_termination_msg: Optional[Callable[[Dict], bool]] = None,
+            max_consecutive_auto_reply: Optional[int] = None,
+            human_input_mode: Optional[str] = "ALWAYS",
+            function_map: Optional[Dict[str, Callable]] = None,
+            code_execution_config: Optional[Union[Dict, bool]] = None,
+            default_auto_reply: Optional[Union[str, Dict, None]] = "",
+            llm_config: Optional[Union[Dict, bool]] = False,
+            system_message: Optional[str] = "",
+            call_back=None,
+    ):
+        super().__init__(
+            name,
+            system_message,
+            is_termination_msg,
+            max_consecutive_auto_reply,
+            human_input_mode,
+            function_map,
+            code_execution_config,
+            llm_config,
+            default_auto_reply,
+        )
+        self.call_back_func = call_back
+
     def get_human_input(self, prompt: str) -> str:
         print(prompt)
         reply = ""
         # get reply from frontend
         reply = input()
+        if self.call_back_func:
+            reply = self.call_back_func()
         # print("####################USER PROXY LAST MESSAGE#######################")
         # print(self.last_message()["content"])
         # print("####################USER PROXY LAST MESSAGE END#######################")
@@ -16,11 +48,39 @@ class SolidUserProxyAgent(autogen.UserProxyAgent):
 
 
 class SolidAssistantAgent(autogen.AssistantAgent):
+
+    def __init__(
+            self,
+            name: str,
+            system_message: Optional[str] = DEFAULT_SYSTEM_MESSAGE,
+            llm_config: Optional[Union[Dict, bool]] = None,
+            is_termination_msg: Optional[Callable[[Dict], bool]] = None,
+            max_consecutive_auto_reply: Optional[int] = None,
+            human_input_mode: Optional[str] = "NEVER",
+            code_execution_config: Optional[Union[Dict, bool]] = False,
+            call_back=None,
+            **kwargs,
+    ):
+        super().__init__(
+            name,
+            system_message,
+            is_termination_msg,
+            max_consecutive_auto_reply,
+            human_input_mode,
+            code_execution_config=code_execution_config,
+            llm_config=llm_config,
+            **kwargs,
+        )
+        self.call_back_func = call_back
+
     def get_human_input(self, prompt: str) -> str:
         print(prompt)
         reply = ""
-        # get reply from frontend
-        reply = input()
+
+        # assistant should not get any human input though
+        if self.call_back_func:
+            reply = self.call_back_func()
+
         # print("####################ASSISTANT LAST MESSAGE#######################")
         # print(self.last_message()["content"])
         # print("####################ASSISTANT LAST MESSAGE END#######################")
@@ -43,7 +103,6 @@ class AutoGenManager:
             openai.api_key = global_openai_key
         self.__default_model = ConfigReader().get_property("openai_model")
         self.config_list = [{"model": self.__default_model, "api_key": global_openai_key}]
-        self.gpt_models_container = {}
         self.if_show_reply = if_show_reply
         self.planner = None
         self.planner_user = None
@@ -57,37 +116,85 @@ class AutoGenManager:
             message=prompt,
         )
 
-    def construct_agents(self):
-        self.generate_planner()
-        self.generate_planner_user()
-        self.generate_assistant()
-        self.generate_user_proxy()
+    @staticmethod
+    def get_customized_assistant_agent(name: str,
+                                       system_message: Optional[str] = DEFAULT_SYSTEM_MESSAGE,
+                                       llm_config: Optional[Union[Dict, bool]] = None,
+                                       is_termination_msg: Optional[Callable[[Dict], bool]] = None,
+                                       max_consecutive_auto_reply: Optional[int] = None,
+                                       human_input_mode: Optional[str] = "NEVER",
+                                       code_execution_config: Optional[Union[Dict, bool]] = False,
+                                       call_back=None,
+                                       **kwargs):
+        return SolidAssistantAgent(
+            name,
+            system_message,
+            is_termination_msg,
+            max_consecutive_auto_reply,
+            human_input_mode,
+            code_execution_config,
+            call_back,
+            llm_config=llm_config,
+            **kwargs)
 
-    def generate_planner(self):
+    @staticmethod
+    def get_customized_user_proxy_agent(name: str,
+                                        is_termination_msg: Optional[Callable[[Dict], bool]] = None,
+                                        max_consecutive_auto_reply: Optional[int] = None,
+                                        human_input_mode: Optional[str] = "ALWAYS",
+                                        function_map: Optional[Dict[str, Callable]] = None,
+                                        code_execution_config: Optional[Union[Dict, bool]] = None,
+                                        default_auto_reply: Optional[Union[str, Dict, None]] = "",
+                                        llm_config: Optional[Union[Dict, bool]] = False,
+                                        system_message: Optional[str] = "",
+                                        call_back=None):
+        return SolidUserProxyAgent(
+            name,
+            system_message,
+            is_termination_msg,
+            max_consecutive_auto_reply,
+            human_input_mode,
+            function_map,
+            code_execution_config,
+            llm_config,
+            default_auto_reply,
+            call_back)
+
+    def construct_agents(self):
+        self.planner = self.generate_default_planner()
+        self.planner_user = self.generate_default_planner_user()
+        self.assistant = self.generate_default_assistant()
+        self.user_proxy = self.generate_default_user_proxy()
+        return
+
+    def generate_default_planner(self):
+        # todo: update callback function
         planner = SolidAssistantAgent(
             name="planner",
             llm_config={"config_list": self.config_list},
             # the default system message of the AssistantAgent is overwritten here
-            system_message="You are a helpful AI assistant. You suggest coding and reasoning steps for another AI assistant to accomplish a task. Do not suggest concrete code. For any action beyond writing code or reasoning, convert it to a step that can be implemented by writing code. For example, browsing the web can be implemented by writing code that reads and prints the content of a web page. Finally, inspect the execution result. If the plan is not good, suggest a better plan. If the execution is wrong, analyze the error and suggest a fix."
-        )
-        self.planner = planner
+            system_message=DEFAULT_SYSTEM_MESSAGE)
+        return planner
 
-    def generate_planner_user(self):
+    def generate_default_planner_user(self):
+        # todo: update callback function
         planner_user = SolidUserProxyAgent(
             name="planner_user",
             max_consecutive_auto_reply=0,  # terminate without auto-reply
             human_input_mode="NEVER",
         )
-        self.planner_user = planner_user
+        return planner_user
 
     def ask_planner(self, message):
         self.planner_user.initiate_chat(self.planner, message=message)
         # return the last message received from the planner
         return self.planner_user.last_message()["content"]
 
-    def generate_assistant(self):
+    def generate_default_assistant(self):
+        # todo: update callback function
         assistant = SolidAssistantAgent(
             name="assistant",
+            system_message=ASSISTANT_SYSTEM_MESSAGE,
             llm_config={
                 "temperature": 0,
                 "request_timeout": 600,
@@ -112,9 +219,10 @@ class AutoGenManager:
                 ],
             }
         )
-        self.assistant = assistant
+        return assistant
 
-    def generate_user_proxy(self):
+    def generate_default_user_proxy(self):
+        # todo: update callback function
         user_proxy = SolidUserProxyAgent(
             name="user_proxy",
             human_input_mode="ALWAYS",
@@ -124,4 +232,4 @@ class AutoGenManager:
             code_execution_config={"work_dir": "planning"},
             function_map={"ask_planner": self.ask_planner},
         )
-        self.user_proxy = user_proxy
+        return user_proxy
