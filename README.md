@@ -24,7 +24,7 @@ If you like our work, please give us a 🌟 star. Your support serves as a great
 - python3.8 or above
 - [OpenAI api key](https://openai.com/blog/openai-api)
 - [Install npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
-
+- [Install & run redis](https://redis.io/docs/install/install-redis/)
 ## 🔧 **Setup**
 ```sh
 git clone https://github.com/AI-Citizen/SolidGPT.git
@@ -43,7 +43,7 @@ pip3 install -r requirements.txt #installing the env
       set PYTHONPATH=path\to\directory
       ```
 - ### Start Server
-    cd into the project root folder(SolidGPT)
+    Open first terminal and cd into the project root folder(SolidGPT)
     - Linux/Mac/WSL2
       ```sh
       sh StartServer.sh
@@ -72,6 +72,7 @@ pip3 install -r requirements.txt #installing the env
         docker run -p 8000:8000 solidgptlocalhost
         ```
 - ### Start UI portal
+	Open the second terminal
   - You'll need to install npm, and we recommend using version 9.8.1 or higher.
 
     ```sh
