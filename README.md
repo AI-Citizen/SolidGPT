@@ -5,10 +5,10 @@
 [![Twitter Follow](https://img.shields.io/twitter/follow/SolidGPT?style=social)](https://twitter.com/SolidGPT)
 
 # 🚀 What’s this
-Chat everything with your code repository, ask repository level code questions, and discuss your requirements. AI scans and learns from your code to seek coding advice, develop coding plans, and generate a product requirement documents using the information in the repository.
+Chat everything with your code repository, ask repository-level code questions, and discuss your requirements. AI scans and learns from your code to seek coding advice, develop coding plans, and generate a product requirement documents using the information in the repository.
 
 ***Chat with Your Code Repository (Beta) Published***
-Chat with everything with your code repository, ask repository level code questions, and discuss your requirements.
+Chat with everything with your code repository, ask repository-level code questions, and discuss your requirements.
 <img width="1506" alt="Screen Shot 2023-10-18 at 11 10 47 PM" src="https://github.com/AI-Citizen/SolidGPT/assets/39673228/3164a280-755a-4f05-8848-ec61c570a420">
 
 
@@ -92,7 +92,7 @@ pip3 install -r requirements.txt #installing the env
 
 1. Choose `Onboard Project` from the top left dropdown.
 1. Enter your OpenAI API key.
-1. Upload your project folder.（All files will be save in your localstorage `SolidGPT/localstorage/...`）
+1. Upload your project folder.（All files will be saved in your localstorage `SolidGPT/localstorage/...`）
 1. ❗️Note: After completing the Onboard Project, an Onboard ID will be generated. If you remain in the same browser session, it will be automatically applied to subsequent actions. Alternatively, you can save it and manually input it in the future to bypass onboarding.
 
 ## 🧮 Get Technical Solution

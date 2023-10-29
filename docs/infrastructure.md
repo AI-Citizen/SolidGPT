@@ -37,7 +37,7 @@ A SKillOutput has:
 |
 
 ### WorkAgent
-A WorkAgent is an agent that can perform certains skills. A specific WorkAgent is capable of performaing multiple skills.
+A WorkAgent is an agent that can perform certains skills. A specific WorkAgent is capable of performing multiple skills.
 
 ### WorkNode
 A WorkNode is a unit on a WorkGraph contains a WorkAgent and the WorkSkill that agent is going to perform. 
