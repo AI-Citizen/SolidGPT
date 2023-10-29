@@ -22,7 +22,6 @@ class AutoGenAnalysis(WorkSkill):
             SkillIOParamCategory.PlainText,
         )
 
-        # self.add_input(self.relatived_files)
         self.add_input(self.code_schema)
         self.add_input(self.summary)
         self.add_input(self.requirements)

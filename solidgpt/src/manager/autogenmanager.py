@@ -71,21 +71,19 @@ class SolidUserProxyAgent(autogen.UserProxyAgent):
         self.manager.add_message("-" * 80)
 
     def get_human_input(self, prompt: str) -> str:
-        # print(prompt)
         reply = ""
         # get reply from frontend
         msg = self.manager.retrieve_message()
         if self.callback_map.get("autogen_update_result_callback"):
             self.callback_map.get("autogen_update_result_callback")(msg)
-        # print(msg)
+        # display the chat
+        logging.info(msg)
 
         if self.callback_map.get("autogen_message_input_callback"):
             reply = self.callback_map.get("autogen_message_input_callback")()
         else:
             reply = input()
-        # print("####################USER PROXY LAST MESSAGE#######################")
-        # print(self.last_message()["content"])
-        # print("####################USER PROXY LAST MESSAGE END#######################")
+
         return reply
 
 
@@ -145,9 +143,6 @@ class SolidAssistantAgent(autogen.AssistantAgent):
         print(prompt)
         reply = ""
 
-        # print("####################ASSISTANT LAST MESSAGE#######################")
-        # print(self.last_message()["content"])
-        # print("####################ASSISTANT LAST MESSAGE END#######################")
         return reply
 
 
