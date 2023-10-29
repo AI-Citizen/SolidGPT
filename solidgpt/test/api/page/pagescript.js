@@ -112,6 +112,34 @@ async function runPrdGraph() {
     console.log(data);
 }
 
+async function runAutogen() {
+    const urlPrefix = document.getElementById('serverURL').value;
+    const onboardId = document.getElementById('onboardId').value;
+    const openaiKey = document.getElementById('openaiKey').value;
+    const graphId = document.getElementById('graphId').value;
+    const requirementContent = document.getElementById('requirement').value;
+    const taskId = document.getElementById('taskId').value;
+    const newSession = document.getElementById('newSession').value;
+
+    const response = await fetch(joinAndNormalizeUrl(urlPrefix, '/autogenanalysis'), {
+        method: 'POST',
+        body: JSON.stringify({
+            openai_key: openaiKey,
+            onboarding_id: onboardId,
+            requirement: requirementContent,
+            task_id: taskId,
+            is_new_session: newSession,
+        }),
+        headers: {
+            'Content-Type': 'application/json', // Set the appropriate content type
+        },
+    });
+
+    const data = await response.json();
+    console.log(data);
+}
+
+
 async function runTechSolutionGraph() {
     const urlPrefix = document.getElementById('serverURL').value;
     const onboardId = document.getElementById('onboardId').value;
@@ -157,6 +185,22 @@ async function getUploadStatus() {
             method: 'Post',
             body: JSON.stringify({
                 upload_id: uploadId // should be a uuid here
+            }),
+            headers: {
+                'Content-Type': 'application/json', // Set the appropriate content type
+            },
+        });
+    const data = await response.json();
+    console.log(data);
+}
+
+async function getAutogenStatus() {
+    const urlPrefix = document.getElementById('serverURL').value;
+    const taskId = document.getElementById('taskId').value;
+    const response = await fetch(joinAndNormalizeUrl(urlPrefix, '/status/autogen'), {
+            method: 'Post',
+            body: JSON.stringify({
+                task_id: taskId // should be a uuid here
             }),
             headers: {
                 'Content-Type': 'application/json', // Set the appropriate content type

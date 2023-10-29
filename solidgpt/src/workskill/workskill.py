@@ -14,6 +14,7 @@ class WorkSkill:
     graph_cache: dict = {}
     display_result: DisplayResult = None
     callback_func = None
+    graph = None
 
     def __init__(self):
         self.name = ""
@@ -22,6 +23,7 @@ class WorkSkill:
         self.action = ""
         self.display_result = DisplayResult()
         self.callback_func = None
+        self.graph = None
         return
 
     def add_input(self, skill_input: SkillInput):

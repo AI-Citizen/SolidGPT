@@ -7,7 +7,7 @@ from solidgpt.src.workskill.workskill import *
 class AutoGenAnalysis(WorkSkill):
     def __init__(self):
         super().__init__()
-        self.autogen_manager = AutoGenManager._instance
+        self.autogen_manager = AutoGenManager()
         self.name = SKILL_NAME_REPO_CHAT
         self.code_schema = SkillInput(
             "Code Schema",
@@ -21,15 +21,11 @@ class AutoGenAnalysis(WorkSkill):
             "Requirements",
             SkillIOParamCategory.PlainText,
         )
-        self.history_context = SkillInput(
-            "History Context",
-            SkillIOParamCategory.PlainText,
-        )
+
         # self.add_input(self.relatived_files)
         self.add_input(self.code_schema)
         self.add_input(self.summary)
         self.add_input(self.requirements)
-        self.add_input(self.history_context)
 
         self.related_files_content = None
         self.code_schema_content = None
@@ -49,9 +45,9 @@ class AutoGenAnalysis(WorkSkill):
     def execution_impl(self):
         self.autogen_manager.construct_agents()
         prompt = self.__get_model_input()
-        user_proxy = self.autogen_manager.user_proxy
-        assistant = self.autogen_manager.assistnat
-        user_proxy.initiate_chat(assistant, prompt)
+        self.autogen_manager.user_proxy.callback_map["autogen_message_input_callback"] = self.graph.custom_data.get("autogen_message_input_callback")
+        self.autogen_manager.user_proxy.callback_map["autogen_update_result_callback"] = self.graph.custom_data.get("autogen_update_result_callback")
+        self.autogen_manager.run(prompt)
         return
 
     def __get_model_input(self):
@@ -60,4 +56,4 @@ class AutoGenAnalysis(WorkSkill):
         Project Instruction: {self.summary_content} \n 
         Code schema: {self.code_schema_content} \n
         Related code files: {self.related_files_content} \n
-         and always input the Markdown clean format '''
+        and always input the Markdown clean format '''

@@ -16,6 +16,7 @@ from solidgpt.src.workskill.skills.summary_file_local import SummaryFileLocal
 from solidgpt.src.workskill.skills.summary_project import SummaryProject
 from solidgpt.src.workskill.skills.techsolution import ProvideTechSolution
 from solidgpt.src.workskill.skills.write_prd import WritePRD
+from solidgpt.src.workskill.skills.autogen_analysis import AutoGenAnalysis
 from solidgpt.src.workskill.workskill import WorkSkill
 
 
@@ -165,4 +166,38 @@ def build_repo_chat_graph(requirement: str, onboarding_graph_id: str, output_id:
     
     graph.add_node(query_code)
     graph.add_node(tech_solution)
+    return graph
+
+
+def build_autogen_analysis_graph(requirement: str, onboarding_graph_id: str, output_id: str,
+                                 autogen_message_input_callback, autogen_update_result_callback):
+    graph = WorkGraph(output_id=output_id)
+    onboarding_folder_path = os.path.join(LOCAL_STORAGE_OUTPUT_DIR, onboarding_graph_id)
+    code_shema_path = glob.glob(os.path.join(onboarding_folder_path, 'Summary_project_*', "Code_Schema_*"))[0]
+    code_summary_path = glob.glob(os.path.join(onboarding_folder_path, 'Summary_project_*', "Code_Summary_*"))[0]
+
+    query_code = generate_node("0", QueryCodeLocal(),
+                               [
+                                   SkillInputConfig("", SkillInputLoadingMethod.LOAD_FROM_CACHE_STRING, -1,
+                                                    onboarding_graph_id),
+                                   SkillInputConfig("", SkillInputLoadingMethod.LOAD_FROM_CACHE_STRING, -1,
+                                                    requirement),
+                               ], output_ids=[0])
+    autogen_solution = generate_node_with_output_configs("1", AutoGenAnalysis(),
+                                                      [
+                                                          SkillInputConfig(code_shema_path,
+                                                                           SkillInputLoadingMethod.LOAD_FROM_STRING,
+                                                                           -1),
+                                                          SkillInputConfig(code_summary_path,
+                                                                           SkillInputLoadingMethod.LOAD_FROM_STRING,
+                                                                           -1),
+                                                          SkillInputConfig("",
+                                                                           SkillInputLoadingMethod.LOAD_FROM_CACHE_STRING,
+                                                                           -1, requirement),
+                                                      ],
+                                                      [])
+    graph.add_node(query_code)
+    graph.add_node(autogen_solution)
+    graph.custom_data["autogen_message_input_callback"] = autogen_message_input_callback
+    graph.custom_data["autogen_update_result_callback"] = autogen_update_result_callback
     return graph

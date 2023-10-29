@@ -29,6 +29,12 @@
     <br>
     <label for="project_additional_info">project_additional_info: </label>
     <input type="text" id="project_additional_info" value="00000">
+    <br>
+    <label for="taskId">taskId: </label>
+    <input type="text" id="taskId" value="00000">
+    <br>
+    <label for="newSession">taskId: </label>
+    <input type="text" id="newSession" value="1">
 
 
     <br><br>
@@ -42,11 +48,13 @@
     <button onclick="removeAllFiles()">Remove All Files</button>
     <br><br>
     <button onclick="runPrdGraph()">Run PRD Graph</button>
+    <button onclick="runAutogen()">Run Autogen</button>
     <br><br>
     <button onclick="runTechSolutionGraph()">Run Tech Solution Graph</button>
     <br><br><br><br>
     <button onclick="getGraphStatus()">Graph Status</button>
     <button onclick="getUploadStatus()">Upload Status</button>
+    <button onclick="getAutogenStatus()">Get Autogen Status</button>
     <!-- Link the external JavaScript file -->
     <script src="pagescript.js"></script>
 </body>

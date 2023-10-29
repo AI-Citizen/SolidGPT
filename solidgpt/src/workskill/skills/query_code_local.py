@@ -52,6 +52,7 @@ class QueryCodeLocal(WorkSkill):
         output_file = self.__format_output(top_five)
         self.graph_cache[Cache_Label_Query_Code] = output_file
         save_to_text(os.path.join(self.skill_output.param_path), output_file)
+        self.client.close()
         return
 
     def __find_top_five(self):

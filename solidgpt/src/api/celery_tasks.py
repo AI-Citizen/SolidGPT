@@ -1,5 +1,6 @@
 import base64
 import time
+import uuid
 
 from celery import Celery
 import shutil
@@ -13,12 +14,14 @@ from solidgpt.src.workskill.workskill import WorkSkill
 from solidgpt.src.workskill.skills.load_repo import LoadRepo
 from solidgpt.src.workgraph.graph import *
 from solidgpt.src.manager.initializer import *
+import redis
 
 app = Celery('celery_tasks',
              BROKER_URL='redis://localhost:6379/0',  # Using Redis as the broker
              CELERY_RESULT_BACKEND='redis://localhost:6379/1'
              )
 app.autodiscover_tasks(['solidgpt.src.api'])
+r = redis.Redis()
 Initializer()
 
 
@@ -104,12 +107,48 @@ def celery_task_tech_solution_graph(openai_key, requirement, onboarding_id, grap
     text_result = g.display_result.get_result()
     return text_result
 
+
 @app.task
 def celery_task_repo_chat_graph(openai_key, requirement, onboarding_id, graph_id):
-    logging.info("celery task: tech solution graph")
+    logging.info("celery task: repo chat graph")
     openai.api_key = openai_key
     g = build_repo_chat_graph(requirement, onboarding_id, graph_id)
     g.init_node_dependencies()
     g.execute()
     text_result = g.display_result.get_result()
     return text_result
+
+
+@app.task(bind=True)
+def celery_task_autogen_analysis_graph(self, openai_key, requirement, onboarding_id, graph_id):
+    logging.info("celery task: autogen analysis graph")
+    self.update_state(
+        state='PROGRESS',
+        meta={'result': "", 'state_id': ""}
+    )
+
+    def autogen_message_input_callback():
+        data = r.blpop(self.request.id)
+        if data:
+            # Extracting UUID and poem text from the tuple
+            task_id, poem_bytes = data
+
+            # Converting bytes to string
+            poem_text = poem_bytes.decode()
+            print(poem_text)  # for server debug
+            return poem_text
+        return ""
+
+    def autogen_update_result_callback(result):
+        self.update_state(
+            state='PROGRESS',
+            meta={'result': result, 'state_id': str(uuid.uuid4())}
+        )
+
+    openai.api_key = openai_key
+    g = build_autogen_analysis_graph(requirement, onboarding_id, graph_id,
+                                     autogen_message_input_callback, autogen_update_result_callback)
+    g.init_node_dependencies()
+    g.execute()
+
+    return ""

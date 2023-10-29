@@ -1,4 +1,7 @@
+import logging
+
 import autogen
+from autogen import oai
 import openai
 from solidgpt.src.configuration.configreader import ConfigReader
 from typing import Callable, Dict, Optional, Union
@@ -6,7 +9,16 @@ from typing import Callable, Dict, Optional, Union
 from solidgpt.src.manager.promptresource import DEFAULT_SYSTEM_MESSAGE, ASSISTANT_SYSTEM_MESSAGE
 
 
+def colored(x, *args, **kwargs):
+    return x
+
+
 class SolidUserProxyAgent(autogen.UserProxyAgent):
+
+    manager = None
+    callback_map = {
+
+    }
 
     def __init__(
             self,
@@ -19,28 +31,58 @@ class SolidUserProxyAgent(autogen.UserProxyAgent):
             default_auto_reply: Optional[Union[str, Dict, None]] = "",
             llm_config: Optional[Union[Dict, bool]] = False,
             system_message: Optional[str] = "",
-            call_back=None,
     ):
         super().__init__(
-            name,
-            system_message,
-            is_termination_msg,
-            max_consecutive_auto_reply,
-            human_input_mode,
-            function_map,
-            code_execution_config,
-            llm_config,
-            default_auto_reply,
+            name=name,
+            system_message=system_message,
+            is_termination_msg=is_termination_msg,
+            max_consecutive_auto_reply=max_consecutive_auto_reply,
+            human_input_mode=human_input_mode,
+            function_map=function_map,
+            code_execution_config=code_execution_config,
+            llm_config=llm_config,
+            default_auto_reply=default_auto_reply,
         )
-        self.call_back_func = call_back
+
+    def _print_received_message(self, message: Union[Dict, str], sender):
+        # print the message received
+        self.manager.add_message(sender.name, "(to", f"{self.name}):\n")
+        if message.get("role") == "function":
+            func_print = f"***** Response from calling function \"{message['name']}\" *****"
+            self.manager.add_message(func_print)
+            self.manager.add_message(message["content"])
+            self.manager.add_message("*" * len(func_print))
+        else:
+            content = message.get("content")
+            if content is not None:
+                if "context" in message:
+                    content = oai.ChatCompletion.instantiate(
+                        content,
+                        message["context"],
+                        self.llm_config and self.llm_config.get("allow_format_str_template", False),
+                    )
+                self.manager.add_message(content)
+            if "function_call" in message:
+                func_print = f"***** Suggested function Call: {message['function_call'].get('name', '(No function name found)')} *****"
+                self.manager.add_message(func_print)
+                self.manager.add_message("Arguments: ")
+                self.manager.add_message(message["function_call"].get("arguments", "(No arguments found)"))
+                self.manager.add_message("*" * len(func_print))
+        self.manager.add_message("-" * 80)
 
     def get_human_input(self, prompt: str) -> str:
-        print(prompt)
+        # print(prompt)
         reply = ""
         # get reply from frontend
-        reply = input()
-        if self.call_back_func:
-            reply = self.call_back_func()
+        msg = self.manager.retrieve_message()
+        if self.callback_map.get("autogen_update_result_callback"):
+            self.callback_map.get("autogen_update_result_callback")(msg)
+        # print(msg)
+
+        if self.callback_map.get("autogen_message_input_callback"):
+            reply = self.callback_map.get("autogen_message_input_callback")()
+        else:
+            reply = input()
         # print("####################USER PROXY LAST MESSAGE#######################")
         # print(self.last_message()["content"])
         # print("####################USER PROXY LAST MESSAGE END#######################")
@@ -48,6 +90,8 @@ class SolidUserProxyAgent(autogen.UserProxyAgent):
 
 
 class SolidAssistantAgent(autogen.AssistantAgent):
+
+    manager = None
 
     def __init__(
             self,
@@ -58,28 +102,48 @@ class SolidAssistantAgent(autogen.AssistantAgent):
             max_consecutive_auto_reply: Optional[int] = None,
             human_input_mode: Optional[str] = "NEVER",
             code_execution_config: Optional[Union[Dict, bool]] = False,
-            call_back=None,
             **kwargs,
     ):
         super().__init__(
-            name,
-            system_message,
-            is_termination_msg,
-            max_consecutive_auto_reply,
-            human_input_mode,
+            name=name,
+            system_message=system_message,
+            is_termination_msg=is_termination_msg,
+            max_consecutive_auto_reply=max_consecutive_auto_reply,
+            human_input_mode=human_input_mode,
             code_execution_config=code_execution_config,
             llm_config=llm_config,
             **kwargs,
         )
-        self.call_back_func = call_back
+
+    def _print_received_message(self, message: Union[Dict, str], sender):
+        # print the message received
+        self.manager.add_message(sender.name, "(to", f"{self.name}):\n")
+        if message.get("role") == "function":
+            func_print = f"***** Response from calling function \"{message['name']}\" *****"
+            self.manager.add_message(func_print)
+            self.manager.add_message(message["content"])
+            self.manager.add_message("*" * len(func_print))
+        else:
+            content = message.get("content")
+            if content is not None:
+                if "context" in message:
+                    content = oai.ChatCompletion.instantiate(
+                        content,
+                        message["context"],
+                        self.llm_config and self.llm_config.get("allow_format_str_template", False),
+                    )
+                self.manager.add_message(content)
+            if "function_call" in message:
+                func_print = f"***** Suggested function Call: {message['function_call'].get('name', '(No function name found)')} *****"
+                self.manager.add_message(func_print)
+                self.manager.add_message("Arguments: ")
+                self.manager.add_message(message["function_call"].get("arguments", "(No arguments found)"))
+                self.manager.add_message("*" * len(func_print))
+        self.manager.add_message("-" * 80)
 
     def get_human_input(self, prompt: str) -> str:
         print(prompt)
         reply = ""
-
-        # assistant should not get any human input though
-        if self.call_back_func:
-            reply = self.call_back_func()
 
         # print("####################ASSISTANT LAST MESSAGE#######################")
         # print(self.last_message()["content"])
@@ -88,13 +152,7 @@ class SolidAssistantAgent(autogen.AssistantAgent):
 
 
 class AutoGenManager:
-    _instance = None
-
-    def __new__(cls):
-        if cls._instance is None:
-            cls._instance = super(AutoGenManager, cls).__new__(cls)
-            # You can initialize the instance attributes here
-        return cls._instance
+    cumulative_message = ""
 
     def __init__(self, if_show_reply=False):
         # read api key from config file
@@ -102,7 +160,7 @@ class AutoGenManager:
         if global_openai_key is not None and global_openai_key != "":
             openai.api_key = global_openai_key
         self.__default_model = ConfigReader().get_property("openai_model")
-        self.config_list = [{"model": self.__default_model, "api_key": global_openai_key}]
+        self.config_list = [{"model": self.__default_model, "api_key": openai.api_key}]
         self.if_show_reply = if_show_reply
         self.planner = None
         self.planner_user = None
@@ -127,13 +185,13 @@ class AutoGenManager:
                                        call_back=None,
                                        **kwargs):
         return SolidAssistantAgent(
-            name,
-            system_message,
-            is_termination_msg,
-            max_consecutive_auto_reply,
-            human_input_mode,
-            code_execution_config,
-            call_back,
+            name=name,
+            system_message=system_message,
+            is_termination_msg=is_termination_msg,
+            max_consecutive_auto_reply=max_consecutive_auto_reply,
+            human_input_mode=human_input_mode,
+            code_execution_config=code_execution_config,
+            call_back=call_back,
             llm_config=llm_config,
             **kwargs)
 
@@ -147,25 +205,39 @@ class AutoGenManager:
                                         default_auto_reply: Optional[Union[str, Dict, None]] = "",
                                         llm_config: Optional[Union[Dict, bool]] = False,
                                         system_message: Optional[str] = "",
-                                        call_back=None):
+                                        ):
         return SolidUserProxyAgent(
             name,
-            system_message,
-            is_termination_msg,
-            max_consecutive_auto_reply,
-            human_input_mode,
-            function_map,
-            code_execution_config,
-            llm_config,
-            default_auto_reply,
-            call_back)
+            system_message=system_message,
+            is_termination_msg=is_termination_msg,
+            max_consecutive_auto_reply=max_consecutive_auto_reply,
+            human_input_mode=human_input_mode,
+            function_map=function_map,
+            code_execution_config=code_execution_config,
+            llm_config=llm_config,
+            default_auto_reply=default_auto_reply,
+            )
 
     def construct_agents(self):
         self.planner = self.generate_default_planner()
         self.planner_user = self.generate_default_planner_user()
         self.assistant = self.generate_default_assistant()
         self.user_proxy = self.generate_default_user_proxy()
+        self.planner.manager = self
+        self.planner_user.manager = self
+        self.assistant.manager = self
+        self.user_proxy.manager = self
         return
+
+    def add_message(self, *args):
+        # Joining all arguments with a space after converting each to a string
+        messages = ' '.join(map(str, args))
+        self.cumulative_message += messages + "\n"
+
+    def retrieve_message(self):
+        msg = self.cumulative_message
+        self.cumulative_message = ""
+        return msg
 
     def generate_default_planner(self):
         # todo: update callback function
@@ -187,6 +259,7 @@ class AutoGenManager:
 
     def ask_planner(self, message):
         self.planner_user.initiate_chat(self.planner, message=message)
+        self.planner_msg = self.planner_user.last_message()["content"]
         # return the last message received from the planner
         return self.planner_user.last_message()["content"]
 
@@ -233,3 +306,4 @@ class AutoGenManager:
             function_map={"ask_planner": self.ask_planner},
         )
         return user_proxy
+

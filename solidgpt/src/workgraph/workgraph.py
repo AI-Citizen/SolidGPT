@@ -16,6 +16,7 @@ class WorkGraph:
     notion = None
     cache = {}
     callback_map: dict = {}
+    custom_data: dict = {}
 
     def __init__(self, output_directory_path_override: str = "", output_id = None):
         # need to manually initialize here
@@ -52,6 +53,9 @@ class WorkGraph:
             # intialize callback func for skills
             if node.skill.name in self.callback_map:
                 node.skill.callback_func = self.callback_map.get(node.skill.name, None)
+
+            # keep a graph reference in skill
+            node.skill.graph = self
 
             # create directory for node
             node_directory_path = os.path.join(self.output_directory_path,
