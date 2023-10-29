@@ -1,0 +1,35 @@
+services:
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+  api:
+    build:
+      context: .
+      dockerfile: dockerfiles/Dockerfile.api
+    depends_on:
+      - redis
+    ports:
+      - "8000:8000"
+    environment:
+      - BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+  worker:
+    build:
+      context: .
+      dockerfile: dockerfiles/Dockerfile.worker
+    depends_on:
+      - redis
+    environment:
+      - BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+  webui:
+    build:
+      context: .
+      dockerfile: dockerfiles/Dockerfile.webui
+    depends_on:
+      - api
+    ports:
+      - "3000:3000"
+
+
