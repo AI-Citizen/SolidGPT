@@ -28,7 +28,6 @@ const UserInputView = ({   showView,
     const [userRequirement, setUserRequirement] = useState("");
     const [productInfo, setProductInfo] = useState("");
     const pollingInterval = 5000;
-    const UploadFilesSizeLimit = 10485760 * 5;
     const [uploadStatus, setUploadStatus] = useState(false)
 
     const disableStart = useRef(true)
@@ -116,14 +115,14 @@ const UserInputView = ({   showView,
         const files = event.target;
         let totalSize = 0;
         for (let i = 0; i < files.files.length; i++) {
-            if (totalSize > UploadFilesSizeLimit) {
+            if (totalSize > config.UploadFilesSizeLimit) {
                 alert(stringConstant.FileSizeAlert);
                 repoRootFolderRef.current = null
                 return
             }
             totalSize = totalSize + files.files[i].size
         }
-        if (totalSize < UploadFilesSizeLimit) {
+        if (totalSize < config.UploadFilesSizeLimit) {
             setRepoRootFolder(files);
             repoRootFolderRef.current = files
         } else {
