@@ -54,6 +54,7 @@ app.add_middleware(
 Initializer()
 # orchestration = Orchestration()
 uploaded_repo_map: dict = {}
+autogen_task_map: dict = {}
 graph_result_map: dict[str, GraphResult] = {}
 graph_stage_map: dict = {}
 
@@ -168,9 +169,10 @@ async def generate_tech_solution(body: dict = Body(...)):
         "current_work_name": "tech solution"
     }, status_code=200)
 
+
 @app.post("/repochat")
 async def repo_chat(body: dict = Body(...)):
-    # Enqueue the background task: tech solution
+    # Enqueue the background task: repo chat
     logging.info("celery task: repo chat graph")
     graph_id = str(uuid.uuid4())
     onboarding_id = body['onboarding_id']
@@ -189,6 +191,51 @@ async def repo_chat(body: dict = Body(...)):
     }, status_code=200)
 
 
+@app.post("/autogenanalysis")
+async def autogen_analysis(body: dict = Body(...)):
+    # Enqueue the background task: autogen analysis
+    logging.info("celery task: autogen analysis graph")
+
+    onboarding_id = body['onboarding_id']
+    openai_key = body['openai_key']
+    requirement = body['requirement']
+    task_id = body['task_id']
+    is_new_session = int(body['is_new_session'])
+
+    if is_new_session:
+        graph_id = str(uuid.uuid4())
+        result = celery_task_autogen_analysis_graph.apply_async(args=[
+            openai_key, requirement, onboarding_id, graph_id])
+        task_id = result.id
+        autogen_task_map[task_id] = result
+
+        return JSONResponse(content={
+            "message": f"New autogen analysis graph...",
+            "task_id": task_id,
+            "is_final": True,
+            "status": 1,
+            "current_work_name": "autogen analysis"
+        }, status_code=200)
+    else:
+        task = autogen_task_map.get(task_id)
+        if task is None:
+            return JSONResponse(content={
+                "message": f"Invalid Autogen Analysis graph.",
+                "task_id": task_id,
+                "is_final": True,
+                "status": 2,
+                "current_work_name": "autogen analysis"
+            }, status_code=200)
+        r.lpush(task_id, requirement)
+        return JSONResponse(content={
+            "message": f"Continuing autogen analysis graph...",
+            "task_id": task_id,
+            "is_final": True,
+            "status": 3,
+            "current_work_name": "autogen analysis"
+        }, status_code=200)
+
+
 @app.post("/uploadrepo")
 async def upload_repo(body: dict = Body(...)):
     # Store the file to local storage
@@ -201,6 +248,33 @@ async def upload_repo(body: dict = Body(...)):
     return JSONResponse(content={
         "message": f"Uploading files...",
         "upload_id": upload_id
+    }, status_code=200)
+
+
+@app.post("/status/autogen")
+async def get_autogen_status(body: dict = Body(...)):
+    task_id: str = body['task_id']
+    celery_task_result = autogen_task_map.get(task_id)
+
+    if celery_task_result is None:
+        return JSONResponse(content={
+            "message": "status: Error, not exist or not started",
+            "task_id": task_id,
+            "status": 1,
+            "result": ""
+        }, status_code=200)
+    if celery_task_result.ready():
+        return JSONResponse(content={
+            "message": "status: Error, autogen task cannot be finished",
+            "task_id": task_id,
+            "status": 2,
+            "result": ""
+        }, status_code=200)
+    return JSONResponse(content={
+        "message": "status: autogen task result",
+        "task_id": task_id,
+        "status": 3,
+        "result": celery_task_result.info
     }, status_code=200)
 
 

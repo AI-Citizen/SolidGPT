@@ -72,6 +72,7 @@ class SummaryFileLocal(WorkSkill):
                 self.callback_func(current_file_idx, file_count)
             if file[-3:] in self.Allowed_Extensions:
                 self.__summary_file(file)
+        self.client.close()
         return
 
     def __summary_file(self, filename):

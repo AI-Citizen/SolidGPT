@@ -66,6 +66,7 @@ class QueryCode(WorkSkill):
         #         logging.info("Cannot remove file: " + file)
         # Mac/Linux
         shutil.rmtree(self.qdrant_path)
+        self.client.close()
         return
 
     @staticmethod
