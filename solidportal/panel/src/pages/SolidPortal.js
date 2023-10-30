@@ -20,6 +20,10 @@ const SolidPortal = () => {
     const [currentRunningSubgraphName, setCurrentRunningSubgraphName] = useState("")
     const [totalSubgraph, setTotalSubgraph] = useState([])
     const [status, setStatus] = useState(false)
+    const [autoGenStatus, setAutoGenStatus] = useState(false)
+    const [autoGenTaskId, setAutoGenTaskId] = useState(null)
+    let state_id = useRef("");
+    let autoGenResult = useRef("");
     const [showTermsCondition, setShowTermsCondition] = useState(false)
     const [mdEditorValue, setMdEditorValue] = useState(showTermsCondition ? stringConstant.TermsCondition : stringConstant.MdEditorStartText);
     const saveMdEditorValue = (mdEditorValue) => {
@@ -54,6 +58,14 @@ const SolidPortal = () => {
 
     const saveGetStatusCall = (boolean) => {
         setStatus(boolean)
+    }
+
+    const saveGetAutoGenStatusCall = (boolean) => {
+        setAutoGenStatus(boolean)
+    }
+
+    const saveSetAutoGenTaskId = (taskId) => {
+        setAutoGenTaskId(taskId)
     }
 
     const saveIsFinal = (boolean) => {
@@ -126,6 +138,50 @@ const SolidPortal = () => {
             return () => clearInterval(intervalId);
         }
     }, [status, pollingInterval]);
+
+    useEffect( () =>{
+        const requestBody = JSON.stringify({
+            task_id: autoGenTaskId
+        })
+        if (autoGenStatus){
+            const intervalId = setInterval(async () => {
+                try {
+                    const response = await ApiHelper.postRequest(endPoint.StatusAutoGen, requestBody, {
+                        headers: config.CustomHeaders,
+                    });
+
+                    if (response.status === 200) {
+                        console.log(response.data)
+                        if (response.data.status === 1 || response.data.status === 2){
+                            setMdEditorValue(response.data.message)
+                            setAutoGenStatus(false)
+                        }else if(response.data.status === 3){
+                            console.log(response.data.result)
+                            if (state_id.current !== response.data.result.state_id){
+                                console.log(state_id.current)
+                                autoGenResult.current = response.data.result.result + autoGenResult.current
+                                setMdEditorValue(autoGenResult.current)
+                                setAutoGenStatus(false)
+                            }
+                            state_id.current = response.data.result.state_id;
+                        }
+
+                    }else{
+                        setMdEditorValue(stringConstant.APIFail)
+                        setAutoGenStatus(false)
+                    }
+
+                } catch (e) {
+                    console.log(e)
+                    setMdEditorValue("Failed to get status update")
+                    setAutoGenStatus(false)
+                }
+            }, pollingInterval);
+            return () => clearInterval(intervalId);
+        }
+
+
+    },[autoGenStatus, pollingInterval] )
 
 
     const toggleIcon = () => {
@@ -206,6 +262,9 @@ const SolidPortal = () => {
                            getMdEditorValue={mdEditorValue}
                            setSaveMdEditorValue={saveMdEditorValue}
                            setGetStatusCall={saveGetStatusCall}
+                           setGetAutoGenStatusCall={saveGetAutoGenStatusCall}
+                           setSaveSetAutoGenTaskId={saveSetAutoGenTaskId}
+                           getAutoGenTaskId={autoGenTaskId}
                            setIsFinal={saveIsFinal}
                            setSaveOpenAIKey={saveOpenAIKey}
                            setSaveUserRequirement={saveUserRequirement}

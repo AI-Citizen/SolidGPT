@@ -15,6 +15,9 @@ const UserInputView = ({   showView,
                            getMdEditorValue,
                            setSaveMdEditorValue,
                            setGetStatusCall,
+                           setGetAutoGenStatusCall,
+                           setSaveSetAutoGenTaskId,
+                           getAutoGenTaskId,
                            setIsFinal,
                            setSaveOpenAIKey,
                            setSaveUserRequirement,
@@ -29,12 +32,14 @@ const UserInputView = ({   showView,
     const [productInfo, setProductInfo] = useState("");
     const pollingInterval = 5000;
     const [uploadStatus, setUploadStatus] = useState(false)
+    const [isAutoGenNewSession, setIsAutoGenNewSession] = useState(true)
 
     const disableStart = useRef(true)
     const userRequirementRef = useRef("")
     const repoRootFolderRef = useRef(null)
     const openAIKeyRef = useRef("")
     const onboardIdRef = useRef("")
+    const productInfoRef = useRef("")
 
     useEffect(() => {
         if (uploadStatus) {
@@ -161,7 +166,7 @@ const UserInputView = ({   showView,
             }
         }
         else if(graphType === GraphType.GeneratePRD) {
-            if (openAIKeyRef.current === "" || userRequirementRef.current === "" || (onboardIdRef.current === "" && recentOnboardId === "")) {
+            if (openAIKeyRef.current === "" || userRequirementRef.current === "" || productInfoRef.current === "" || (onboardIdRef.current === "" && recentOnboardId === "")) {
                 disableStart.current = true
                 return false
             } else {
@@ -169,16 +174,7 @@ const UserInputView = ({   showView,
                 return true
             }
         }
-        else if(graphType === GraphType.TechSolution) {
-            if (openAIKeyRef.current === "" || userRequirementRef.current === "" || (onboardIdRef.current === "" && recentOnboardId === "")) {
-                disableStart.current = true
-                return false
-            } else {
-                disableStart.current = false
-                return true
-            }
-        }
-        else if(graphType === GraphType.RepoChat) {
+        else if(graphType === GraphType.TechSolution || graphType === GraphType.RepoChat || graphType === GraphType.AutoGenAnalysis) {
             if (openAIKeyRef.current === "" || userRequirementRef.current === "" || (onboardIdRef.current === "" && recentOnboardId === "")) {
                 disableStart.current = true
                 return false
@@ -274,6 +270,13 @@ const UserInputView = ({   showView,
                 ])
                 setCurrentRunningSubgraphName("Chat with your repository")
             }
+        }else if(selectedGraphType === GraphType.AutoGenAnalysis){
+            if (await AutoGenAnalysis()){
+                setTotalSubgraph([
+                    "analyzing your repository via AutoGen",
+                ])
+                setCurrentRunningSubgraphName("analyzing your repository via AutoGen")
+            }
         }
     }
 
@@ -362,6 +365,45 @@ const UserInputView = ({   showView,
         }
     }
 
+    const AutoGenAnalysis = async () => {
+        disableStart.current = true
+        const requestBody = JSON.stringify({
+            openai_key: openAIKey,
+            onboarding_id: localStorage.getItem(config.GraphId),
+            requirement: userRequirement,
+            task_id: getAutoGenTaskId,
+            is_new_session: isAutoGenNewSession
+        })
+        setSaveMdEditorValue(stringConstant.WaitHint)
+        try {
+            const response = await ApiHelper.postRequest(endPoint.AutoGenAnalysis, requestBody, {
+                headers: config.CustomHeaders,
+            });
+            if (response.status === 200) {
+                console.log(response.data)
+                if (response.data.status === 1) {
+                    setSaveSetAutoGenTaskId(response.data.task_id)
+                    setIsAutoGenNewSession(false)
+                    setGetAutoGenStatusCall(true)
+                } else if (response.data.status === 2) {
+                    setIsAutoGenNewSession(true)
+                } else if (response.data.status === 3) {
+                    setSaveSetAutoGenTaskId(response.data.task_id)
+                    setIsAutoGenNewSession(false)
+                    setGetAutoGenStatusCall(true)
+                }
+                return true
+            } else {
+                setSaveMdEditorValue(stringConstant.APIFail)
+            }
+        } catch (error) {
+            setSaveMdEditorValue(error.message)
+            console.error('Error:', error);
+            window.alert(error);
+            return false
+        }
+    }
+
     const onboardRepo = async () => {
         if (openAIKey === null || openAIKey === '') {
             window.alert(stringConstant.OpenAIKeyAlert);
@@ -370,6 +412,10 @@ const UserInputView = ({   showView,
         disableStart.current = true
         setSaveMdEditorValue(stringConstant.WaitHint)
         return await uploadFiles()
+    }
+
+    const startButtonText = () => {
+        return (selectedGraphType === GraphType.RepoChat || selectedGraphType === GraphType.AutoGenAnalysis) ? "Send" : "Start"
     }
 
     return (<div className={styles.userinputview}
@@ -385,6 +431,8 @@ const UserInputView = ({   showView,
                 <option value={GraphType.OnboardProject} style={{fontSize: '13px'}}>{GraphType.OnboardProject}
                 </option>
                 <option value={GraphType.RepoChat} style={{fontSize: '13px'}}>{GraphType.RepoChat}
+                </option>
+                <option value={GraphType.AutoGenAnalysis} style={{fontSize: '13px'}}>{GraphType.AutoGenAnalysis}
                 </option>
                 <option value={GraphType.GeneratePRD} style={{fontSize: '13px'}}>{GraphType.GeneratePRD}
                 </option>
@@ -416,7 +464,7 @@ const UserInputView = ({   showView,
                     />
                 </div>
             </div>}
-        {(selectedGraphType === GraphType.RepoChat)
+        {(selectedGraphType === GraphType.RepoChat || selectedGraphType === GraphType.AutoGenAnalysis)
         && <div>
             <div>
                 <TextArea className={styles.requirement} bordered={false}
@@ -453,7 +501,7 @@ const UserInputView = ({   showView,
                     onClick={startClicked}
                     disabled={selectedGraphType === "" || disableStart.current}
             >
-                {selectedGraphType === GraphType.RepoChat ? "Send" : "Start"}
+                {startButtonText()}
             </Button>
         </div>
         {localStorage.getItem(config.GraphId) !== '' &&
