@@ -273,7 +273,7 @@ const UserInputView = ({   showView,
         }else if(selectedGraphType === GraphType.AutoGenAnalysis){
             if (await AutoGenAnalysis()){
                 setTotalSubgraph([
-                    "analyzing your repository via AutoGen",
+                    "Chat with Engineer Agent(Online Live data)",
                 ])
                 setCurrentRunningSubgraphName("Chat with Engineer Agent(Online Live data)")
             }
