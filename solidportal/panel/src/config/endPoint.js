@@ -5,7 +5,9 @@ const endPoint = {
     TechSolution: '/techsolution',
     RepoChat: '/repochat',
     OnboardRepo: '/onboardrepo/',
-    UploadRepo: '/uploadrepo/'
+    UploadRepo: '/uploadrepo/',
+    AutoGenAnalysis: '/autogenanalysis',
+    StatusAutoGen: '/status/autogen'
 };
 
 export default endPoint;
