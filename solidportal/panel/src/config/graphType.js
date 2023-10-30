@@ -3,7 +3,7 @@ const GraphType = {
     GeneratePRD: "Generate Product Requirement Document",
     TechSolution: "Get Technical Solution",
     RepoChat: "Chat with Your Code Repo(Beta)",
-    AutoGenAnalysis: "AutoGen Analysis(Beta)"
+    AutoGenAnalysis: "Chat with Engineer Agent(Online Live data)"
 }
 
 export default GraphType

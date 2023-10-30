@@ -275,7 +275,7 @@ const UserInputView = ({   showView,
                 setTotalSubgraph([
                     "analyzing your repository via AutoGen",
                 ])
-                setCurrentRunningSubgraphName("analyzing your repository via AutoGen")
+                setCurrentRunningSubgraphName("Chat with Engineer Agent(Online Live data)")
             }
         }
     }
@@ -430,9 +430,9 @@ const UserInputView = ({   showView,
                 </option> */}
                 <option value={GraphType.OnboardProject} style={{fontSize: '13px'}}>{GraphType.OnboardProject}
                 </option>
-                <option value={GraphType.RepoChat} style={{fontSize: '13px'}}>{GraphType.RepoChat}
-                </option>
                 <option value={GraphType.AutoGenAnalysis} style={{fontSize: '13px'}}>{GraphType.AutoGenAnalysis}
+                </option>
+                <option value={GraphType.RepoChat} style={{fontSize: '13px'}}>{GraphType.RepoChat}
                 </option>
                 <option value={GraphType.GeneratePRD} style={{fontSize: '13px'}}>{GraphType.GeneratePRD}
                 </option>
