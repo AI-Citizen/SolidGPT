@@ -68,6 +68,7 @@ class SolidUserProxyAgent(autogen.UserProxyAgent):
                 self.manager.add_message("Arguments: ")
                 self.manager.add_message(message["function_call"].get("arguments", "(No arguments found)"))
                 self.manager.add_message("*" * len(func_print))
+        self.manager.add_message("")
         self.manager.add_message("-" * 80)
 
     def get_human_input(self, prompt: str) -> str:
@@ -137,6 +138,7 @@ class SolidAssistantAgent(autogen.AssistantAgent):
                 self.manager.add_message("Arguments: ")
                 self.manager.add_message(message["function_call"].get("arguments", "(No arguments found)"))
                 self.manager.add_message("*" * len(func_print))
+        self.manager.add_message("")
         self.manager.add_message("-" * 80)
 
     def get_human_input(self, prompt: str) -> str:
