@@ -18,6 +18,7 @@ const UserInputView = ({   showView,
                            setGetAutoGenStatusCall,
                            setSaveSetAutoGenTaskId,
                            getAutoGenTaskId,
+                           getAutoGenResult,
                            setIsFinal,
                            setSaveOpenAIKey,
                            setSaveUserRequirement,
@@ -387,6 +388,7 @@ const UserInputView = ({   showView,
                     setGetAutoGenStatusCall(true)
                 } else if (response.data.status === 2) {
                     setIsAutoGenNewSession(true)
+                    getAutoGenResult.current = ""
                 } else if (response.data.status === 3) {
                     setSaveSetAutoGenTaskId(response.data.task_id)
                     setIsAutoGenNewSession(false)

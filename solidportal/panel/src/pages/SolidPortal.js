@@ -265,6 +265,7 @@ const SolidPortal = () => {
                            setGetAutoGenStatusCall={saveGetAutoGenStatusCall}
                            setSaveSetAutoGenTaskId={saveSetAutoGenTaskId}
                            getAutoGenTaskId={autoGenTaskId}
+                           getAutoGenResult={autoGenResult}
                            setIsFinal={saveIsFinal}
                            setSaveOpenAIKey={saveOpenAIKey}
                            setSaveUserRequirement={saveUserRequirement}
