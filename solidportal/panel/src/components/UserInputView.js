@@ -23,7 +23,9 @@ const UserInputView = ({   showView,
                            setSaveOpenAIKey,
                            setSaveUserRequirement,
                            setSaveProductInfo,
-                           setSaveSelectedGraphType
+                           setSaveSelectedGraphType,
+                           autoGenStatus,
+                           setIsAutoGenNewSession
                        }) => {
     const [selectedGraphType, setSelectedGraphType] = useState(GraphType.OnboardProject);
     const [openAIKey, setOpenAIKey] = useState("");
@@ -33,7 +35,7 @@ const UserInputView = ({   showView,
     const [productInfo, setProductInfo] = useState("");
     const pollingInterval = 5000;
     const [uploadStatus, setUploadStatus] = useState(false)
-    const [isAutoGenNewSession, setIsAutoGenNewSession] = useState(true)
+
 
     const disableStart = useRef(true)
     const userRequirementRef = useRef("")

@@ -23,6 +23,7 @@ const SolidPortal = () => {
     const [status, setStatus] = useState(false)
     const [autoGenStatus, setAutoGenStatus] = useState(false)
     const [autoGenTaskId, setAutoGenTaskId] = useState(null)
+    const [isAutoGenNewSession, setIsAutoGenNewSession] = useState(true)
     let state_id = useRef("");
     let autoGenResult = useRef("");
     const [showTermsCondition, setShowTermsCondition] = useState(false)
@@ -73,6 +74,10 @@ const SolidPortal = () => {
         setIsFinal(boolean)
     }
 
+    const saveIsAutoGenNewSession = (boolean) => {
+        setIsAutoGenNewSession(boolean)
+    }
+
     const userInputView = (
         <UserInputView
             showView={!showTermsCondition && showLeftPanel}
@@ -91,6 +96,7 @@ const SolidPortal = () => {
             setSaveProductInfo={saveProductInfo}
             setSaveSelectedGraphType={saveSelectedGraphType}
             autoGenStatus={autoGenStatus}
+            setIsAutoGenNewSession={saveIsAutoGenNewSession}
         />
     );
 
@@ -197,6 +203,9 @@ const SolidPortal = () => {
                         if (response.data.status === 1 || response.data.status === 2){
                             setMdEditorValue(response.data.message)
                             setAutoGenStatus(false)
+                            if (response.data.status === 2) {
+                                setIsAutoGenNewSession(true)
+                            }
                         }else if(response.data.status === 3){
                             console.log(response.data.result)
                             if (state_id.current !== response.data.result.state_id){
