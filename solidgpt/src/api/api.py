@@ -208,7 +208,6 @@ async def autogen_analysis(body: dict = Body(...)):
             openai_key, requirement, onboarding_id, graph_id])
         task_id = result.id
         autogen_task_map[task_id] = result
-
         return JSONResponse(content={
             "message": f"New autogen analysis graph...",
             "task_id": task_id,
@@ -226,7 +225,7 @@ async def autogen_analysis(body: dict = Body(...)):
                 "status": 2,
                 "current_work_name": "autogen analysis"
             }, status_code=200)
-        r.lpush(task_id, requirement)
+        redis_instance.lpush(task_id, requirement)
         return JSONResponse(content={
             "message": f"Continuing autogen analysis graph...",
             "task_id": task_id,

@@ -164,11 +164,11 @@ class AutoGenManager:
         self.assistant = None
         self.user_proxy = None
 
-    def run(self, prompt):
-        self.construct_agents()
+    def run(self, requirement, relatived_code):
+        self.construct_agents(relatived_code)
         self.user_proxy.initiate_chat(
             self.assistant,
-            message=prompt,
+            message=requirement,
         )
 
     @staticmethod
@@ -215,10 +215,10 @@ class AutoGenManager:
             default_auto_reply=default_auto_reply,
             )
 
-    def construct_agents(self):
+    def construct_agents(self, relatived_code):
         self.planner = self.generate_default_planner()
         self.planner_user = self.generate_default_planner_user()
-        self.assistant = self.generate_default_assistant()
+        self.assistant = self.generate_default_assistant(relatived_code)
         self.user_proxy = self.generate_default_user_proxy()
         self.planner.manager = self
         self.planner_user.manager = self
@@ -239,7 +239,7 @@ class AutoGenManager:
     def generate_default_planner(self):
         # todo: update callback function
         planner = SolidAssistantAgent(
-            name="planner",
+            name="Planner",
             llm_config={"config_list": self.config_list},
             # the default system message of the AssistantAgent is overwritten here
             system_message=DEFAULT_SYSTEM_MESSAGE)
@@ -248,7 +248,7 @@ class AutoGenManager:
     def generate_default_planner_user(self):
         # todo: update callback function
         planner_user = SolidUserProxyAgent(
-            name="planner_user",
+            name="Your_Proxy",
             max_consecutive_auto_reply=0,  # terminate without auto-reply
             human_input_mode="NEVER",
         )
@@ -260,11 +260,11 @@ class AutoGenManager:
         # return the last message received from the planner
         return self.planner_user.last_message()["content"]
 
-    def generate_default_assistant(self):
+    def generate_default_assistant(self, relatived_code: str):
         # todo: update callback function
         assistant = SolidAssistantAgent(
-            name="assistant",
-            system_message=ASSISTANT_SYSTEM_MESSAGE,
+            name="SolidGPT",
+            system_message=ASSISTANT_SYSTEM_MESSAGE + f"""Relatived code as follow: {relatived_code}""",
             llm_config={
                 "temperature": 0,
                 "request_timeout": 600,
@@ -294,7 +294,7 @@ class AutoGenManager:
     def generate_default_user_proxy(self):
         # todo: update callback function
         user_proxy = SolidUserProxyAgent(
-            name="user_proxy",
+            name="Your_Proxy",
             human_input_mode="ALWAYS",
             max_consecutive_auto_reply=10,
             is_termination_msg=lambda x: "content" in x and x["content"] is not None and x["content"].rstrip().endswith(
