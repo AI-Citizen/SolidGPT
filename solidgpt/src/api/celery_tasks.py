@@ -21,7 +21,7 @@ app = Celery('celery_tasks',
              CELERY_RESULT_BACKEND='redis://localhost:6379/1'
              )
 app.autodiscover_tasks(['solidgpt.src.api'])
-r = redis.Redis()
+redis_instance = redis.Redis()
 Initializer()
 
 
@@ -126,9 +126,8 @@ def celery_task_autogen_analysis_graph(self, openai_key, requirement, onboarding
         state='PROGRESS',
         meta={'result': "", 'state_id': ""}
     )
-
     def autogen_message_input_callback():
-        data = r.blpop(self.request.id)
+        data = redis_instance.blpop(self.request.id)
         if data:
             # Extracting UUID and poem text from the tuple
             task_id, poem_bytes = data

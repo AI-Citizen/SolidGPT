@@ -73,12 +73,22 @@ export const stringConstant = {
         "\n" +
         "- After this, choose Generate PRD or Get Tech Solution for customized solutions based on the onboarded project.\n" +
         "\n" +
-        "## 📖 Onborading your project\n" +
-        "\n" +
+        "## ❗️❗️ Onborading your project(Required)\n" +
         "1. Choose `Onboard Project` from the top left dropdown.\n" +
         "1. Enter your OpenAI API key.\n" +
         "1. Upload your project folder.\n" +
         "1. ❗️Note: After completing the Onboard Project, an Onboard ID will be generated. If you remain in the same browser session, it will be automatically applied to subsequent actions. Alternatively, you can save it and manually input it in the future to bypass onboarding.\n" +
+        "\n" +
+        "\n" +
+        "## 🤖️ Chat with Your Code Repo\n" +
+        "1. Choose `Chat with Your Repo(Beta)` from the top left dropdown.\n" +
+        "1. Enter your OpenAI API key.\n" +
+        "1. Input your problem/Requirement and start any topic with your codebase \n" +
+        "\n" +
+        "## 🧠 AutoGen Analysis\n" +
+        "1. Choose `AutoGen Analysis(Beta)` from the top left dropdown.\n" +
+        "1. Enter your OpenAI API key.\n" +
+        "1. Input your problem/Requirement and start the issue focused chat sessions\n" +
         "\n" +
         "## 🧮 Get Technical Solution\n" +
         "1. Choose `Get Tech Solution` from the top left dropdown.\n" +
