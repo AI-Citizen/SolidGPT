@@ -82,6 +82,8 @@ pip3 install -r requirements.txt #installing the env
     cd solidportal/panel  
     npm i && npm start
     ```
+- ## With docker compose
+  Run `docker compose up`.
 
 
 
