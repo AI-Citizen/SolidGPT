@@ -97,6 +97,7 @@ const SolidPortal = () => {
             setSaveSelectedGraphType={saveSelectedGraphType}
             autoGenStatus={autoGenStatus}
             setIsAutoGenNewSession={saveIsAutoGenNewSession}
+            isAutoGenNewSession={isAutoGenNewSession}
         />
     );
 

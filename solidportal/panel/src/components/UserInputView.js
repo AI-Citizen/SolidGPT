@@ -25,7 +25,8 @@ const UserInputView = ({   showView,
                            setSaveProductInfo,
                            setSaveSelectedGraphType,
                            autoGenStatus,
-                           setIsAutoGenNewSession
+                           setIsAutoGenNewSession,
+                           isAutoGenNewSession
                        }) => {
     const [selectedGraphType, setSelectedGraphType] = useState(GraphType.OnboardProject);
     const [openAIKey, setOpenAIKey] = useState("");
