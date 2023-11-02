@@ -370,6 +370,9 @@ const UserInputView = ({   showView,
     }
 
     const AutoGenAnalysis = async ( requirement ) => {
+        if(requirement.toLowerCase().replace(/\s/g, '') === "confirm"){
+            requirement = ""
+        }
         disableStart.current = true
         const requestBody = JSON.stringify({
             openai_key: openAIKey,
