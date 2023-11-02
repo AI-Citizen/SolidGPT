@@ -23,6 +23,7 @@ const SolidPortal = () => {
     const [status, setStatus] = useState(false)
     const [autoGenStatus, setAutoGenStatus] = useState(false)
     const [autoGenTaskId, setAutoGenTaskId] = useState(null)
+    const [isAutoGenNewSession, setIsAutoGenNewSession] = useState(true)
     let state_id = useRef("");
     let autoGenResult = useRef("");
     const [showTermsCondition, setShowTermsCondition] = useState(false)
@@ -73,8 +74,12 @@ const SolidPortal = () => {
         setIsFinal(boolean)
     }
 
+    const saveIsAutoGenNewSession = (boolean) => {
+        setIsAutoGenNewSession(boolean)
+    }
+
     const userInputView = (
-        <UserInputView 
+        <UserInputView
             showView={!showTermsCondition && showLeftPanel}
             setCurrentRunningSubgraphName={saveCurrentRunningSubgraphName}
             setTotalSubgraph={saveSetTotalSubgraph}
@@ -84,15 +89,18 @@ const SolidPortal = () => {
             setGetAutoGenStatusCall={saveGetAutoGenStatusCall}
             setSaveSetAutoGenTaskId={saveSetAutoGenTaskId}
             getAutoGenTaskId={autoGenTaskId}
+            getAutoGenResult={autoGenResult}
             setIsFinal={saveIsFinal}
             setSaveOpenAIKey={saveOpenAIKey}
             setSaveUserRequirement={saveUserRequirement}
             setSaveProductInfo={saveProductInfo}
             setSaveSelectedGraphType={saveSelectedGraphType}
             autoGenStatus={autoGenStatus}
+            setIsAutoGenNewSession={saveIsAutoGenNewSession}
+            isAutoGenNewSession={isAutoGenNewSession}
         />
     );
-    
+
 
     // const [autoGenActivePlannerState, setAutoGenActivePlannerState] = useState(AutoGenActivePlannerState.Disable);
     // const activeAutoGenPlanner = async () => {
@@ -195,7 +203,10 @@ const SolidPortal = () => {
                         console.log(response.data)
                         if (response.data.status === 1 || response.data.status === 2){
                             setMdEditorValue(response.data.message)
-                            setAutoGenStatus(false)                          
+                            setAutoGenStatus(false)
+                            if (response.data.status === 2) {
+                                setIsAutoGenNewSession(true)
+                            }
                         }else if(response.data.status === 3){
                             console.log(response.data.result)
                             if (state_id.current !== response.data.result.state_id){
@@ -204,7 +215,7 @@ const SolidPortal = () => {
                                 setMdEditorValue(autoGenResult.current)
                                 setAutoGenStatus(false)
                                 // check current planner status
-                                // await activeAutoGenPlanner() 
+                                // await activeAutoGenPlanner()
                             }
                             state_id.current = response.data.result.state_id;
                         }
@@ -308,7 +319,7 @@ const SolidPortal = () => {
     //             if (response.data.status === 1) {
     //                 setAutoGenTaskId(response.data.task_id)
     //                 saveGetAutoGenStatusCall(true)
-    //             } 
+    //             }
     //             else if (response.data.status === 3) {
     //                 setAutoGenTaskId(response.data.task_id)
     //                 saveGetAutoGenStatusCall(true)

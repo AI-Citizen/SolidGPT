@@ -18,10 +18,15 @@ const UserInputView = ({   showView,
                            setGetAutoGenStatusCall,
                            setSaveSetAutoGenTaskId,
                            getAutoGenTaskId,
+                           getAutoGenResult,
+                           setIsFinal,
                            setSaveOpenAIKey,
                            setSaveUserRequirement,
                            setSaveProductInfo,
-                           setSaveSelectedGraphType
+                           setSaveSelectedGraphType,
+                           autoGenStatus,
+                           setIsAutoGenNewSession,
+                           isAutoGenNewSession
                        }) => {
     const [selectedGraphType, setSelectedGraphType] = useState(GraphType.OnboardProject);
     const [openAIKey, setOpenAIKey] = useState("");
@@ -31,7 +36,7 @@ const UserInputView = ({   showView,
     const [productInfo, setProductInfo] = useState("");
     const pollingInterval = 5000;
     const [uploadStatus, setUploadStatus] = useState(false)
-    const [isAutoGenNewSession, setIsAutoGenNewSession] = useState(true)
+
 
     const disableStart = useRef(true)
     const userRequirementRef = useRef("")
@@ -97,6 +102,7 @@ const UserInputView = ({   showView,
             return () => clearInterval(intervalId);
         }
     }, [uploadStatus, pollingInterval]);
+
 
     const handleGraphTypeSelectChange = (e) => {
         setSelectedGraphType(e.target.value);
@@ -364,6 +370,9 @@ const UserInputView = ({   showView,
     }
 
     const AutoGenAnalysis = async ( requirement ) => {
+        if(requirement.toLowerCase().replace(/\s/g, '') === "confirm"){
+            requirement = ""
+        }
         disableStart.current = true
         const requestBody = JSON.stringify({
             openai_key: openAIKey,
@@ -383,6 +392,7 @@ const UserInputView = ({   showView,
                     setSaveSetAutoGenTaskId(response.data.task_id)
                     setIsAutoGenNewSession(false)
                     setGetAutoGenStatusCall(true)
+                    getAutoGenResult.current = ""
                 } else if (response.data.status === 2) {
                     setIsAutoGenNewSession(true)
                 } else if (response.data.status === 3) {
