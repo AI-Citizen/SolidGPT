@@ -264,7 +264,7 @@ async def get_autogen_status(body: dict = Body(...)):
         }, status_code=200)
     if celery_task_result.ready():
         return JSONResponse(content={
-            "message": "status: Error, autogen task cannot be finished",
+            "message": "Status: Current session is over, chat to start a new session",
             "task_id": task_id,
             "status": 2,
             "result": ""

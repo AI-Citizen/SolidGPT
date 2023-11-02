@@ -396,6 +396,7 @@ const UserInputView = ({   showView,
             }
         } catch (error) {
             setSaveMdEditorValue(error.message)
+            setIsAutoGenNewSession(true)
             console.error('Error:', error);
             window.alert(error);
             return false
