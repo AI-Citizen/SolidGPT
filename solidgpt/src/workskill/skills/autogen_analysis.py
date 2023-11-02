@@ -42,17 +42,18 @@ class AutoGenAnalysis(WorkSkill):
         return load_from_text(self.get_input_path(skill_input), extension=".txt")
 
     def execution_impl(self):
-        self.autogen_manager.construct_agents()
-        prompt = self.__get_model_input()
+        self.autogen_manager.construct_agents(self.related_files_content)
+        # prompt = self.__get_model_input()
         self.autogen_manager.user_proxy.callback_map["autogen_message_input_callback"] = self.graph.custom_data.get("autogen_message_input_callback")
         self.autogen_manager.user_proxy.callback_map["autogen_update_result_callback"] = self.graph.custom_data.get("autogen_update_result_callback")
-        self.autogen_manager.run(prompt)
+        self.autogen_manager.run(self.requirements_content, self.related_files_content)
         return
 
-    def __get_model_input(self):
-        return f'''Requirements: {self.requirements_content} \n 
-        And the repository information as below
-        Project Instruction: {self.summary_content} \n 
-        Code schema: {self.code_schema_content} \n
-        Related code files: {self.related_files_content} \n
-        and always input the Markdown clean format '''
+    # def __get_model_input(self):
+        # return f'''Requirements: {self.requirements_content} \n 
+        # And the repository information as below
+        # Project Instruction: {self.summary_content} \n 
+        # Code schema: {self.code_schema_content} \n
+        # Related code files: {self.related_files_content} \n
+        # and always input the Markdown clean format '''
+

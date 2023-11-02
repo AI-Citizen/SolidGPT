@@ -18,7 +18,6 @@ const UserInputView = ({   showView,
                            setGetAutoGenStatusCall,
                            setSaveSetAutoGenTaskId,
                            getAutoGenTaskId,
-                           setIsFinal,
                            setSaveOpenAIKey,
                            setSaveUserRequirement,
                            setSaveProductInfo,
@@ -98,7 +97,6 @@ const UserInputView = ({   showView,
             return () => clearInterval(intervalId);
         }
     }, [uploadStatus, pollingInterval]);
-
 
     const handleGraphTypeSelectChange = (e) => {
         setSelectedGraphType(e.target.value);
@@ -271,11 +269,11 @@ const UserInputView = ({   showView,
                 setCurrentRunningSubgraphName("Chat with your repository")
             }
         }else if(selectedGraphType === GraphType.AutoGenAnalysis){
-            if (await AutoGenAnalysis()){
+            if (await AutoGenAnalysis(userRequirement)){
                 setTotalSubgraph([
-                    "Chat with Engineer Agent(Online Live data)",
+                    "AutoGen Analysis(Beta)",
                 ])
-                setCurrentRunningSubgraphName("Chat with Engineer Agent(Online Live data)")
+                setCurrentRunningSubgraphName("AutoGen Analysis(Beta)")
             }
         }
     }
@@ -365,12 +363,12 @@ const UserInputView = ({   showView,
         }
     }
 
-    const AutoGenAnalysis = async () => {
+    const AutoGenAnalysis = async ( requirement ) => {
         disableStart.current = true
         const requestBody = JSON.stringify({
             openai_key: openAIKey,
             onboarding_id: localStorage.getItem(config.GraphId),
-            requirement: userRequirement,
+            requirement: requirement,
             task_id: getAutoGenTaskId,
             is_new_session: isAutoGenNewSession
         })
@@ -398,6 +396,7 @@ const UserInputView = ({   showView,
             }
         } catch (error) {
             setSaveMdEditorValue(error.message)
+            setIsAutoGenNewSession(true)
             console.error('Error:', error);
             window.alert(error);
             return false
@@ -484,18 +483,6 @@ const UserInputView = ({   showView,
                           allowClear placeholder="Please input your product information"/>
             </div>
         </div>}
-        {/*   <div>
-            <div><TextArea className={styles.notionpageid} bordered={false}
-                           value={notionID}
-                           onChange={handleNotionIDInputChange}
-                           autoSize={{minRows: 2, maxRows: 2}} placeholder="Notion Page ID:"/></div>
-        </div>
-        <div>
-            <div><TextArea className={styles.notionkey} bordered={false}
-                           value={notionKey}
-                           onChange={handleNotionKeyInputChange} autoSize={{minRows: 2, maxRows: 2}}
-                           placeholder="Notion API Key:"/></div>
-        </div>*/}
         <div>
             <Button className={styles.startbutton}
                     onClick={startClicked}

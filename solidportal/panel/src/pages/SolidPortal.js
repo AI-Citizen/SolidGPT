@@ -11,6 +11,7 @@ import Cookies from 'js-cookie';
 import GraphType from "../config/graphType";
 import {ApiHelper} from "../utils/ApiHelper";
 import endPoint from "../config/endPoint";
+import AutoGenActivePlannerState from "../config/autoGenActivePlannerState";
 
 
 const SolidPortal = () => {
@@ -71,6 +72,46 @@ const SolidPortal = () => {
     const saveIsFinal = (boolean) => {
         setIsFinal(boolean)
     }
+
+    const userInputView = (
+        <UserInputView 
+            showView={!showTermsCondition && showLeftPanel}
+            setCurrentRunningSubgraphName={saveCurrentRunningSubgraphName}
+            setTotalSubgraph={saveSetTotalSubgraph}
+            getMdEditorValue={mdEditorValue}
+            setSaveMdEditorValue={saveMdEditorValue}
+            setGetStatusCall={saveGetStatusCall}
+            setGetAutoGenStatusCall={saveGetAutoGenStatusCall}
+            setSaveSetAutoGenTaskId={saveSetAutoGenTaskId}
+            getAutoGenTaskId={autoGenTaskId}
+            setIsFinal={saveIsFinal}
+            setSaveOpenAIKey={saveOpenAIKey}
+            setSaveUserRequirement={saveUserRequirement}
+            setSaveProductInfo={saveProductInfo}
+            setSaveSelectedGraphType={saveSelectedGraphType}
+            autoGenStatus={autoGenStatus}
+        />
+    );
+    
+
+    // const [autoGenActivePlannerState, setAutoGenActivePlannerState] = useState(AutoGenActivePlannerState.Disable);
+    // const activeAutoGenPlanner = async () => {
+    //     console.log(autoGenActivePlannerState)
+    //     if (autoGenActivePlannerState === AutoGenActivePlannerState.Disable) {
+    //         await AutoGenAnalysis('ask planner')
+    //         setAutoGenActivePlannerState(AutoGenActivePlannerState.RequestPlanner)
+    //     }
+    //     else if (autoGenActivePlannerState === AutoGenActivePlannerState.RequestPlanner) {
+    //         await AutoGenAnalysis('')
+    //         setAutoGenActivePlannerState(AutoGenActivePlannerState.Confirm)
+    //     }
+    //     else if (autoGenActivePlannerState === AutoGenActivePlannerState.Confirm) {
+    //         setAutoGenActivePlannerState(AutoGenActivePlannerState.Active)
+    //     }
+    //     else {
+    //         return;
+    //     }
+    // };
 
     useEffect(() => {
         const requestBody = JSON.stringify({
@@ -154,7 +195,7 @@ const SolidPortal = () => {
                         console.log(response.data)
                         if (response.data.status === 1 || response.data.status === 2){
                             setMdEditorValue(response.data.message)
-                            setAutoGenStatus(false)
+                            setAutoGenStatus(false)                          
                         }else if(response.data.status === 3){
                             console.log(response.data.result)
                             if (state_id.current !== response.data.result.state_id){
@@ -162,6 +203,8 @@ const SolidPortal = () => {
                                 autoGenResult.current = response.data.result.result + autoGenResult.current
                                 setMdEditorValue(autoGenResult.current)
                                 setAutoGenStatus(false)
+                                // check current planner status
+                                // await activeAutoGenPlanner() 
                             }
                             state_id.current = response.data.result.state_id;
                         }
@@ -246,6 +289,42 @@ const SolidPortal = () => {
         }
 
     }
+
+    // const AutoGenAnalysis = async ( requirement ) => {
+    //     const requestBody = JSON.stringify({
+    //         openai_key: openAIKey,
+    //         onboarding_id: localStorage.getItem(config.GraphId),
+    //         requirement: requirement,
+    //         task_id: autoGenTaskId,
+    //         is_new_session: false
+    //     })
+    //     setMdEditorValue(stringConstant.WaitHint)
+    //     try {
+    //         const response = await ApiHelper.postRequest(endPoint.AutoGenAnalysis, requestBody, {
+    //             headers: config.CustomHeaders,
+    //         });
+    //         if (response.status === 200) {
+    //             console.log(response.data)
+    //             if (response.data.status === 1) {
+    //                 setAutoGenTaskId(response.data.task_id)
+    //                 saveGetAutoGenStatusCall(true)
+    //             } 
+    //             else if (response.data.status === 3) {
+    //                 setAutoGenTaskId(response.data.task_id)
+    //                 saveGetAutoGenStatusCall(true)
+    //             }
+    //             return true
+    //         } else {
+    //             setMdEditorValue(stringConstant.APIFail)
+    //         }
+    //     } catch (error) {
+    //         setMdEditorValue(error.message)
+    //         console.error('Error:', error);
+    //         window.alert(error);
+    //         return false
+    //     }
+    // }
+
     const disableEditorWhenTermsCondition = (value) => {
         if (showTermsCondition){
             setMdEditorValue(stringConstant.TermsCondition)
@@ -256,20 +335,7 @@ const SolidPortal = () => {
 
     return (
         <div className={styles.solidportal}>
-            <UserInputView showView={!showTermsCondition && showLeftPanel}
-                           setCurrentRunningSubgraphName={saveCurrentRunningSubgraphName}
-                           setTotalSubgraph={saveSetTotalSubgraph}
-                           getMdEditorValue={mdEditorValue}
-                           setSaveMdEditorValue={saveMdEditorValue}
-                           setGetStatusCall={saveGetStatusCall}
-                           setGetAutoGenStatusCall={saveGetAutoGenStatusCall}
-                           setSaveSetAutoGenTaskId={saveSetAutoGenTaskId}
-                           getAutoGenTaskId={autoGenTaskId}
-                           setIsFinal={saveIsFinal}
-                           setSaveOpenAIKey={saveOpenAIKey}
-                           setSaveUserRequirement={saveUserRequirement}
-                           setSaveProductInfo={saveProductInfo}
-                           setSaveSelectedGraphType={saveSelectedGraphType}/>
+            {userInputView}
             {!showTermsCondition && <FloatButton type="default" icon={floatIcon} style={{left: 20}}
                          onClick={() => {
                              toggleIcon()
@@ -281,9 +347,6 @@ const SolidPortal = () => {
                     <Button className={styles.continueactiobutton} disabled={isFinal && !showTermsCondition} onClick={() => {
                         continueClicked()
                     }}>{showTermsCondition ?"Accept": "Continue"}</Button>
-                    {/* <Button className={styles.continueactiobutton}>Stop</Button>*/}
-                    {/*       <Button className={styles.continueactiobutton}>Notion Sync</Button>
-                    <Button className={styles.continueactiobutton}>Notion Open</Button>*/}
                 </div>
                 <div className={styles.statusnodelist}>
                     {totalSubgraph.map((item, index) => (
