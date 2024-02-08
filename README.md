@@ -1,23 +1,21 @@
 ![IMG_4502](https://github.com/AI-Citizen/SolidGPT/assets/39673228/347a6be2-93d6-42e9-99e2-f8b7b1ea96de)
-<h1 align="center">🧱 SolidGPT-Technology Business Boosting Framework</h1>
+<h1 align="center">🧱 SolidGPT-Build Your Service with AI</h1>
 
-<a href="docs/Introduction_CN.md"><img src="https://img.shields.io/badge/文档-中文版-blue.svg" alt="CN doc"></a>
 [![Twitter Follow](https://img.shields.io/twitter/follow/SolidGPT?style=social)](https://twitter.com/SolidGPT)
 
-# 🚀 What’s this
+# 🚀 SolidGPT(SaaS edition)
+SolidGPT(SaaS edition) is an AI-centric serverless platform. Combine AI coding and AI cloud infrastructure management. You can easily build, launch and scaleing services on AWS using natural language with LLM Agents.
+
+## 📖 Highlight
+- AI create APIs on AWS with one line input.
+<img width="760" alt="Screen Shot 2024-02-04 at 2 59 44 PM" src="https://github.com/AI-Citizen/SolidGPT/assets/39673228/e72f3280-415f-4ac1-9496-812ac67a5153">
+
+Incomming..
+
+# SolidGPT
 Chat everything with your code repository, ask repository-level code questions, and discuss your requirements. AI scans and learns from your code to seek coding advice, develop coding plans, and generate a product requirement documents using the information in the repository.
 
-***SolidGPT <> AutoGen***
-🚀 Introducing AutoGen Analysis! 🧠 Engage in issue focused chat sessions, to get the most detailed insights.
-
-***Chat with Your Code Repository (Beta) Published***
-Chat with everything with your code repository, ask repository-level code questions, and discuss your requirements.
-<img width="1506" alt="Screen Shot 2023-10-18 at 11 10 47 PM" src="https://github.com/AI-Citizen/SolidGPT/assets/39673228/3164a280-755a-4f05-8848-ec61c570a420">
-
-### 🔥🔥 [Click to try official host SolidGPT](https://calm-flower-017281610.3.azurestaticapps.net/)
-
-If you like our work, please give us a 🌟 star. Your support serves as a great encouragement for us. Thank you! 😊
-
+**If you like our work, please give us a 🌟 star. Your support serves as a great encouragement for us. Thank you! 😊**
 
 # 🏁 Quick Start
 
