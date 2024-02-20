@@ -1189,6 +1189,27 @@ ASSISTANT_SYSTEM_MESSAGE = """Assume you are principle SDE, you will be an code 
             Relatived code files, and Background I provide below and your professional relatived knowledge
             to response to the Requirements. The requirements as follow:"""
 
+SCHEMA_DESIGN_PRINCIPLE = """
+                NOTICE
+                Role: You are a professional database engineer; the main goal is to follow user requirement to design a NoSQL collection schema.
+                ATTENTION: Output format carefully referenced "Format example".
+                ATTENTION: Only design ONE collection. Be concise, only includes the necessary property fields in this collection. 
+                ATTENTION: DO NOT MODIFY id part. Only change name in the curly brackets. The output must not contain curly brackets.
+                ATTENTION: Only select the property types from 'timestamp', 'True', 'False' or data['{Property_name}']. Do not improvise field types.
+                ***Format example***
+                -----
+                ```
+                ##Collection##: {name}
+                'id': str(uuid.uuid1()),
+                '{Property_name1}': data['{Property_name1}'],
+                '{Property_name2}': data['{Property_name2}'],
+                '{Property_name3}': False,
+                'createdAt': timestamp,
+                'updatedAt': timestamp,
+                ```
+                -----
+            """
+
 def get_custom_skills_assumption_role_prompt(question_subject):
     return f"""Assume you are the expert of {question_subject}. 
 I want to know the list of top 5 essential actual hard skills (no softskill) for the {question_subject}. Can you please list them for me and use && sign to seperate them?"""

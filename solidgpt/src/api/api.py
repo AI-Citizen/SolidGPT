@@ -3,6 +3,7 @@ import logging
 import uuid
 from pydantic import BaseModel
 from solidgpt.src.api.api_response import *
+from solidgpt.src.configuration.configreader import ConfigReader
 from solidgpt.src.manager.initializer import Initializer
 from fastapi import FastAPI, UploadFile, File, HTTPException, Body, BackgroundTasks
 from fastapi.responses import JSONResponse
@@ -357,3 +358,24 @@ async def get_graph_status_impl(body: dict = Body(...)):
         message=f"Graph in unknown state.",
         status=3,
     ), status_code=200)
+
+
+@app.post("/httpsolution/v1")
+async def http_solution_v1(body: dict = Body(...)):
+    logging.info("celery task: http solution graph")
+    graph_id = body['graph_id']
+    openai_key = body['openai_key']
+    requirement = body['requirement']
+    logging.info("celery task: http solution v1")
+    openai.api_key = openai_key
+
+    result = celery_task_http_solution.apply_async(args=[openai_key, requirement, graph_id])
+    graph_result = GraphResult(result, "HTTP Solution Graph")
+    graph_result_map[graph_id] = graph_result
+
+    return JSONResponse(content={
+        "message": f"Running HTTP Solution graph...",
+        "graph_id": graph_id,
+        "is_final": True,
+        "current_work_name": "HTTP Solution"
+    }, status_code=200)

@@ -126,6 +126,7 @@ def celery_task_autogen_analysis_graph(self, openai_key, requirement, onboarding
         state='PROGRESS',
         meta={'result': "", 'state_id': ""}
     )
+
     def autogen_message_input_callback():
         data = redis_instance.blpop(self.request.id)
         if data:
@@ -151,3 +152,22 @@ def celery_task_autogen_analysis_graph(self, openai_key, requirement, onboarding
     g.execute()
 
     return ""
+
+
+@app.task(bind=True)
+def celery_task_http_solution(self, openai_key, requirement, graph_id):
+    logging.info("celery task: http solution")
+    openai.api_key = openai_key
+    g = build_http_solution_graph(requirement, graph_id)
+
+    def update_progress(current_content):
+        self.update_state(
+            state='PROGRESS',
+            meta={'current_content': current_content}
+        )
+
+    g.callback_map[SKILL_NAME_HTTP_SOLUTION] = update_progress
+    g.init_node_dependencies()
+    g.execute()
+    text_result = g.display_result.get_result()
+    return text_result
