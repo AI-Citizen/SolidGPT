@@ -1,5 +1,5 @@
 import shutil
-
+import uuid
 from solidgpt.src.manager.gptmanager import GPTManager
 from solidgpt.src.util.util import *
 from solidgpt.src.workskill.workskill import *
@@ -12,33 +12,37 @@ class HTTPCodeSolution(WorkSkill):
         super().__init__()
         self.gpt_manager = GPTManager._instance
         self.name = SKILL_NAME_HTTP_SOLUTION
-        self.session_id_input = SkillInput(
-            "Session ID",
-            SkillIOParamCategory.PlainText,
-        )
+
         self.input_user_requirement = SkillInput(
             "User requirement",
             SkillIOParamCategory.PlainText,
         )
 
-        self.add_input(self.session_id_input)
         self.add_input(self.input_user_requirement)
-
+        self.output_path = SkillOutput(
+            "HTTP Solution Path",
+            SkillIOParamCategory.PlainText,
+        )
+        self.add_output(self.output_path)
         self.input_content = None
         self.schema_dict = {}
         self.need_modify = False
+        self.session_id = None
 
     def _read_input(self):
         self.input_content = self.input_user_requirement.content
-        self.session_id = self.session_id_input.content
+        self.session_id = self.get_uuid()
 
     def execution_impl(self):
         logging.info("Start to Generate HTTP Code...")
+        self.remove_dir()
         self.copy_templates()
         self.create_schema()
         if self.need_modify:
             self.modify_todo_create()
             self.modify_todo_update()
+        dst_path = os.path.join(LOCAL_STORAGE_OUTPUT_DIR, self.session_id, "architecture")
+        self._save_to_result_cache(self.output_path, dst_path)
 
     def copy_templates(self):
         src = os.path.join(SRC_DIR, "tools", "templates", "aws-python-http-api-with-dynamodb")
@@ -118,4 +122,11 @@ class HTTPCodeSolution(WorkSkill):
         with open(dest_path, 'w') as file:
             file.write(data)
 
+    def remove_dir(self):
+        if os.path.exists(os.path.join(LOCAL_STORAGE_OUTPUT_DIR, self.session_id, "architecture")):
+            shutil.rmtree(os.path.join(LOCAL_STORAGE_OUTPUT_DIR, self.session_id, "architecture"))
+        return
 
+    @staticmethod
+    def get_uuid():
+        return str(uuid.uuid4().hex)

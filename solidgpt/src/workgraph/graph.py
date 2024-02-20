@@ -204,14 +204,13 @@ def build_autogen_analysis_graph(requirement: str, onboarding_graph_id: str, out
     return graph
 
 
-def build_http_solution_graph(requirement: str, session_id : str):
+def build_http_solution_graph(requirement: str, session_id: str):
     graph = WorkGraph(output_id=session_id)
     graph_cache = {}
     graph_cache["session_id"] = session_id
     http_solution = generate_node_with_output_configs("0", HTTPCodeSolution(),
                                 [
-                                    SkillInputConfig("", SkillInputLoadingMethod.LOAD_FROM_CACHE_STRING, -1, session_id),
                                     SkillInputConfig("", SkillInputLoadingMethod.LOAD_FROM_CACHE_STRING, -1, requirement),
-                                ], output_configs=[])
+                                ], output_configs=[{"id": 1, "to_display": True}])
     graph.add_node(http_solution)
     return graph

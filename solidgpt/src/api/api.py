@@ -377,5 +377,6 @@ async def http_solution_v1(body: dict = Body(...)):
         "message": f"Running HTTP Solution graph...",
         "graph_id": graph_id,
         "is_final": True,
+        "path": result,
         "current_work_name": "HTTP Solution"
     }, status_code=200)
