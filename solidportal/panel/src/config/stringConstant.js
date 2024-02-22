@@ -105,7 +105,8 @@ export const stringConstant = {
         "If you have any questions or feedback about our project, please don't hesitate to reach out to us. We greatly appreciate your suggestions!\n" +
         "- Email: aict@ai-citi.com\n" +
         "- GitHub Issues: For more technical inquiries, you can also create a new issue in our [GitHub repository](https://github.com/AI-Citizen/SolidGPT/issues).\n" +
-        "We will respond to all questions within 2-3 business days."
+        "We will respond to all questions within 2-3 business days.",
+    AWSLoginHint: "Please provide AWS account and password."
 };
 
 export default stringConstant;

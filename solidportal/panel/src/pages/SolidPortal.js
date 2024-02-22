@@ -12,6 +12,7 @@ import GraphType from "../config/graphType";
 import {ApiHelper} from "../utils/ApiHelper";
 import endPoint from "../config/endPoint";
 import AutoGenActivePlannerState from "../config/autoGenActivePlannerState";
+import AWSLogin from "../components/AWSLogin";
 
 
 const SolidPortal = () => {
@@ -21,12 +22,15 @@ const SolidPortal = () => {
     const [currentRunningSubgraphName, setCurrentRunningSubgraphName] = useState("")
     const [totalSubgraph, setTotalSubgraph] = useState([])
     const [status, setStatus] = useState(false)
+    const [serverlessStatus, setServerlessStatus] = useState(false)
+    const [serverlessTaskID, setServerlessTaskID] = useState("")
     const [autoGenStatus, setAutoGenStatus] = useState(false)
     const [autoGenTaskId, setAutoGenTaskId] = useState(null)
     const [isAutoGenNewSession, setIsAutoGenNewSession] = useState(true)
     let state_id = useRef("");
     let autoGenResult = useRef("");
     const [showTermsCondition, setShowTermsCondition] = useState(false)
+    const [serverlessDeploySuccess, setServerlessDeploySuccess] = useState(false);
     const [mdEditorValue, setMdEditorValue] = useState(showTermsCondition ? stringConstant.TermsCondition : stringConstant.MdEditorStartText);
     const saveMdEditorValue = (mdEditorValue) => {
         setMdEditorValue(mdEditorValue)
@@ -81,6 +85,7 @@ const SolidPortal = () => {
     const userInputView = (
         <UserInputView
             showView={!showTermsCondition && showLeftPanel}
+            setShowLeftPanel={setShowLeftPanel}
             setCurrentRunningSubgraphName={saveCurrentRunningSubgraphName}
             setTotalSubgraph={saveSetTotalSubgraph}
             getMdEditorValue={mdEditorValue}
@@ -101,6 +106,47 @@ const SolidPortal = () => {
         />
     );
 
+    const [AWSLoginViewVisible, setAWSLoginViewVisible] = useState(false);
+    const onAWSLoginFinish = async (values) => {
+        console.log('Received values:', values);
+        const requestBody = JSON.stringify({
+            session_id: localStorage.getItem(config.CurrentGraphId),
+            aws_key_id: values.username,
+            aws_access_key: values.password
+        })
+        try {
+            let endpoint = ""
+            if (serverlessDeploySuccess === true){
+                endpoint = endPoint.ServerlessDeployRemove;
+            }else{
+                endpoint = endPoint.ServerlessDeploy;
+            }
+            const response = await ApiHelper.postRequest(endpoint, requestBody, {
+                headers: config.CustomHeaders,
+            });
+            if (response.status === 200) {
+                setServerlessStatus(true)
+                setServerlessTaskID(response.data.task_id)
+                setAWSLoginViewVisible(false)
+            } else {
+                setMdEditorValue(stringConstant.APIFail)
+                setAWSLoginViewVisible(false)
+            }
+        }catch (error) {
+            setMdEditorValue(error.message)
+            console.error('Error:', error);
+            window.alert(error);
+        }
+    };
+    const onAWSLoginFail = () => {
+        setMdEditorValue(stringConstant.AWSLoginHint)
+    }
+    const AWSLoginView = (<AWSLogin
+        visible = {AWSLoginViewVisible}
+        setVisible = {setAWSLoginViewVisible}
+        onLoginFinish={onAWSLoginFinish}
+        onLoginFail={onAWSLoginFail}
+    />);
 
     // const [autoGenActivePlannerState, setAutoGenActivePlannerState] = useState(AutoGenActivePlannerState.Disable);
     // const activeAutoGenPlanner = async () => {
@@ -159,18 +205,18 @@ const SolidPortal = () => {
                         else if (response.data.status === 2) {
                             if (selectedGraphType === GraphType.OnboardProject) {
                                 setMdEditorValue(stringConstant.OnboardFinishHint + response.data.result)
-                            } 
+                            }
                             else {
                                 setMdEditorValue(response.data.result)
                             }
                             //TODO: change this to true
-                            currentRunningSubgraphName === "Step1: Analyzing your requirement"  ? setIsFinal(false) : setIsFinal(true)
+                            (currentRunningSubgraphName === "Step1: Analyzing your requirement"|| currentRunningSubgraphName === "Step1: Cloud Solution")  ? setIsFinal(false) : setIsFinal(true)
                             setStatus(false)
                         }
                         // If response data status is other than 1 or 2, then it is an internel error
                         else {
                             setMdEditorValue(stringConstant.APIFail)
-                            setStatus(false)                       
+                            setStatus(false)
                         }
                     } else {
                         setMdEditorValue(stringConstant.APIFail)
@@ -237,6 +283,42 @@ const SolidPortal = () => {
 
     },[autoGenStatus, pollingInterval] )
 
+    useEffect(() => {
+        const requestBody = JSON.stringify({
+            task_id: serverlessTaskID
+        })
+        if (serverlessStatus) {
+            const intervalId = setInterval(async () => {
+                try {
+                    const response = await ApiHelper.postRequest(endPoint.ServerlessStatus, requestBody, {
+                        headers: config.CustomHeaders,
+                    });
+
+                    if (response.status === 200) {
+                        console.log(response.data)
+                        if (response.data.status !== "Running"){
+                            setMdEditorValue(response.data.message);
+                            setServerlessStatus(false);
+                            if(response.data.status === "Failed"){
+                                setServerlessDeploySuccess(true)
+                            }
+                        }
+                    } else {
+                        setMdEditorValue(stringConstant.APIFail);
+                        setServerlessStatus(false);
+                    }
+                } catch (e) {
+                    console.log(e)
+                    setMdEditorValue("Failed to get status update");
+                    setServerlessStatus(false);
+                }
+
+            }, pollingInterval);
+
+            return () => clearInterval(intervalId);
+        }
+    }, [serverlessStatus, pollingInterval]);
+
 
     const toggleIcon = () => {
         if (!showLeftPanel) {
@@ -278,6 +360,34 @@ const SolidPortal = () => {
             setIsFinal(true)
             saveCurrentRunningSubgraphName("Step2: Generating PRD")
         }
+        if(selectedGraphType === GraphType.CloudSolution){
+            cloudSolutionDeploy()
+            saveCurrentRunningSubgraphName(   "Step2: Server Deploy")
+        }
+    }
+
+    const showContinueButton = () => {
+        return isFinal ? 'none' : 'flex'
+    }
+
+    const continueButtonText = () => {
+        let buttonText = ""
+        if (showTermsCondition){
+            buttonText = "Accept"
+        }else if(selectedGraphType === GraphType.CloudSolution){
+            if (serverlessDeploySuccess === true){
+                buttonText = "Remove Deploy"
+            }else{
+                buttonText = "Deploy"
+            }
+        }else{
+            buttonText = "Continue"
+        }
+        return buttonText
+    }
+
+    const cloudSolutionDeploy = () => {
+        setAWSLoginViewVisible(true);
     }
 
     const writePRD = async () => {
@@ -347,6 +457,7 @@ const SolidPortal = () => {
     return (
         <div className={styles.solidportal}>
             {userInputView}
+            {AWSLoginView}
             {!showTermsCondition && <FloatButton type="default" icon={floatIcon} style={{left: 20}}
                          onClick={() => {
                              toggleIcon()
@@ -354,10 +465,10 @@ const SolidPortal = () => {
                          }}/>}
             <div className={styles.mainview}>
                 <div/>
-                <div className={styles.actionbuttons} style={{ display: isFinal && !showTermsCondition ? 'none' : 'flex' }}>
+                <div className={styles.actionbuttons} style={{ display: showContinueButton() }}>
                     <Button className={styles.continueactiobutton} disabled={isFinal && !showTermsCondition} onClick={() => {
                         continueClicked()
-                    }}>{showTermsCondition ?"Accept": "Continue"}</Button>
+                    }}>{continueButtonText()}</Button>
                 </div>
                 <div className={styles.statusnodelist}>
                     {totalSubgraph.map((item, index) => (
