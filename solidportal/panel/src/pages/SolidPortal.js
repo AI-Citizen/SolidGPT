@@ -299,7 +299,7 @@ const SolidPortal = () => {
                         if (response.data.status !== "Running"){
                             setMdEditorValue(response.data.message);
                             setServerlessStatus(false);
-                            if(response.data.status === "Failed"){
+                            if(response.data.status === "Succeeded"){
                                 setServerlessDeploySuccess(true)
                             }
                         }
