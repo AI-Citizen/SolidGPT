@@ -19,8 +19,8 @@ import os
 import subprocess
 
 app = Celery('celery_tasks',
-             BROKER_URL='redis://localhost:6379/0',  # Using Redis as the broker
-             CELERY_RESULT_BACKEND='redis://localhost:6379/1'
+             BROKER_URL=os.getenv('BROKER_URL', 'redis://localhost:6379/0'),  # Using Redis as the broker
+             CELERY_RESULT_BACKEND=os.getenv('CELERY_RESULT_BACKEND', 'redis://localhost:6379/1')
              )
 app.autodiscover_tasks(['solidgpt.src.api'])
 redis_instance = redis.Redis()
