@@ -7,7 +7,11 @@ const endPoint = {
     OnboardRepo: '/onboardrepo/',
     UploadRepo: '/uploadrepo/',
     AutoGenAnalysis: '/autogenanalysis',
-    StatusAutoGen: '/status/autogen'
+    StatusAutoGen: '/status/autogen',
+    HttpSolutionV1: '/httpsolution/v1',
+    ServerlessDeploy: '/serverless/deploy',
+    ServerlessDeployRemove: '/serverless/remove',
+    ServerlessStatus: '/status/serverless'
 };
 
 export default endPoint;

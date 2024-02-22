@@ -7,9 +7,11 @@ import stringConstant from "../config/stringConstant";
 import GraphType from "../config/graphType";
 import {ApiHelper} from "../utils/ApiHelper";
 import endPoint from "../config/endPoint";
+import {v4} from "uuid";
 
 
 const UserInputView = ({   showView,
+                           setShowLeftPanel,
                            setCurrentRunningSubgraphName,
                            setTotalSubgraph,
                            getMdEditorValue,
@@ -80,14 +82,14 @@ const UserInputView = ({   showView,
                                 setGetStatusCall(true)
                                 setRecentOnboardId(data.graph_id)
                             } else {
-                                setSaveMdEditorValue(stringConstant.APIFail)   
+                                setSaveMdEditorValue(stringConstant.APIFail)
                             }
                             setUploadStatus(false)
                         }
                         // If response data status is other than 1, 2 or 3, then it is an internel error
                         else {
                             setSaveMdEditorValue(stringConstant.APIFail)
-                            setUploadStatus(false)                       
+                            setUploadStatus(false)
                         }
                     } else {
                         // If response status is other than 200, then it is an internel error
@@ -97,7 +99,7 @@ const UserInputView = ({   showView,
                 } catch(error) {
                     setSaveMdEditorValue(stringConstant.APIFail)
                     setUploadStatus(false)
-                } 
+                }
             }, pollingInterval);
             return () => clearInterval(intervalId);
         }
@@ -107,6 +109,7 @@ const UserInputView = ({   showView,
     const handleGraphTypeSelectChange = (e) => {
         setSelectedGraphType(e.target.value);
         setSaveSelectedGraphType(e.target.value);
+        setIsFinal(true);
         isReady(e.target.value)
     };
     const handleOpenAIKeyInputChange = (event) => {
@@ -184,6 +187,16 @@ const UserInputView = ({   showView,
                 return false
             } else {
                 disableStart.current = false
+                return true
+            }
+        }else if(graphType === GraphType.CloudSolution){
+
+            if (openAIKeyRef.current === "" || userRequirementRef.current === "") {
+                disableStart.current = true
+                return false
+            } else {
+                disableStart.current = false
+                openAIKeyRef.current = null
                 return true
             }
         }
@@ -281,6 +294,15 @@ const UserInputView = ({   showView,
                 ])
                 setCurrentRunningSubgraphName("AutoGen Analysis(Beta)")
             }
+        }else if(selectedGraphType === GraphType.CloudSolution){
+            if(await httpSolutionV1()) {
+                setTotalSubgraph([
+                    "Step1: Cloud Solution",
+                    "Step2: Server Deploy",
+                ])
+                setCurrentRunningSubgraphName("Step1: Cloud Solution")
+            }
+            setShowLeftPanel(false)
         }
     }
 
@@ -413,6 +435,34 @@ const UserInputView = ({   showView,
         }
     }
 
+    const httpSolutionV1 = async () => {
+        disableStart.current = true
+        const requestBody = JSON.stringify({
+            openai_key: openAIKey,
+            graph_id: v4(),
+            requirement: userRequirement
+        })
+        try {
+            const response = await ApiHelper.postRequest(endPoint.HttpSolutionV1, requestBody, {
+                headers: config.CustomHeaders,
+            });
+            setSaveMdEditorValue(stringConstant.WaitHint)
+            if (response.status === 200) {
+                localStorage.setItem(config.CurrentGraphId, response.data.graph_id)
+                setGetStatusCall(true)
+                return true
+            } else {
+                setSaveMdEditorValue(stringConstant.APIFail)
+            }
+
+        } catch (error) {
+            setSaveMdEditorValue(error.message)
+            console.error('Error:', error);
+            window.alert(error);
+            return false
+        }
+    }
+
     const onboardRepo = async () => {
         if (openAIKey === null || openAIKey === '') {
             window.alert(stringConstant.OpenAIKeyAlert);
@@ -447,6 +497,8 @@ const UserInputView = ({   showView,
                 </option>
                 <option value={GraphType.TechSolution} style={{fontSize: '13px'}}>{GraphType.TechSolution}
                 </option>
+                <option value={GraphType.CloudSolution} style={{fontSize: '13px'}}>{GraphType.CloudSolution}
+                </option>
         </select>
         {selectedGraphType === GraphType.OnboardProject && <div className={styles.repofolderpath}>
                 <div style={{fontSize: '12px', fontWeight: 'bold'}}>{'Repository (<50mb:)'}</div>
@@ -462,7 +514,8 @@ const UserInputView = ({   showView,
                           autoSize={{minRows: 1, maxRows: 1}} placeholder="OpenAI API Key:"/>
         </div>
         {(selectedGraphType === GraphType.GeneratePRD ||
-                selectedGraphType === GraphType.TechSolution)
+                selectedGraphType === GraphType.TechSolution
+                || selectedGraphType === GraphType.CloudSolution)
             && <div>
                 <div>
                     <TextArea className={styles.requirement} bordered={false}
