@@ -8,6 +8,7 @@ from solidgpt.src.workgraph.workgraph import WorkGraph
 from solidgpt.src.worknode.worknode import WorkNode
 from solidgpt.src.workskill.skillio import SkillInputConfig, SkillInputLoadingMethod
 from solidgpt.src.workskill.skills.analysis import ProductAnalysis
+from solidgpt.src.workskill.skills.http_codesolution import HTTPCodeSolution
 from solidgpt.src.workskill.skills.load_repo import LoadRepo
 from solidgpt.src.workskill.skills.query_code_local import QueryCodeLocal
 from solidgpt.src.workskill.skills.repo_chat import RepoChat
@@ -200,4 +201,16 @@ def build_autogen_analysis_graph(requirement: str, onboarding_graph_id: str, out
     graph.add_node(autogen_solution)
     graph.custom_data["autogen_message_input_callback"] = autogen_message_input_callback
     graph.custom_data["autogen_update_result_callback"] = autogen_update_result_callback
+    return graph
+
+
+def build_http_solution_graph(requirement: str, session_id: str):
+    graph = WorkGraph(output_id=session_id)
+    graph_cache = {}
+    graph_cache["session_id"] = session_id
+    http_solution = generate_node_with_output_configs("0", HTTPCodeSolution(),
+                                [
+                                    SkillInputConfig("", SkillInputLoadingMethod.LOAD_FROM_CACHE_STRING, -1, requirement),
+                                ], output_configs=[{"id": 1, "to_display": True}])
+    graph.add_node(http_solution)
     return graph
