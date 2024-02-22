@@ -15,6 +15,8 @@ from solidgpt.src.workskill.skills.load_repo import LoadRepo
 from solidgpt.src.workgraph.graph import *
 from solidgpt.src.manager.initializer import *
 import redis
+import os
+import subprocess
 
 app = Celery('celery_tasks',
              BROKER_URL='redis://localhost:6379/0',  # Using Redis as the broker
@@ -151,3 +153,68 @@ def celery_task_autogen_analysis_graph(self, openai_key, requirement, onboarding
     g.execute()
 
     return ""
+
+@app.task(bind=True)
+def celery_task_serverless_deploy(self, yml_path: str, aws_key_id: str, aws_access_key: str):
+    logging.info("celery task: serverless deploy")
+
+    # Extract the directory from the file path
+    directory = Path(yml_path).parent
+
+    # Set AWS credentials
+    env = os.environ.copy()
+    env['AWS_ACCESS_KEY_ID'] = aws_key_id
+    env['AWS_SECRET_ACCESS_KEY'] = aws_access_key
+
+    # Define the command to run
+    command = ["serverless", "deploy", "--config", yml_path, "--verbose"]
+    self.update_state(
+        state='PROGRESS',
+        meta={}
+    )
+
+    # Execute the command
+    process = subprocess.run(command, shell=True, capture_output=True, text=True, cwd=directory, env=env)
+
+    # Check if the command was successful
+    if process.returncode == 0:
+        print("Deployment successful.")
+        print("Output:\n", process.stdout)
+        return {'status': 'Succeeded', 'message': 'Deployment successful.', 'output': process.stdout}
+    else:
+        print("Deployment failed.")
+        print("Error:\n", process.stdout)
+        return {'status': 'Failed', 'message': 'Deployment failed.', 'output': process.stdout}
+
+
+@app.task(bind=True)
+def celery_task_serverless_remove(self, yml_path: str, aws_key_id: str, aws_access_key: str):
+    logging.info("celery task: serverless remove")
+
+    # Extract the directory from the file path
+    directory = Path(yml_path).parent
+
+    # Set AWS credentials
+    env = os.environ.copy()
+    env['AWS_ACCESS_KEY_ID'] = aws_key_id
+    env['AWS_SECRET_ACCESS_KEY'] = aws_access_key
+
+    # Define the command to run
+    command = ["serverless", "remove", "--config", yml_path, "--verbose"]
+    self.update_state(
+        state='PROGRESS',
+        meta={}
+    )
+
+    # Execute the command
+    process = subprocess.run(command, shell=True, capture_output=True, text=True, cwd=directory, env=env)
+
+    # Check if the command was successful
+    if process.returncode == 0:
+        print("Removal successful.")
+        print("Output:\n", process.stdout)
+        return {'status': 'Succeeded', 'message': 'Removal successful.', 'output': process.stdout}
+    else:
+        print("Removal failed.")
+        print("Error:\n", process.stdout)
+        return {'status': 'Failed', 'message': 'Removal failed.', 'output': process.stdout}

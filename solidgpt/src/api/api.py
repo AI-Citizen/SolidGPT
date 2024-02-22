@@ -57,6 +57,7 @@ uploaded_repo_map: dict = {}
 autogen_task_map: dict = {}
 graph_result_map: dict[str, GraphResult] = {}
 graph_stage_map: dict = {}
+serverless_task_map: dict = {}
 
 
 class FileData(BaseModel):
@@ -356,4 +357,78 @@ async def get_graph_status_impl(body: dict = Body(...)):
         graph=graph_result.get_name(),
         message=f"Graph in unknown state.",
         status=3,
+    ), status_code=200)
+
+
+@app.post("/serverless/deploy")
+async def deploy_serverless(body: dict = Body(...)):
+    task_id = f'deploy-{str(uuid.uuid4())}'
+    session_id = body.get("session_id", "")
+    yml_path = os.path.join(LOCAL_STORAGE_OUTPUT_DIR, session_id, "architecture", "serverless.yml")
+    aws_key_id = body.get("aws_key_id", "")
+    aws_access_key = body.get("aws_access_key", "")
+    result = celery_task_serverless_deploy.apply_async(args=[yml_path, aws_key_id, aws_access_key])
+    serverless_task_map[task_id] = result
+
+    return JSONResponse(content={
+        "message": f"Deploying to AWS...",
+        "task_id": task_id
+    }, status_code=200)
+
+
+@app.post("/serverless/remove")
+async def remove_serverless(body: dict = Body(...)):
+    task_id = f'remove-{str(uuid.uuid4())}'
+    session_id = body.get("session_id", "")
+    yml_path = os.path.join(LOCAL_STORAGE_OUTPUT_DIR, session_id, "architecture", "serverless.yml")
+    aws_key_id = body.get("aws_key_id", "")
+    aws_access_key = body.get("aws_access_key", "")
+    result = celery_task_serverless_remove.apply_async(args=[yml_path, aws_key_id, aws_access_key])
+    serverless_task_map[task_id] = result
+
+    return JSONResponse(content={
+        "message": f"Removing from AWS...",
+        "task_id": task_id
+    }, status_code=200)
+
+
+@app.post("/status/serverless")
+async def get_serverless_task_status(body: dict = Body(...)):
+    task_id: str = body['task_id']
+    celery_task_result = serverless_task_map.get(task_id, None)
+
+    if celery_task_result is None:
+        return JSONResponse(content=response_serverless(
+                                message="status: not exist or not started",
+                                status="Failed"
+                            ), status_code=200)
+    if celery_task_result.ready():
+        if celery_task_result.status == "SUCCESS":
+            res_dict = celery_task_result.info
+            if res_dict.get("status", "Failed") == "Succeeded":
+                return JSONResponse(content=response_serverless(
+                    message="status: succeeded",
+                    status="Succeeded"
+                ), status_code=200)
+            else:
+                return JSONResponse(content=response_serverless(
+                    message="status: " + str(res_dict.get("status", "Failed")),
+                    status="Failed",
+                    error=res_dict.get("output", "no error output")
+                ), status_code=200)
+        elif celery_task_result.status == "FAILURE":
+            return JSONResponse(content=response_serverless(
+                message="status: failed due to an unexpected error",
+                status="Failed",
+                error=celery_task_result.traceback
+            ), status_code=200)
+        else:
+            return JSONResponse(content=response_serverless(
+                message="status: unknown",
+                status="Failed"
+            ), status_code=200)
+    return JSONResponse(content=response_upload(
+        message="status: executing serverless...",
+        status="Running",
+        progress=celery_task_result.info
     ), status_code=200)
