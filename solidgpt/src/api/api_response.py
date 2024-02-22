@@ -20,3 +20,10 @@ def response_graph(graph="", message="", status="", progress="", error="", resul
         "error": error,
         "result": result,
     }
+
+def response_serverless(message="", status="", error=""):
+    return {
+        "message": message,
+        "status": status,
+        "error": error,
+    }
