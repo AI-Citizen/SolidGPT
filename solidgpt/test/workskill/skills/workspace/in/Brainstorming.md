@@ -1,1 +1,0 @@
-Help me brainstorm a AI product which can be used host discord servers, auto reply memeber and join discussion.

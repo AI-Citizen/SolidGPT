@@ -1,0 +1,36 @@
+.file-list-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.file-row {
+    flex: 1;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.file-scroll {
+    display: flex;
+}
+
+.file-item {
+    flex: 0 0 auto;
+    margin: 5px;
+    padding: 5px 10px;
+    border-radius: 20px;
+    background-color: #454545;
+    color: #cccccc;
+    position: relative;
+    border: #007acc 0.3px solid;
+}
+
+.remove-button {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: red;
+    font-weight: bold;
+}

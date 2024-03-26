@@ -1,0 +1,124 @@
+#root {
+  margin: 0 auto;
+}
+
+body {
+  margin: 0;
+}
+
+.chat {
+  display: flex;
+  font-family: var(--font), 'Segoe UI', 'Roboto', 'sans-serif';
+  flex-direction: row;
+  height: auto;
+  margin: 0;
+  width: 100%;
+}
+
+.chat.user {
+  flex-direction: row-reverse;
+}
+
+.chat .avatar {
+  align-items: center;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  color: var(--text-color);
+  display: flex;
+  /* display: inline-block; */
+  height: 2rem;
+  justify-content: center;
+  margin: 3px;
+  overflow: hidden;
+  width: 2rem;
+}
+
+.chat .avatar img {
+  height: 100%;
+}
+
+.chat .msg {
+  display: inline-block;
+  background: #3c3c3c;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  padding: 10px;
+  line-height: 1.2;
+  margin: 0 5px;
+  max-width: 70%;
+  min-height: 1.5rem;
+  white-space: pre-line;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  color:#cccccc;
+}
+
+.chat .msg::after {
+  content: "";
+  top: 0;
+  position: absolute;
+  border: 0.75em solid transparent;
+  border-top-color: var(--secondary-bg-color);
+  display: block;
+  left: 3.1rem;
+  content: none !important;
+}
+
+.chat.user .msg::after {
+  right: 3.1rem;
+  left: auto;
+}
+
+.chat .msg p {
+  margin-block: 0;
+}
+
+.chat .msg a:hover {
+  color: var(--primary-color);
+}
+
+.chat .msg.msg-table {
+  white-space: normal;
+  color: rgb(255, 255, 255)
+}
+
+.chat .msg:has(> table) {
+  white-space: normal;
+}
+
+.chat .msg table {
+  border-collapse: collapse;
+  margin: 10px;
+}
+
+.chat .msg td,
+.chat .msg th {
+  border: 1px solid var(--text-color);
+  padding: 3px;
+}
+
+/* Styles for No Avatar */
+.chat.no-avatar .avatar {
+  height: 0;
+  width: 0;
+}
+
+.chat.no-avatar .msg {
+  max-width: 85%;
+}
+
+.chat.no-avatar .msg::after {
+  left: 0.2rem;
+}
+
+.chat.no-avatar.user .msg::after {
+  right: 0.2rem;
+  left: auto;
+}
+
+@media screen and (max-width: 260px) {
+  /* Hide the item but don't collapse it */
+  .chat .avatar {
+    visibility: hidden;
+  }
+}

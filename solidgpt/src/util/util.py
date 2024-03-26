@@ -1,5 +1,11 @@
 import json
+import os
 import sys
+import openai
+import uuid
+from qdrant_client import QdrantClient
+from langchain.embeddings import OpenAIEmbeddings
+from qdrant_client.http.models import PointStruct, Distance, VectorParams
 from solidgpt.definitions import *
 
 
@@ -69,11 +75,10 @@ def create_directories_if_not_exist(filepath: str):
 def load_from_text(filename, path = "", extension = ".md") -> str:
     full_path = os.path.join(path, filename)
     full_path = add_extension_if_not_exist(full_path, extension)
-    with open(full_path, "r") as md_file:
+    with open(full_path, "r", encoding='utf-8') as md_file:
         content = md_file.read()
     logging.info(f"Information loaded from {full_path}")
     return content
-
 
 def add_extension_if_not_exist(input_string, extension):
     if not input_string.endswith(extension):
@@ -108,3 +113,50 @@ def delete_directory_contents(directory):
                 print(f"Deleted directory: {dir_path}")
             except Exception as e:
                 print(f"Error deleting directory {dir_path}: {str(e)}")
+
+
+def embed_templates():
+    qdrant_path = os.path.join(SRC_DIR, "tools", "qdrant", "embedding")
+    client = QdrantClient(path=qdrant_path)
+    template_lists = list(filter(lambda x: os.path.isdir(os.path.join(SRC_DIR, "tools", "templates", x)),
+                                 os.listdir(os.path.join(SRC_DIR, "tools", "templates"))))
+
+    def get_uuid():
+        return str(uuid.uuid4().hex)
+
+    def __embed_summary(summary, path):
+        payload_dict = {"path": path, "summary": summary}
+        embeddings_model = OpenAIEmbeddings(openai_api_key=openai.api_key)
+        embedded_query = embeddings_model.embed_query(summary)
+        try:
+            client.upsert(
+                collection_name="templates",
+                points=[
+                    PointStruct(id=get_uuid(), vector=embedded_query, payload=payload_dict)
+                ]
+            )
+        except ValueError:
+            client.recreate_collection(
+                collection_name="templates",
+                vectors_config=VectorParams(size=len(embedded_query), distance=Distance.COSINE),
+            )
+            client.upsert(
+                collection_name="templates",
+                points=[
+                    PointStruct(id=get_uuid(), vector=embedded_query, payload=payload_dict)
+                ]
+            )
+        return
+
+    for cur_dir in template_lists:
+        cur_path = os.path.join(SRC_DIR, "tools", "templates", cur_dir)
+        readme = os.path.join(cur_path, "README.md")
+        with open(readme) as f:
+            content = f.read()
+            __embed_summary(content, cur_path)
+    return
+
+
+if __name__ == "__main__":
+    # embed_templates()
+    pass

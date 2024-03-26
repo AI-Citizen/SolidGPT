@@ -1,0 +1,54 @@
+.ant-btn-primary {
+    background-color: "#007acc";
+    border-color: "#007acc";
+}
+
+.settings-container {
+    position: fixed;
+    bottom: 130px;
+    right: 50px;
+    z-index: 999;
+}
+
+.settings-content {
+    position: absolute;
+    width: 260px;
+    bottom: 46px;
+    right: 0;
+    padding: 20px;
+    background: #454545;
+    border-radius: 5px;
+}
+
+.settings-content-input {
+    color: #cccccc;
+}
+
+.settings-paragraph {
+    word-wrap: break-word;
+    color: #cccccc;
+}
+
+.settings-addon-before-container {
+    display: inline-block;
+    width: 85px;
+    color: #cccccc;
+    font-size: smaller;
+}
+
+.settings-checkbox {
+    color: #cccccc;
+}
+
+
+@media screen and (max-width: 350px) {
+    .settings-content {
+        width: 25vh;
+    }
+}
+
+@media screen and (max-width: 250px) {
+    .settings-content {
+        width: 15vh;
+    }
+}

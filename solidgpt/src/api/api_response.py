@@ -9,7 +9,15 @@ def response_upload(message="", status="", progress="", error=""):
     }
 
 
-def response_graph(graph="", message="", status="", progress="", error="", result=""):
+def response_serverless(message="", status="", error=""):
+    return {
+        "message": message,
+        "status": status,
+        "error": error,
+    }
+
+
+def response_graph(graph="", message="", status="", progress="", error="", result="", extra_payload=None):
     if progress == "":
         progress = {}
     return {
@@ -19,11 +27,5 @@ def response_graph(graph="", message="", status="", progress="", error="", resul
         "progress": progress,
         "error": error,
         "result": result,
-    }
-
-def response_serverless(message="", status="", error=""):
-    return {
-        "message": message,
-        "status": status,
-        "error": error,
+        "payload": extra_payload,
     }

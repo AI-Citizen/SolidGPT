@@ -2,7 +2,7 @@
 import os
 import time
 from solidgpt.src.saveload.saveload import *
-from solidgpt.src.tools.notion.notionactions import NotionActions
+# from solidgpt.src.tools.notion.notionactions import NotionActions
 from solidgpt.src.workgraph.displayresult import DisplayResult
 
 
@@ -159,7 +159,8 @@ class WorkGraph:
                     continue
                 elif same_string(user_input, "notion-open"):
                     if self.notion is None:
-                        self.notion = NotionActions()
+                        # self.notion = NotionActions()
+                        pass
                     if not notion_file_opened:
                         skill_outputs = node.skill.outputs
                         if len(skill_outputs) > 0:

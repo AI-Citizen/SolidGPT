@@ -20,16 +20,16 @@ class GPTManager:
         self.gpt_models_container = {}
         self.if_show_reply = if_show_reply
 
-    def create_model(self, prompt, gpt_model_label, temperature = 1, model = None):
+    def create_model(self, prompt, gpt_model_label, temperature=1.0, model = None):
         if model is None:
             model = self.__default_model
         gpt_model = GPTModel(prompt, self.__default_model, self.if_show_reply, temperature)
         self.gpt_models_container[gpt_model_label] = gpt_model
         return gpt_model
     
-    def create_and_chat_with_model(self, prompt, gpt_model_label, input_message, temperature = 0.1, model = None):
+    def create_and_chat_with_model(self, prompt, gpt_model_label, input_message, temperature=0.1, model=None, is_stream = False):
         gpt_model = self.create_model(prompt, gpt_model_label, temperature, model)
-        return gpt_model.chat_with_model(input_message)
+        return gpt_model.chat_with_model(input_message, is_stream=is_stream)
 
     def get_gpt_model(self, gpt_model_label):
         return self.completions_container[gpt_model_label]
@@ -46,9 +46,12 @@ class GPTModel:
         self.if_show_reply = if_show_reply
         self.temperature = temperature
 
-    def chat_with_model(self, input_message):
+    def chat_with_model(self, input_message, is_stream=False):
         self.messages.append({"role": "user", "content": input_message})
-        self._run_model()
+        if not is_stream:
+            self._run_model()
+        else:
+            return self._run_model_stream()
         return self.last_reply
 
     def _run_model(self):
@@ -62,6 +65,16 @@ class GPTModel:
             print(f"ChatGPT: {reply}")
         self.messages.append({"role": "assistant", "content": reply})
         self.last_reply = reply
+
+    def _run_model_stream(self):
+        stream = openai.ChatCompletion.create(
+            model=self.model,
+            messages=self.messages,
+            temperature=self.temperature,
+            stream=True,
+        )
+        return stream
+
 
     def add_background(self, background_message):
         self.messages.append({"role": "assistant", "content": background_message})
