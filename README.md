@@ -16,7 +16,7 @@ Highly recommend to try SolidGPT VSCode Extension from the [VSCode Marketplace](
 Or you can follow the steps below to build from source. 
 ## 📦 Build From Source
 1. Pull the latest version of the SolidGPT from the GitHub repository.
-1. Pip install the requirements.txt file. 
+1. Pip install the requirements.txt file under the SolidGPT root directory. 
 ```sh
 pip install -r requirements.txt
 ```
