@@ -3,11 +3,18 @@
 # 🚀 What's this
 SolidGPT is a AI searching assistant for developer that helps code and workspace semantic search
 
+🔥🔥🔥 Try SolidGPT VSCode Extension from the [VSCode Marketplace](https://marketplace.visualstudio.com/items?itemName=aict.solidgpt)
+
 Appreciate Star 🌟 us on our [SolidGPT Github](https://github.com/AI-Citizen/SolidGPT)
 
-# 🏁 Quick Start
+# Try SolidGPT VSCode Extension
+1. Install SolidGPT VSCode Extension from the [VSCode Marketplace](https://marketplace.visualstudio.com/items?itemName=aict.solidgpt)
 
-## 📦 Install
+# 🏁 Quick Start
+Highly recommend to try SolidGPT VSCode Extension from the [VSCode Marketplace](https://marketplace.visualstudio.com/items?itemName=aict.solidgpt).
+
+Or you can follow the steps below to build from source. 
+## 📦 Build From Source
 1. Pull the latest version of the SolidGPT from the GitHub repository.
 1. Pip install the requirements.txt file. 
 ```sh

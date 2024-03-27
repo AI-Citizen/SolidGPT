@@ -176,3 +176,7 @@ localstorage/
 workspace/out/
 solidgpt/src/tools/qdrant/embeddings/
 solidgpt/src/tools/qdrant/embedding/
+
+# DB
+celerydb.sqlite
+results.db

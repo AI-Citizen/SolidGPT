@@ -1,55 +1,5 @@
 {
   "name": "solidgpt",
-  "displayName": "SolidGPT",
-  "publisher": "AICT",
-  "icon": "solidgpticonpng.png",
-  "description": "SolidGPT is a AI searching assistant for developer that helps code and workspace semantic search",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/AI-Citizen/SolidGPT"
-  },
-  "version": "0.1.0",
-  "engines": {
-    "vscode": "^1.64.0"
-  },
-  "categories": [
-    "Programming Languages",
-    "Machine Learning",
-    "Snippets",
-    "Education"
-  ],
-  "activationEvents": [],
-  "main": "./out/extension.js",
-  "contributes": {
-    "commands": [
-      {
-        "command": "vscodepluginsolidgpt.runext",
-        "title": "SolidGPT: Run Extension"
-      },
-      {
-        "command": "vscodepluginsolidgpt.installreq",
-        "title": "SolidGPT: Install Requirements (under development)"
-      }
-    ],
-    "viewsContainers": {
-      "activitybar": [
-          {
-              "id": "explorer1",
-              "title": "SolidGPT Explorer",
-              "icon": "solidgpticon.svg"
-          }
-      ]
-    },
-    "views": {
-			"explorer1": [
-				{
-					"type": "webview",
-					"id": "SolidGPT.webView",
-					"name": "SolidGPT"
-				}
-			]
-		}
-  },
   "scripts": {
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
