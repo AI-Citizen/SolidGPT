@@ -10,6 +10,7 @@ class SkillIOParamCategory(int, Enum):
     KanbanBoard = 6
     YAML = 7
     CODE_PLAIN_TEXT = 8
+    CODE_PLAN = 9
 
 class SkillInputLoadingMethod(Enum):
     LOAD_FROM_OUTPUT_ID = 1

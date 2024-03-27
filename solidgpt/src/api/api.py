@@ -1,21 +1,17 @@
-# run uvicorn solidgpt.src.api.api:app --reload
+## api.py
+import asyncio
 import logging
 import uuid
 from pydantic import BaseModel
 from solidgpt.src.api.api_response import *
-from solidgpt.src.configuration.configreader import ConfigReader
 from solidgpt.src.manager.initializer import Initializer
-from fastapi import FastAPI, UploadFile, File, HTTPException, Body, BackgroundTasks
+from fastapi import FastAPI, HTTPException, Body
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware  # Import the CORSMiddleware
-import shutil
-from pathlib import Path
-
-from solidgpt.src.orchestration.orchestration import Orchestration
+from celery.result import allow_join_result
 from solidgpt.src.util.util import *
 from solidgpt.src.workgraph.graph import *
-from solidgpt.src.workgraph.graph_helper import GraphType, GraphStatus
-
+import os
 from solidgpt.src.api.celery_tasks import *  # Import task function
 
 
@@ -24,9 +20,8 @@ class GraphResult:
     __graph_name = ""
 
     def __init__(self, result, graph_name):
-        self.__result = result
+        self.set_result_obj(result)
         self.__graph_name = graph_name
-        return
 
     def set_result_obj(self, result_obj):
         self.__result = result_obj
@@ -86,238 +81,10 @@ async def remove_all_files():
 
     return JSONResponse(content={"message": f"All files removed"}, status_code=200)
 
-
-@app.post("/onboardrepo")
-async def onboard_repo(body: dict = Body(...)):
-    # Enqueue the background task: onboard repo
-    logging.info("celery task: onboard repo graph")
-    graph_id = str(uuid.uuid4())
-    upload_id = body['upload_id']
-    openai_key = body['openai_key']
-    result = celery_task_onboard_repo_graph.apply_async(args=[openai_key, upload_id, graph_id])
-    graph_result = GraphResult(result, "Onboard Repo Graph")
-    graph_result_map[graph_id] = graph_result
-    return JSONResponse(content={
-        "message": f"Onboarding repo...",
-        "graph_id": graph_id,
-        "is_final": True,
-        "current_work_name": "onboard repo"
-    }, status_code=200)
-
-
-@app.post("/prd")
-async def generate_prd(body: dict = Body(...)):
-    # Enqueue the background task: prd
-    logging.info("celery task: prd graph")
-    new_graph_id = str(uuid.uuid4())
-    onboarding_id = body['onboarding_id']
-    current_graph_id = body['current_graph_id']
-    if not current_graph_id or current_graph_id not in graph_result_map or current_graph_id not in graph_stage_map:
-        current_graph_id = new_graph_id
-        graph_stage_map[current_graph_id] = 0
-    openai_key = body['openai_key']
-    requirement = body['requirement']
-    edit_content = body['edit_content']
-    project_additional_info = body['project_additional_info']
-    graph_stage = graph_stage_map.get(current_graph_id, 0)
-    if graph_stage < 2:
-        result = celery_task_prd_graph.apply_async(args=[
-            openai_key, requirement, project_additional_info, onboarding_id, graph_stage, edit_content,
-            current_graph_id])
-        graph_result = GraphResult(result, "PRD Graph")
-        graph_result_map[current_graph_id] = graph_result
-
-        graph_stage_map[current_graph_id] = graph_stage + 1
-        if graph_stage_map[current_graph_id] == 1:
-            return JSONResponse(content={
-                "message": f"Running prd graph...",
-                "graph_id": current_graph_id,
-                "is_final": False,
-                "current_work_name": "write prd step 1"
-            }, status_code=200)
-        else:
-            return JSONResponse(content={
-                "message": f"Running prd graph...",
-                "graph_id": current_graph_id,
-                "is_final": True,
-                "current_work_name": "write prd step 2"
-            }, status_code=200)
-
-    return JSONResponse(content={
-        "message": f"Cannot run prd graph, the graph has already completed",
-        "graph_id": current_graph_id,
-        "is_final": True,
-        "current_work_name": "write prd"
-    }, status_code=200)
-
-
-@app.post("/techsolution")
-async def generate_tech_solution(body: dict = Body(...)):
-    # Enqueue the background task: tech solution
-    logging.info("celery task: tech solution graph")
-    graph_id = str(uuid.uuid4())
-    onboarding_id = body['onboarding_id']
-    openai_key = body['openai_key']
-    requirement = body['requirement']
-    result = celery_task_tech_solution_graph.apply_async(args=[
-        openai_key, requirement, onboarding_id, graph_id])
-    graph_result = GraphResult(result, "Tech Solution Graph")
-    graph_result_map[graph_id] = graph_result
-
-    return JSONResponse(content={
-        "message": f"Running tech solution graph...",
-        "graph_id": graph_id,
-        "is_final": True,
-        "current_work_name": "tech solution"
-    }, status_code=200)
-
-
-@app.post("/repochat")
-async def repo_chat(body: dict = Body(...)):
-    # Enqueue the background task: repo chat
-    logging.info("celery task: repo chat graph")
-    graph_id = str(uuid.uuid4())
-    onboarding_id = body['onboarding_id']
-    openai_key = body['openai_key']
-    requirement = body['requirement']
-    result = celery_task_repo_chat_graph.apply_async(args=[
-        openai_key, requirement, onboarding_id, graph_id])
-    graph_result = GraphResult(result, "Repo chat Graph")
-    graph_result_map[graph_id] = graph_result
-
-    return JSONResponse(content={
-        "message": f"Running repo chat graph...",
-        "graph_id": graph_id,
-        "is_final": True,
-        "current_work_name": "repo chat"
-    }, status_code=200)
-
-
-@app.post("/autogenanalysis")
-async def autogen_analysis(body: dict = Body(...)):
-    # Enqueue the background task: autogen analysis
-    logging.info("celery task: autogen analysis graph")
-
-    onboarding_id = body['onboarding_id']
-    openai_key = body['openai_key']
-    requirement = body['requirement']
-    task_id = body['task_id']
-    is_new_session = int(body['is_new_session'])
-
-    if is_new_session:
-        graph_id = str(uuid.uuid4())
-        result = celery_task_autogen_analysis_graph.apply_async(args=[
-            openai_key, requirement, onboarding_id, graph_id])
-        task_id = result.id
-        autogen_task_map[task_id] = result
-        return JSONResponse(content={
-            "message": f"New autogen analysis graph...",
-            "task_id": task_id,
-            "is_final": True,
-            "status": 1,
-            "current_work_name": "autogen analysis"
-        }, status_code=200)
-    else:
-        task = autogen_task_map.get(task_id)
-        if task is None:
-            return JSONResponse(content={
-                "message": f"Invalid Autogen Analysis graph.",
-                "task_id": task_id,
-                "is_final": True,
-                "status": 2,
-                "current_work_name": "autogen analysis"
-            }, status_code=200)
-        redis_instance.lpush(task_id, requirement)
-        return JSONResponse(content={
-            "message": f"Continuing autogen analysis graph...",
-            "task_id": task_id,
-            "is_final": True,
-            "status": 3,
-            "current_work_name": "autogen analysis"
-        }, status_code=200)
-
-
-@app.post("/uploadrepo")
-async def upload_repo(body: dict = Body(...)):
-    # Store the file to local storage
-    upload_id = f'uploadrepo-{str(uuid.uuid4())}'
-    file_contents = body.get("file_contents", [])
-    file_names = body.get("file_names", [])
-    result = celery_task_upload_repo.apply_async(args=[upload_id, file_contents, file_names])
-    uploaded_repo_map[upload_id] = result
-
-    return JSONResponse(content={
-        "message": f"Uploading files...",
-        "upload_id": upload_id
-    }, status_code=200)
-
-
-@app.post("/status/autogen")
-async def get_autogen_status(body: dict = Body(...)):
-    task_id: str = body['task_id']
-    celery_task_result = autogen_task_map.get(task_id)
-
-    if celery_task_result is None:
-        return JSONResponse(content={
-            "message": "status: Error, not exist or not started",
-            "task_id": task_id,
-            "status": 1,
-            "result": ""
-        }, status_code=200)
-    if celery_task_result.ready():
-        return JSONResponse(content={
-            "message": "Status: Current session is over, chat to start a new session",
-            "task_id": task_id,
-            "status": 2,
-            "result": ""
-        }, status_code=200)
-    return JSONResponse(content={
-        "message": "status: autogen task result",
-        "task_id": task_id,
-        "status": 3,
-        "result": celery_task_result.info
-    }, status_code=200)
-
-
-@app.post("/status/upload")
-async def get_upload_status(body: dict = Body(...)):
-    repo_upload_id: str = body['upload_id']
-    celery_task_result = uploaded_repo_map.get(repo_upload_id, None)
-
-    if celery_task_result is None:
-        return JSONResponse(content=response_upload(
-                                message="status: not exist or not started",
-                                status=1
-                            ), status_code=200)
-    if celery_task_result.ready():
-        if celery_task_result.status == "SUCCESS":
-            return JSONResponse(content=response_upload(
-                message="status: uploaded",
-                status=2
-            ), status_code=200)
-        elif celery_task_result.status == "FAILURE":
-            return JSONResponse(content=response_upload(
-                message="status: failed",
-                status=4,
-                error=celery_task_result.traceback
-            ), status_code=200)
-        else:
-            return JSONResponse(content=response_upload(
-                message="status: unknown",
-                status=5
-            ), status_code=200)
-    return JSONResponse(content=response_upload(
-        message="status: uploading",
-        status=3,
-        progress=celery_task_result.info
-    ), status_code=200)
-
-
 @app.post("/status/graph")
 async def get_graph_status(body: dict = Body(...)):
     result = await get_graph_status_impl(body)
     return result
-
 
 async def get_graph_status_impl(body: dict = Body(...)):
     graph_id = body['graph_id']
@@ -340,12 +107,23 @@ async def get_graph_status_impl(body: dict = Body(...)):
         ), status_code=200)
     elif result.ready():
         if result.status == "SUCCESS":
-            result_txt = result.get()
+            result_txt = ""
+            extra_payload = None
+            with allow_join_result():
+                result_obj = result.get()
+                if isinstance(result_obj, str):
+                    result_txt = result_obj
+                elif isinstance(result_obj, list):
+                    if len(result_obj) >= 1:
+                        result_txt = result_obj[0]
+                    if len(result_obj) >= 2:
+                        extra_payload = result_obj[1]
             return JSONResponse(content=response_graph(
                 graph=graph_result.get_name(),
                 message=f"Graph finishes running.",
                 status=2,
                 result=result_txt,
+                extra_payload=extra_payload,
             ), status_code=200)
         elif result.status == "FAILURE":
             return JSONResponse(content=response_graph(
@@ -360,6 +138,101 @@ async def get_graph_status_impl(body: dict = Body(...)):
         status=3,
     ), status_code=200)
 
+@app.post("/repochat/v2")
+async def repo_chat_v2(body: dict = Body(...)):
+    # Enqueue the background task: repo chat
+    try:
+        logging.info("celery task: repo chat graph")
+        session_id = body['session_id']
+        openai_key = body['openai_key']
+        requirement = body['requirement']
+        logging.info("celery task: repo chat graph")
+        openai.api_key = openai_key
+        g = build_repo_chat_graph_v2(requirement, session_id)
+        g.init_node_dependencies()
+        g.execute()
+        result = g.display_result.get_result()
+
+        return JSONResponse(content={
+            "message": f"Running repo chat graph...",
+            "session_id": session_id,
+            "result": result,
+            "status": "Succeeded"
+        }, status_code=200)
+    except Exception as e:
+        session_id = body.get('session_id', "")
+        return JSONResponse(content={
+            "message": f"Running repo chat graph...",
+            "session_id": session_id,
+            "result": str(e),
+            "status": "Failed"
+        }, status_code=200)
+
+@app.post("/onboardrepo/v4")
+async def onboard_repo_v4(body: dict = Body(...)):
+    # Enqueue the background task: onboard repo
+    logging.info("celery task: onboard repo graph")
+    # TODO: Remove graph_id in the future
+    graph_id = f'placeholder'
+    openai_key = body['openai_key']
+    base_path = body['base_path']
+    # logging.info(f"onboard_repo_v4: {base_path}")
+    result = celery_task_onboard_repo_graph_v4.apply_async(args=[openai_key, graph_id, base_path])
+    graph_result = GraphResult(result, "Onboard Repo Graph")
+    graph_result_map[graph_id] = graph_result
+    return JSONResponse(content={
+        "message": f"Indexing codebase...",
+        "graph_id": graph_id,
+        "is_final": True,
+        "current_work_name": "onboard repo"
+    }, status_code=200)
+
+@app.post("/codeplan/v4")
+async def code_plan_v4(body: dict = Body(...)):
+    # Enqueue the background task: code plan
+    logging.info("celery task: code plan graph")
+    graph_id = body['graph_id']
+    openai_key = body['openai_key']
+    requirement = body['requirement']
+    logging.info("celery task: code plan graph")
+    openai.api_key = openai_key
+    if 'openai_model' in body:
+        ConfigReader().set_default_openai_model(body['openai_model'])
+    result = celery_task_code_plan_graph_v4.apply_async(args=[openai_key, requirement, graph_id])
+    graph_result = GraphResult(result, "Code Plan Graph")
+    graph_result_map[graph_id] = graph_result
+
+    return JSONResponse(content={
+        "message": f"Running code plan graph...",
+        "graph_id": graph_id,
+        "is_final": True,
+        "current_work_name": "code plan"
+    }, status_code=200)
+
+@app.post("/codesolution/v3")
+async def code_solution_v3(body: dict = Body(...)):
+    # Enqueue the background task: code plan
+    logging.info("celery task: code solution graph")
+    graph_id = body['graph_id']
+    openai_key = body['openai_key']
+    requirement = body['requirement']
+    code_plan = body['code_plan']
+    # If user input the openai model, set it as default for most of the skills
+    if 'openai_model' in body:
+        ConfigReader().set_default_openai_model(body['openai_model'])
+
+    logging.info("celery task: code solution graph")
+    openai.api_key = openai_key
+    result = celery_task_code_solution_graph_v3.apply_async(args=[openai_key, requirement, code_plan, graph_id])
+    graph_result = GraphResult(result, "Code Solution Graph")
+    graph_result_map[graph_id] = graph_result
+
+    return JSONResponse(content={
+        "message": f"Running tech solution graph...",
+        "graph_id": graph_id,
+        "is_final": True,
+        "current_work_name": "tech solution"
+    }, status_code=200)
 
 @app.post("/serverless/deploy")
 async def deploy_serverless(body: dict = Body(...)):
@@ -434,6 +307,28 @@ async def get_serverless_task_status(body: dict = Body(...)):
         progress=celery_task_result.info
     ), status_code=200)
 
+@app.post("/selecttemplate")
+async def select_template(body: dict = Body(...)):
+    # Enqueue the background task: code plan
+    logging.info("celery task: select template graph")
+    graph_id = body['graph_id']
+    openai_key = body['openai_key']
+    requirement = body['requirement']
+    logging.info("celery task: select template")
+    openai.api_key = openai_key
+    if 'openai_model' in body:
+        ConfigReader().set_default_openai_model(body['openai_model'])
+    result = celery_task_select_template.apply_async(args=[openai_key, requirement, graph_id])
+    graph_result = GraphResult(result, "Select Template Graph")
+    graph_result_map[graph_id] = graph_result
+
+    return JSONResponse(content={
+        "message": f"Running Select Template graph...",
+        "graph_id": graph_id,
+        "is_final": True,
+        "current_work_name": "Select Template"
+    }, status_code=200)
+
 @app.post("/httpsolution/v1")
 async def http_solution_v1(body: dict = Body(...)):
     logging.info("celery task: http solution graph")
@@ -442,7 +337,8 @@ async def http_solution_v1(body: dict = Body(...)):
     requirement = body['requirement']
     logging.info("celery task: http solution v1")
     openai.api_key = openai_key
-
+    if 'openai_model' in body:
+        ConfigReader().set_default_openai_model(body['openai_model'])
     result = celery_task_http_solution.apply_async(args=[openai_key, requirement, graph_id])
     graph_result = GraphResult(result, "HTTP Solution Graph")
     graph_result_map[graph_id] = graph_result
@@ -454,3 +350,120 @@ async def http_solution_v1(body: dict = Body(...)):
         "path": result,
         "current_work_name": "HTTP Solution"
     }, status_code=200)
+
+
+@app.post("/notionembed")
+async def notion_embed(body: dict = Body(...)):
+    logging.info("celery task: notion embed")
+    # TODO: Remove graph_id in the future
+    graph_id = f'placeholder'
+    onboarding_id = body['onboarding_id']
+    openai_key = body['openai_key']
+    workspace_token = body['workspace_token']
+    page_id = body['top_level_page_id']
+    openai.api_key = openai_key
+    if 'openai_model' in body:
+        ConfigReader().set_default_openai_model(body['openai_model'])
+    result = celery_task_notion_embed.apply_async(args=[openai_key, onboarding_id, workspace_token, page_id])
+    graph_result = GraphResult(result, "Notion Embed Graph")
+    graph_result_map[graph_id] = graph_result
+
+    return JSONResponse(content={
+        "message": f"Indexing Notion workspace...",
+        "graph_id": graph_id,
+        "is_final": True,
+        "current_work_name": "Notion Embed"
+    }, status_code=200)
+
+@app.post("/codechatapi")
+async def codechatapi(body: dict = Body(...)):
+    logging.info("celery task: code chat api graph")
+    graph_id = body['graph_id']
+    openai_key = body['openai_key']
+    requirement = body['requirement']
+    scope = body['scope']
+    logging.info("celery task: code chat api")
+    if len(scope) > 5:
+        logging.info("can only refer to 5 files, using top five files listed")
+        scope = scope[:5]
+    openai.api_key = openai_key
+    if 'openai_model' in body:
+        ConfigReader().set_default_openai_model(body['openai_model'])
+    try:
+        code_result = None
+        code_scope = []
+        for path in scope:
+            if path[:9] == "codebase/":
+                code_scope.append(path)
+        code_result = celery_task_code_chat.apply_async(args=[openai_key, requirement, graph_id, code_scope])
+        code_graph_graph_result = GraphResult(code_result, "code chat api Graph")
+        graph_result_map[graph_id] = code_graph_graph_result
+
+        return JSONResponse(content={
+            "message": f"I am thinking...",
+            "graph_id": graph_id,
+            "is_final": True,
+            "status": "Succeeded",
+            "current_work_name": "chat api"
+        }, status_code=200)
+    except Exception as e:
+        session_id = body.get('session_id', "")
+        return JSONResponse(content={
+            "message": f"Running celery task: chat api...",
+            "session_id": session_id,
+            "result": str(e.with_traceback()),
+            "status": "Failed"
+        }, status_code=200)
+
+@app.post("/notionchatapi")
+async def notionchatapi(body: dict = Body(...)):
+    logging.info("celery task: notion chat api graph")
+    graph_id = body['graph_id']
+    openai_key = body['openai_key']
+    requirement = body['requirement']
+    scope = body['scope']
+    logging.info("celery task: notion chat api")
+    if len(scope) > 5:
+        logging.info("can only refer to 5 files, using top five files listed")
+        scope = scope[:5]
+    openai.api_key = openai_key
+    if 'openai_model' in body:
+        ConfigReader().set_default_openai_model(body['openai_model'])
+    try:
+        notion_result = None
+        notion_scope = []
+        for path in scope:
+            if path[:7] == "notion/":
+                notion_scope.append(path)
+        notion_result = celery_task_notion_chat.apply_async(args=[openai_key, requirement, graph_id, notion_scope])
+        notion_graph_graph_result = GraphResult(notion_result, "notion chat api Graph")
+        graph_result_map[graph_id] = notion_graph_graph_result
+
+        return JSONResponse(content={
+            "message": f"I am thinking...",
+            "graph_id": graph_id,
+            "is_final": True,
+            "status": "Succeeded",
+            "current_work_name": "chat api"
+        }, status_code=200)
+    except Exception as e:
+        session_id = body.get('session_id', "")
+        return JSONResponse(content={
+            "message": f"Running celery task: chat api...",
+            "session_id": session_id,
+            "result": str(e.with_traceback()),
+            "status": "Failed"
+        }, status_code=200)
+    
+@app.post("/clean/chat")
+async def clean_chat_history():
+    # Implement the logic to clean the chat history here
+    file_path = os.path.join(LOCAL_STORAGE_OUTPUT_DIR, "placeholder", "placeholder_chat.json")
+    try:
+        os.remove(file_path)
+        logging.info("File deleted successfully.")
+    except OSError as e:
+        logging.warn(f"Error deleting the file: {e}")
+        return JSONResponse(content={"message": f"Error deleting the file: {e}"}, status_code=200)
+    return JSONResponse(content={"message": "Chat history cleaned successfully."}, status_code=200)
+

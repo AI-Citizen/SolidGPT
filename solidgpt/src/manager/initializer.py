@@ -17,4 +17,4 @@ class Initializer:
 
     def _initialize(self):
         self.gpt_manager = GPTManager()
-        self.customize_skill_manager = CustomizeSkillManager()
+        # self.customize_skill_manager = CustomizeSkillManager()

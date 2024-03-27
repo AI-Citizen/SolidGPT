@@ -1,0 +1,248 @@
+.ant-btn-primary {
+    background-color: #007acc;
+    border-color: #007acc;
+  }
+
+.home-style {
+    align-items: start;
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh);
+    position: relative;
+    background-color: #252526;
+}
+
+.home-style .nav {
+    align-items: start;
+    background-color: rgb(0, 0, 0);
+    box-shadow: 0px 1px 2px #0000000d;
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    position: relative;
+    width: 100%;
+}
+
+.home-style .div-mx-auto {
+    align-items: flex-start;
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    position: relative;
+    width: 100%;
+}
+
+.home-style .div-flex {
+    align-items: flex-start;
+    display: flex;
+    height: 64px;
+    justify-content: space-between;
+    position: relative;
+    width: 100%;
+}
+
+.home-style .div {
+    padding-left: 20px;
+    align-items: flex-start;
+    align-self: stretch;
+    display: inline-flex;
+    flex: 0 0 auto;
+    position: relative;
+}
+
+.home-style .img {
+    align-self: stretch;
+    flex: 0 0 auto;
+    position: relative;
+    cursor: pointer;
+}
+
+.home-style .text-wrapper {
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    color: rgba(17, 24, 39, 1);
+    display: -webkit-box;
+    font-family: "Roboto", Helvetica;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 20px;
+    margin-top: -2px;
+    overflow: hidden;
+    position: relative;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: fit-content;
+}
+
+.home-style .div-hidden-wrapper {
+    align-items: flex-start;
+    align-self: stretch;
+    display: inline-flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    padding: 0px 0px 0px 24px;
+    position: relative;
+}
+
+.home-style .div-hidden {
+    align-items: center;
+    display: inline-flex;
+    height: 64px;
+    padding: 16px 20px 16px 12px;
+    position: relative;
+}
+
+.home-style .div-relative {
+    align-items: flex-start;
+    display: inline-flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    position: relative;
+}
+
+.home-style .div-hd-ec {
+    align-items: flex-start;
+    align-self: stretch;
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    position: relative;
+    width: 100%;
+}
+
+.home-style .button {
+    align-items: flex-start;
+    background-color: rgba(255, 255, 255, 1);
+    border-radius: 9999px;
+    display: inline-flex;
+    flex: 0 0 auto;
+    position: relative;
+}
+
+.home-style .leerob {
+    background-image: url(../static/img/leerob.png);
+    background-position: 50% 50%;
+    background-size: cover;
+    border-radius: 9999px;
+    height: 32px;
+    max-width: 32px;
+    position: relative;
+    width: 32px;
+    cursor: pointer;
+}
+
+.home-style .div-p {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    max-width: 100%;
+    position: relative;
+    width: 100%;
+}
+
+.home-style .main {
+    align-items: flex-start;
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+
+.home-style .div-text-primary {
+    align-items: center;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+}
+
+.home-style .div-flex-margin-wrapper {
+    align-items: flex-start;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    height: 82vh;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+}
+
+
+
+.home-style .div-mt {
+    align-items: end;
+    background-color: rgba(0, 0, 0, 0);
+    display: flex;
+    width: 90%;
+    position: fixed;
+    bottom: 25px;
+    border: none;
+}
+
+.home-style .form {
+    align-items: flex-start;
+    align-self: center;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    position: relative;
+    width: 65%;
+}
+
+.home-style .file-list {
+    width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.home-style .input {
+    align-self: stretch;
+    height: 40px;
+    position: relative;
+    width: 100%;
+}
+
+.home-style .list-container {
+    margin-block-start: 0em;
+    padding-inline-start: 0px;
+    width: 100%;
+    overflow-y: auto; /* Enable vertical scrolling */
+}
+
+.home-style .list-item {
+    padding: 10px;
+    list-style-type: none !important;; /* Remove the default list-style-type */
+
+}
+.home-style .list-item::after {
+    content: none !important;
+}
+
+.home-style .floating-button-container {
+    position: fixed;
+    bottom: 80px;
+    right: 50px;
+}
+
+.home-style .setting {
+    position: relative;
+}
+
+.ant-select-dropdown {
+    max-height: 100px; /* Set the maximum height for the dropdown */
+    overflow-y: auto; /* Enable vertical scrollbar when content exceeds the height */
+}
+
+.config-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* adjust this value as needed */
+}
+

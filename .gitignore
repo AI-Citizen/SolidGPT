@@ -172,6 +172,11 @@ node_modules
 
 # Local storage and workspace files
 localstorage/
+!localstorage/workspace/
 workspace/out/
 solidgpt/src/tools/qdrant/embeddings/
 solidgpt/src/tools/qdrant/embedding/
+
+# DB
+celerydb.sqlite
+results.db

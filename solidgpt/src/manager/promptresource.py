@@ -1,4 +1,3 @@
-
 PRODUCT_MANAGER_PRD_OUTPUT_TEMPLATE = f'''Base on the information help me generate Markdown PRD follow this format. 
 Here is the output template and explain each sections mean. Always output with this template in Markdown format.
 
@@ -1136,6 +1135,10 @@ Find one word in the page name that best describes the page. Only output a singl
 example: homepage, about, product, contact
 """
 
+SDE_SUMMARIZE_CODE_ASSUMPTION = f"""
+Summarize the functionality of the code in three words. Only output the summarized result.
+"""
+
 
 ### SDE Tech Solution
 SDE_TECH_SOLUTION_ASSUMPTION = f"""Assume you are a principal engineer, and you are going to provide a tech solution for the requirement of project. I will
@@ -1165,6 +1168,17 @@ CUSTOM_GENERATE_SKILL_JSON_OUTPUT_FORMAT = '''{
 }'''
 
 SUMMARY_CODE_SUMMARY_README = '''Summary the readme file of the repo into 100 words. The readme file is as below:'''
+SUMMARY_PROJECT = '''Assume you are Senior Software engineer, help me summarize the project given the summary of all code files based on the following criteria:
+Always use Class, Function, Variable naming, code logic, code path, hierarchy and your professional knowledge to summarize the project.
+Word Limit: Ensure the summary is less than 100 words in total. Be consise.
+Professional Analysis Summary:
+Project's Purpose: Describe the primary objective or role of the project.
+Problem Addressed: Explain the specific problem or issue that the code solves.
+Output format
+1. Project's Purpose:[Your description here]
+
+2. Problem Addressed:[Your description here]
+'''
 SUMMARY_CODE_SUMMARY_PYTHON = '''Summary the functions of python file into 100 words. Be concise. The python file is as below:'''
 SUMMARY_CODE_SUMMARY_SCHEMA = '''Format the schema of the repo. The schema is as below:'''
 
@@ -1188,6 +1202,43 @@ ASSISTANT_SYSTEM_MESSAGE = """Assume you are principle SDE, you will be an code 
             Please base on the Project Instruction, Code Schema,
             Relatived code files, and Background I provide below and your professional relatived knowledge
             to response to the Requirements. The requirements as follow:"""
+PYTHON_EXPERT_ASSUMPTION = "Assume you are an Senior Software Engineer, I will give you template the code and user requirement instructions. You need to generate the code that satisfy the instructions based on template codes. You should only output the code block. "
+PYTHON_DEPENDENCY_EXPERT_ASSUMPTION = "Assume you are an Senior Software Engineer, I will give you the code, list all the object you don't have the source code or you don't have any knowledge about it. ONLY OUTPUT OBJECT NAME SEPERATE BY ,"
+PYTHON_IMPORT_TEMPLATE = """
+object1,object2,objectx,objecty
+"""
+PYTHON_CORRECTION_EXPERT_ASSUMPTION = "Assume you are an Senior Software Engineer, I will give you a target the code, and the dependency code in target code. Could you help me check if there are any mistakes in target python code based on the dependency codes. For exmaple, wrong functions, wrong parameters and grammar mistakes."
+PYTHON_CODE_BLOCK_TEMPLATE = "Based on the provided code and its dependencies, please correct all the mistakes ans misuse of functions and paramters. You should only output the FINAL CODE BLOCK. IF NO MISTAKE PLEASE OUT PUT FINAL CODE AS WELL"
+
+
+### V2 Prompt
+SDE_CHAT_ADVISOR_ASSUMPTION = f"""Assume you are software engineer, 
+please answer the question base on the code plan I provide. And always input the Markdown clean format """
+
+### code chat Prompt
+SDE_CODE_CHAT_ASSUMPTION = f"""Assume you are a senior software engineer, 
+Try to answer the user input base on Related Code Files.
+If there is no related content then response base on your professional knowledge. 
+And indicate there is no related content in the workplace."""
+
+SDE_NOTION_CHAT_ASSUMPTION = f"""Assume you are a senior software engineer, 
+answer User In[ut] always base on Related Notion Files. If there is no related content
+then response base on your professional knowledge. And indicate there is no related content in the workplace."""
+
+CODE_SUMMARY_V2 = f"""
+Assume you are Senior Software engineer, help me summary code file based on the following criteria:
+Always from Class, Function, Variable naming, code logic, and your professional knowledge to summary a code file.
+Word Limit: Ensure the summary is less than 100 words in total.
+Professional Analysis Summary:
+Code's Purpose: Describe the primary objective or role of the code.
+Problem Addressed: Explain the specific problem or issue that the code solves.
+Output format
+1. Code's Purpose:[Your description here]
+
+2. Problem Addressed:[Your description here]
+
+"""
+
 
 SCHEMA_DESIGN_PRINCIPLE = """
                 NOTICE
@@ -1208,7 +1259,16 @@ SCHEMA_DESIGN_PRINCIPLE = """
                 'updatedAt': timestamp,
                 ```
                 -----
-            """
+"""
+
+RELATED_CODE_FILTER_ASSUMPTION = f"""
+Assume you're a Senior Software Engineer tasked with creating a concise implementation plan for specific requirements, 
+based on existing code files and their summaries. Please identify which code files are related or as dependencies,
+which ones require modification, and which files are unrelated and won't be used. List all the files you'll need for dependencies and modifications, as well as those you won't use.
+ATTENTION: When the input is start with the format [file name, file name...], the task is to search for the most similar file names within the 'Code Files' I provided below and then HAVE TO output ALL OF these files as the required files.
+ATTENTION: ALWAYS OUTPUT AS FOLLOW FORMAT DON'T OUTPUT ANYOTHERS:
+Required:[file name, file name...]
+Unuse:[file name, file name...]"""
 
 def get_custom_skills_assumption_role_prompt(question_subject):
     return f"""Assume you are the expert of {question_subject}. 

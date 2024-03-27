@@ -59,6 +59,10 @@ class WorkSkill:
         if skill_output is not None and skill_output.to_display and content is not None:
             self.display_result.set_result(content)
 
+    def _save_custom_result_to_result_cache(self, data):
+        if data is not None:
+            self.display_result.set_custom_result(data)
+
     def begin_execution(self):
         print("Node begins " + str(self.name) + " task...")
         self._read_input()

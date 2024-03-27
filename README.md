@@ -1,131 +1,72 @@
-![IMG_4502](https://github.com/AI-Citizen/SolidGPT/assets/39673228/347a6be2-93d6-42e9-99e2-f8b7b1ea96de)
-<h1 align="center">🧱 SolidGPT-Build Your Service with AI</h1>
+# 🧱 SolidGPT
 
-[![Twitter Follow](https://img.shields.io/twitter/follow/SolidGPT?style=social)](https://twitter.com/SolidGPT)
+# 🚀 What's this
+SolidGPT is a AI searching assistant for developer that helps code and workspace semantic search
 
-# 🚀 SolidGPT(SaaS edition)
-SolidGPT(SaaS edition) is an AI-centric serverless platform. Combine AI coding and AI cloud infrastructure management. You can easily build, launch and scaleing services on AWS using natural language with LLM Agents.
+🔥🔥🔥 Try SolidGPT VSCode Extension from the [VSCode Marketplace](https://marketplace.visualstudio.com/items?itemName=aict.solidgpt)
 
-## 📖 Highlight
-- AI create APIs on AWS with one line input.
-<img width="760" alt="Screen Shot 2024-02-04 at 2 59 44 PM" src="https://github.com/AI-Citizen/SolidGPT/assets/39673228/e72f3280-415f-4ac1-9496-812ac67a5153">
+Appreciate Star 🌟 us on our [SolidGPT Github](https://github.com/AI-Citizen/SolidGPT)
 
-Incomming..
+# Try SolidGPT VSCode Extension
+1. Install SolidGPT VSCode Extension from the [VSCode Marketplace](https://marketplace.visualstudio.com/items?itemName=aict.solidgpt)
 
-# SolidGPT
-Chat everything with your code repository, ask repository-level code questions, and discuss your requirements. AI scans and learns from your code to seek coding advice, develop coding plans, and generate a product requirement documents using the information in the repository.
+# 🏁 Quick Start
+Highly recommend to try SolidGPT VSCode Extension from the [VSCode Marketplace](https://marketplace.visualstudio.com/items?itemName=aict.solidgpt).
 
-**If you like our work, please give us a 🌟 star. Your support serves as a great encouragement for us. Thank you! 😊**
-
-# 🏁 Quick Start
-
-## 🧱 **Prerequisite**
-
-- python3.8 or above
-- [OpenAI api key](https://openai.com/blog/openai-api)
-- [Install npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
-- [Install & run redis](https://redis.io/docs/install/install-redis/)
-## 🔧 **Setup**
+Or you can follow the steps below to build from source. 
+## 📦 Build From Source
+1. Pull the latest version of the SolidGPT from the GitHub repository.
+1. Pip install the requirements.txt file under the SolidGPT root directory. 
 ```sh
-git clone https://github.com/AI-Citizen/SolidGPT.git
-cd SolidGPT 
-pip3 install -r requirements.txt #installing the env
+pip install -r requirements.txt
 ```
-- Set the project root folder as python path
-  - Linux/Mac
-      ```sh
-      export PYTHONPATH=$PYTHONPATH:$(git rev-parse --show-toplevel)/
-      ```
-  - Windows
+1. Open terminal and run the following command to start the server.
+```sh
+python run_api.py
+```
+1. Open terminal and run the following command to start the webapp.
+```sh
+cd solidportal
+npm install
+npm run dev
+```
 
-      Replace path\to\directory with the path of the project root directory
-      ```cmd
-      set PYTHONPATH=path\to\directory
-      ```
-- ### Start Server
-    Open first terminal and cd into the project root folder(SolidGPT)
-    - Linux/Mac/WSL2
-      ```sh
-      sh StartServer.sh
-      ```
-    - Windows
-
-        Install the [WSL2](https://learn.microsoft.com/en-us/windows/wsl/install) and start the server from WSL2
-        ```sh
-        wsl --install
-        wsl2
-        sh StartServer.sh
-        ```
-        
-        Or install directly on Windows [Not Recommended]
-        
-        Note: redis server needs to be installed before running below commands:
-        https://github.com/microsoftarchive/redis/releases
-        ```
-        uvicorn solidgpt.src.api.api:app --reload
-
-        celery -A solidgpt.src.api.celery_tasks worker --loglevel=info -P eventlet
-        ```
-    - Docker
-        ```sh
-        docker buildx build -t solidgptlocalhost .
-        docker run -p 8000:8000 solidgptlocalhost
-        ```
-- ### Start UI portal
-	Open the second terminal
-  - You'll need to install npm, and we recommend using version 9.8.1 or higher.
-
-    ```sh
-    # From the project root folder
-    cd solidportal/panel  
-    npm i && npm start
-    ```
+## ❗️❗️ Onborading your Codebase and Notion
+1. Click Settings button on the right bottom corner.
+<img width="124" alt="image" src="https://github.com/AI-Citizen/SolidGPT-Private/assets/39673228/451b52e3-4f79-478f-9ee9-5679a93a1656">
 
 
+ ### 1. Setup Codebase
+1. Enter your OpenAI API key. [Get OpenAI API Key](https://openai.com/blog/openai-api)
+1. Enter the full path of the folder you wish to onboard. **Suggest onboard lower than 100 files, maximum support 500 files onboarding**. 
+<img width="315" alt="image" src="https://github.com/AI-Citizen/SolidGPT-Private/assets/39673228/62f1790a-196a-4088-a747-e91205e8fc32">
 
-# 🏠 Introduction
-- SolidGPT first learns from your repository in the `Onboard Project` phase. 
+ ### 2. Setup Notion (Optional)
+1. Configure the Notion API by getting your Notion API secret from [Notion API](https://developers.notion.com/docs/create-a-notion-integration#getting-started) and entering it on the Settings page
+1. Give your integration page permissions. [Details](https://developers.notion.com/docs/create-a-notion-integration#give-your-integration-page-permissions)
+1. Get Notion Page ID and entering it on the Settings page
+<img width="669" alt="image" src="https://github.com/AI-Citizen/SolidGPT-Private/assets/39673228/ae2b5ab3-af61-44e7-bdc1-d81a33462d23">
+<img width="315" alt="image" src="https://github.com/AI-Citizen/SolidGPT-Private/assets/39673228/6e96db5b-350a-4e8b-b9ca-b41ccfe6ce7c">
 
-- After this, choose Generate PRD or Get Tech Solution for customized solutions based on the onboarded project.
+ ### 3. Pick chat resources and start chat
 
-## 📖 Onboarding your project
 
-1. Choose `Onboard Project` from the top left dropdown.
-1. Enter your OpenAI API key.
-1. Upload your project folder.（All files will be saved in your localstorage `SolidGPT/localstorage/...`）
-1. ❗️Note: After completing the Onboard Project, an Onboard ID will be generated. If you remain in the same browser session, it will be automatically applied to subsequent actions. Alternatively, you can save it and manually input it in the future to bypass onboarding.
+## 🔥 Usecase
+- Talk to your codebase, save time hunting for the place to start a change or the right method to call.
+- Ask any questions about your codebase, get the answer in seconds.
+- Semantic search and summary in Notion, knows your project from documents and track the project sprint board and tickets.
+- Get questions answered from your codebase and Notion, no more context switching.
 
-## 🧮 Get Technical Solution
-1. Choose `Get Tech Solution` from the top left dropdown.
-1. Enter your OpenAI API key.
-1. Input your problem/Requirement.
+## 📖 Known Issue
+1. [Intel Chip Mac]: permission denied 
+    - Please run \`cd ~/.vscode/extensions\` and \`chmod -R 777 aict.solidgpt*\` in your terminal to allow the app to run.
 
-Note: We currently support Python, JavaScript, and TypeScript projects. Support for more languages is on the way.
-## 📁 Generate Product Requirement Document
-1. Choose `Generate RPD` from the top left dropdown.
-1. Input your requirement (suggest short and clear)
-1. Input additional info or your project, SolidGPT will both use a summary from the repository and additional info you provide (optional)
-
-### 📺 Demo(v0.2.5)
-![copy_FD8819CE-0A56-4E9C-A018-FA90700E7605](https://github.com/AI-Citizen/SolidGPT/assets/39673228/8ef57ba1-093e-4cc5-a07d-45b5c2dea850)
-
-## 🖇️ Document
-[Explore SolidGPT](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/READMEv1.md)
-
-[Solid Portal](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/solidportal.md)
-
-[Solid GPT Infrastructure](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/infrastructure.md)
-
-[Deeply Customize Agent Skill](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/customagentskill.md)
-
-[Embedding with private data](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/embeddingprivatedata.md)
-
-[Fine-tuning with GPT3.5](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/gptfinetuning.md)
-
-[Fine-tuning with Llama2](https://github.com/AI-Citizen/SolidGPT/blob/main/docs/llama2finetuning.md)
-
-## Contact
+## 📣 Feedback!!
 If you have any questions or feedback about our project, please don't hesitate to reach out to us. We greatly appreciate your suggestions!
 - Email: aict@ai-citi.com
 - GitHub Issues: For more technical inquiries, you can also create a new issue in our [GitHub repository](https://github.com/AI-Citizen/SolidGPT/issues).
 We will respond to all questions within 2-3 business days.
+
+## Data Safety
+- SolidGPT will not collect any of users' data.
+- SolidGPT using OpenAI series model API, using SolidGPT indicates that you have read, understood, and agreed to adhere to all terms of use associated with the OpenAI GPT series model API.

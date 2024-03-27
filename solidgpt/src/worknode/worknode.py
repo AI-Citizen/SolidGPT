@@ -12,9 +12,10 @@ class WorkNode:
     graph_cache: dict = {}
     display_result: DisplayResult = None
 
-    def __init__(self, node_id: str, work_skill: WorkSkill, manual_review_result: bool = False):
+    def __init__(self, node_id: str, work_skill: WorkSkill, manual_review_result: bool = False, graph_cache : dict = {}):
         # Initialization
         self.node_id = node_id
+        self.graph_cache = graph_cache
         work_skill.graph_cache = self.graph_cache
         self.skill = work_skill
         self.next_node_ids = set([])
