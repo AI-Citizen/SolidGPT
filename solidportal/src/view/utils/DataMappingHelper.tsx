@@ -39,10 +39,23 @@ class DataMappingHelper {
 
     static getInputHintValue(searchText: string, optionsCommand: string[], type: string, topN): CommandOption[] {
         const foundCommands: CommandOption[] = [];
-        this.findClosestFiles(searchText,optionsCommand,topN).forEach( result => {
-            const prefix = type === Constants.onBoardProject.CodeBaseFileList ? "Codebase: " : "Notion: ";
-            foundCommands.push({ value: prefix + result });
-        })
+        const searchCommands: string[] = [];
+        const prefix = type === Constants.onBoardProject.CodeBaseFileList ? "Codebase: " : "Notion: ";
+        optionsCommand.forEach(option => {
+            searchCommands.push(prefix + option );
+        });
+        searchCommands.forEach(option => {
+            if (option.toLowerCase().replaceAll(" ", "").includes(searchText.toLowerCase().replaceAll(" ", ""))) {
+                foundCommands.push({ value: option });
+            }
+            if (foundCommands.length >= topN) {
+                return;
+            }
+        });
+        // this.findClosestFiles(searchText,searchCommands,topN).forEach( result => {
+            
+        //     foundCommands.push({ value: result });
+        // });
         return foundCommands;
     }
 
