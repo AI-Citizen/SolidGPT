@@ -14,6 +14,8 @@ const Settings = ({handleCodebaseSync, onBoardProgress, handleNotionSync, visibl
     const [AWSCred, setAWSCred] = useState(localStorage.getItem(Constants.settingConstants.AWSCred));
     const [fileNames, setFileNames] = useState([]);
     const [targetFilePath, setTargetFilePath] = useState([""]);
+    const [codebaseChecked, setCodebaseChecked] = useState(true);
+    const [notionChecked, setNotionChecked] = useState(false);
 
     useEffect(() => {
         if (fileNames.length > 0) {
@@ -97,17 +99,19 @@ const Settings = ({handleCodebaseSync, onBoardProgress, handleNotionSync, visibl
 
                     <Checkbox
                         className='settings-checkbox'
-                        defaultChecked={false}
+                        checked={notionChecked}
                         onChange={(e) => {
                             console.log(e.target.checked.toString())
+                            setNotionChecked(e.target.checked)
                             localStorage.setItem(Constants.settingConstants.NotionChecked, e.target.checked.toString());
                         }}>Chat
                         with Notion</Checkbox>
                     <Checkbox
                         className='settings-checkbox'
-                        defaultChecked={true}
+                        checked={codebaseChecked}
                         onChange={(e) => {
                             console.log(e.target.checked.toString())
+                            setCodebaseChecked(e.target.checked)
                             localStorage.setItem(Constants.settingConstants.CodebaseChecked, e.target.checked.toString());
                         }}>Chat
                         with Codebase</Checkbox>
