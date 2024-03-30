@@ -101,8 +101,8 @@ const Settings = ({handleCodebaseSync, onBoardProgress, handleNotionSync, visibl
                         className='settings-checkbox'
                         checked={notionChecked}
                         onChange={(e) => {
-                            console.log(e.target.checked.toString())
-                            setNotionChecked(e.target.checked)
+                            console.log(e.target.checked.toString());
+                            setNotionChecked(e.target.checked);
                             localStorage.setItem(Constants.settingConstants.NotionChecked, e.target.checked.toString());
                         }}>Chat
                         with Notion</Checkbox>
@@ -110,8 +110,8 @@ const Settings = ({handleCodebaseSync, onBoardProgress, handleNotionSync, visibl
                         className='settings-checkbox'
                         checked={codebaseChecked}
                         onChange={(e) => {
-                            console.log(e.target.checked.toString())
-                            setCodebaseChecked(e.target.checked)
+                            console.log(e.target.checked.toString());
+                            setCodebaseChecked(e.target.checked);
                             localStorage.setItem(Constants.settingConstants.CodebaseChecked, e.target.checked.toString());
                         }}>Chat
                         with Codebase</Checkbox>
