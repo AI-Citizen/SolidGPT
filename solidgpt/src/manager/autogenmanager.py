@@ -1,4 +1,7 @@
 import logging
+import agentops
+from dotenv import load_dotenv
+import os
 
 import autogen
 from autogen import oai
@@ -8,10 +11,14 @@ from typing import Callable, Dict, Optional, Union
 
 from solidgpt.src.manager.promptresource import DEFAULT_SYSTEM_MESSAGE, ASSISTANT_SYSTEM_MESSAGE
 
+# Load environment variables
+load_dotenv()
+
+# Initialize AgentOps
+agentops.init(os.getenv('AGENTOPS_API_KEY'))
 
 def colored(x, *args, **kwargs):
     return x
-
 
 class SolidUserProxyAgent(autogen.UserProxyAgent):
 
@@ -20,6 +27,7 @@ class SolidUserProxyAgent(autogen.UserProxyAgent):
 
     }
 
+    @agentops.record_function('SolidUserProxyAgent_init')
     def __init__(
             self,
             name: str,
@@ -44,6 +52,7 @@ class SolidUserProxyAgent(autogen.UserProxyAgent):
             default_auto_reply=default_auto_reply,
         )
 
+    @agentops.record_function('SolidUserProxyAgent_print_received_message')
     def _print_received_message(self, message: Union[Dict, str], sender):
         # print the message received
         self.manager.add_message(sender.name, "(to", f"{self.name}):\n")
@@ -71,6 +80,7 @@ class SolidUserProxyAgent(autogen.UserProxyAgent):
         self.manager.add_message("")
         self.manager.add_message("-" * 80)
 
+    @agentops.record_function('SolidUserProxyAgent_get_human_input')
     def get_human_input(self, prompt: str) -> str:
         reply = ""
         # get reply from frontend
@@ -92,6 +102,7 @@ class SolidAssistantAgent(autogen.AssistantAgent):
 
     manager = None
 
+    @agentops.record_function('SolidAssistantAgent_init')
     def __init__(
             self,
             name: str,
@@ -114,6 +125,7 @@ class SolidAssistantAgent(autogen.AssistantAgent):
             **kwargs,
         )
 
+    @agentops.record_function('SolidAssistantAgent_print_received_message')
     def _print_received_message(self, message: Union[Dict, str], sender):
         # print the message received
         self.manager.add_message(sender.name, "(to", f"{self.name}):\n")
@@ -141,6 +153,7 @@ class SolidAssistantAgent(autogen.AssistantAgent):
         self.manager.add_message("")
         self.manager.add_message("-" * 80)
 
+    @agentops.record_function('SolidAssistantAgent_get_human_input')
     def get_human_input(self, prompt: str) -> str:
         print(prompt)
         reply = ""
@@ -151,6 +164,7 @@ class SolidAssistantAgent(autogen.AssistantAgent):
 class AutoGenManager:
     cumulative_message = ""
 
+    @agentops.record_function('AutoGenManager_init')
     def __init__(self, if_show_reply=False):
         # read api key from config file
         global_openai_key = ConfigReader().get_property("openai_api_key")
@@ -164,6 +178,7 @@ class AutoGenManager:
         self.assistant = None
         self.user_proxy = None
 
+    @agentops.record_function('AutoGenManager_run')
     def run(self, requirement, relatived_code):
         self.construct_agents(relatived_code)
         self.user_proxy.initiate_chat(
@@ -172,6 +187,7 @@ class AutoGenManager:
         )
 
     @staticmethod
+    @agentops.record_function('AutoGenManager_get_customized_assistant_agent')
     def get_customized_assistant_agent(name: str,
                                        system_message: Optional[str] = DEFAULT_SYSTEM_MESSAGE,
                                        llm_config: Optional[Union[Dict, bool]] = None,
@@ -193,6 +209,7 @@ class AutoGenManager:
             **kwargs)
 
     @staticmethod
+    @agentops.record_function('AutoGenManager_get_customized_user_proxy_agent')
     def get_customized_user_proxy_agent(name: str,
                                         is_termination_msg: Optional[Callable[[Dict], bool]] = None,
                                         max_consecutive_auto_reply: Optional[int] = None,
@@ -215,6 +232,7 @@ class AutoGenManager:
             default_auto_reply=default_auto_reply,
             )
 
+    @agentops.record_function('AutoGenManager_construct_agents')
     def construct_agents(self, relatived_code):
         self.planner = self.generate_default_planner()
         self.planner_user = self.generate_default_planner_user()
@@ -226,16 +244,19 @@ class AutoGenManager:
         self.user_proxy.manager = self
         return
 
+    @agentops.record_function('AutoGenManager_add_message')
     def add_message(self, *args):
         # Joining all arguments with a space after converting each to a string
         messages = ' '.join(map(str, args))
         self.cumulative_message += messages + "\n"
 
+    @agentops.record_function('AutoGenManager_retrieve_message')
     def retrieve_message(self):
         msg = self.cumulative_message
         self.cumulative_message = ""
         return msg
 
+    @agentops.record_function('AutoGenManager_generate_default_planner')
     def generate_default_planner(self):
         # todo: update callback function
         planner = SolidAssistantAgent(
@@ -245,6 +266,7 @@ class AutoGenManager:
             system_message=DEFAULT_SYSTEM_MESSAGE)
         return planner
 
+    @agentops.record_function('AutoGenManager_generate_default_planner_user')
     def generate_default_planner_user(self):
         # todo: update callback function
         planner_user = SolidUserProxyAgent(
@@ -254,12 +276,14 @@ class AutoGenManager:
         )
         return planner_user
 
+    @agentops.record_function('AutoGenManager_ask_planner')
     def ask_planner(self, message):
         self.planner_user.initiate_chat(self.planner, message=message)
         self.planner_msg = self.planner_user.last_message()["content"]
         # return the last message received from the planner
         return self.planner_user.last_message()["content"]
 
+    @agentops.record_function('AutoGenManager_generate_default_assistant')
     def generate_default_assistant(self, relatived_code: str):
         # todo: update callback function
         assistant = SolidAssistantAgent(
@@ -291,6 +315,7 @@ class AutoGenManager:
         )
         return assistant
 
+    @agentops.record_function('AutoGenManager_generate_default_user_proxy')
     def generate_default_user_proxy(self):
         # todo: update callback function
         user_proxy = SolidUserProxyAgent(
@@ -304,3 +329,5 @@ class AutoGenManager:
         )
         return user_proxy
 
+# End of program
+agentops.end_session('Success')
