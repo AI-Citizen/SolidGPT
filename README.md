@@ -1,5 +1,12 @@
 # 🧱 SolidGPT
 
+# ❗️❗️We solemnly declare:
+
+**We have NOT issued any cryptocurrency.**
+
+**Any cryptocurrency claiming to be issued in our name is a SCAM. Please stay vigilant and avoid being deceived.**
+
+
 # 🚀 What's this
 SolidGPT is a AI searching assistant for developer that helps code and workspace semantic search
 
