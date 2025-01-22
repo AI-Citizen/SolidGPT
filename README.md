@@ -38,7 +38,7 @@ npm install
 npm run dev
 ```
 
-## ❗️❗️ Onborading your Codebase and Notion
+## ❗️❗️ Onboarding your Codebase and Notion
 1. Click Settings button on the right bottom corner.
 <img width="124" alt="image" src="https://github.com/AI-Citizen/SolidGPT-Private/assets/39673228/451b52e3-4f79-478f-9ee9-5679a93a1656">
 
