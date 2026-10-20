@@ -13,6 +13,7 @@ from solidgpt.src.util.util import *
 from solidgpt.src.workgraph.graph import *
 import os
 from solidgpt.src.api.celery_tasks import *  # Import task function
+from solidgpt.src.api.webresearch import router as research_router
 
 
 class GraphResult:
@@ -37,6 +38,7 @@ class GraphResult:
 
 
 app = FastAPI()
+app.include_router(research_router)
 
 # Add the CORS middleware with the allowed origins
 app.add_middleware(

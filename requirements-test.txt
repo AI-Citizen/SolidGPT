@@ -1,0 +1,2 @@
+# Starlette TestClient compatibility with the project's FastAPI version.
+httpx==0.24.1

@@ -28,6 +28,12 @@ function Home() {
     }
     setColor();
     const [messageList, setMessageList] = useState<any[]>([]);
+    const researchSession = useRef<string | null>(null);
+    const researchRequest = useRef<AbortController | null>(null);
+    useEffect(() => () => researchRequest.current?.abort(), []);
+    if (researchSession.current === null) {
+        researchSession.current = ApiHelper.generateUUID();
+    }
     const [options, setOptions] = useState<{ value: string }[]>([]);
     const [showDropdown, setShowDropdown] = useState(false);
     const notionDefaultList = () =>{
@@ -64,8 +70,12 @@ function Home() {
                         addMessage(false, "**Initialization done**", true);
                         setBackendStatus(true);
                         setIsSendDisabled(false);
-                        localStorage.setItem(Constants.settingConstants.CodebaseChecked, "true");
-                        localStorage.setItem(Constants.settingConstants.NotionChecked, "false");
+                        if (localStorage.getItem(Constants.settingConstants.CodebaseChecked) === null) {
+                            localStorage.setItem(Constants.settingConstants.CodebaseChecked, "true");
+                        }
+                        if (localStorage.getItem(Constants.settingConstants.NotionChecked) === null) {
+                            localStorage.setItem(Constants.settingConstants.NotionChecked, "false");
+                        }
                     } else {
                         addMessage(false, "**Server error happen. Please restart SolidGPT**", true);
                         setBackendStatus(false);
@@ -283,6 +293,10 @@ function Home() {
     };
 
     const clearMessage = async () => {
+        researchRequest.current?.abort();
+        researchRequest.current = null;
+        researchSession.current = ApiHelper.generateUUID();
+        setIsSendDisabled(false);
         setMessageList([]);
         setStatus(false);
         await cleanChat();
@@ -358,6 +372,30 @@ function Home() {
     }
 
     async function getAction() {
+        if (/^\/(web|fetch)(\s|$)/.test(inputValue.trim())) {
+            const controller = new AbortController();
+            researchRequest.current = controller;
+            try {
+                const response = await ApiHelper.postRequest(endPoints.WebResearch, {
+                    command: inputValue.trim(),
+                    session_id: researchSession.current,
+                    openai_key: localStorage.getItem(Constants.settingConstants.APIToken) || "",
+                }, controller.signal);
+                if (!controller.signal.aborted) {
+                    addMessage(false, response.data.result);
+                }
+            } catch (error) {
+                if (!controller.signal.aborted) {
+                    addMessage(false, (error as any).response?.data?.detail || "Public research is unavailable. Try again later.");
+                }
+            } finally {
+                if (researchRequest.current === controller) {
+                    researchRequest.current = null;
+                    setIsSendDisabled(false);
+                }
+            }
+            return;
+        }
         if (localStorage.getItem(Constants.settingConstants.NotionChecked) === "true"){
             await notionChatApiCall()
         }
@@ -462,10 +500,11 @@ function Home() {
                                               options={options}
                                               onKeyDown={handleKeyPress}
                                               onClick={() => setSettingVisible(false)}
-                                              placeholder= "Use @ to select the specific files or code you'd like to talk"
+                                              placeholder= "@ files, /web public query, or /fetch public URL"
                                 />
                             </div>
                             <Button type="primary" size="large"
+                                    aria-label="Send message"
                                     style={{cursor: isSendDisabled ? 'not-allowed' : 'pointer'}}
                                     onClick={handleSendClick}
                                     disabled={isSendDisabled}
@@ -484,7 +523,7 @@ function Home() {
                             isSendDisabled={isSendDisabled}/>
                 </div>
                 <div className="floating-button-container">
-                    <Button type="primary" shape="circle" icon={<ReloadOutlined/>} onClick={clearMessage} size="large"/>
+                    <Button type="primary" shape="circle" aria-label="New chat" icon={<ReloadOutlined/>} onClick={clearMessage} size="large"/>
                 </div>
             </div>
         </div>

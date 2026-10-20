@@ -9,7 +9,8 @@
     "dev": "webpack-dev-server -c webpack.dev.js",
     "build": "webpack -c webpack.prod.js",
     "package": "vsce package",
-    "buildall": "npm run compile && npm run build && npm run package"
+    "buildall": "npm run compile && npm run build && npm run package",
+    "test:research": "node scripts/test-research.cjs"
   },
   "devDependencies": {
     "@babel/core": "^7.23.3",
@@ -25,11 +26,13 @@
     "@vscode/test-electron": "^2.3.6",
     "babel-loader": "^9.1.3",
     "css-loader": "^6.8.1",
+    "esbuild": "^0.25.12",
     "eslint": "^8.52.0",
     "file-loader": "^6.2.0",
     "glob": "^10.3.10",
     "html-webpack-plugin": "^5.5.3",
     "mocha": "^10.2.0",
+    "react-test-renderer": "^18.2.0",
     "style-loader": "^3.3.3",
     "svg-url-loader": "^8.0.0",
     "svgo": "^3.0.4",

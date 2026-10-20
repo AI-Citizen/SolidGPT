@@ -57,6 +57,41 @@ npm run dev
 
  ### 3. Pick chat resources and start chat
 
+### Public web research
+
+Enter an OpenAI API key in Settings, then use either command in chat:
+
+* `/web Python asyncio TaskGroup documentation` searches the public web.
+* `/fetch https://docs.python.org/3/library/asyncio-task.html` reads one public page.
+
+These commands use [Parallel Search MCP](https://docs.parallel.ai/integrations/mcp/search-mcp)
+with no Parallel account or API key. Anonymous search uses Fast mode. The public
+sources are passed to your configured OpenAI model to produce an answer with source
+links. Your existing OpenAI API key is still required for that answer; indexing a
+codebase or Notion workspace is unnecessary.
+
+Only the explicit query or URL is sent to Parallel. Selected files, codebase and
+Notion content are not included. Other chat messages keep using the selected local
+resources. Do not put secrets in public research commands. New chat/reset starts a
+new research session; related search and fetch commands reuse the current session.
+Public research does not include earlier chat messages in model prompts.
+
+The server uses Parallel when `SOLIDGPT_WEB_SEARCH_PROVIDER` is unset. Set it to
+`disabled` before starting the server to disable public research. An unsupported
+explicit provider value returns an error rather than falling back. Requests have
+timeouts and surface service errors, including free-tier rate limits.
+
+To run the focused tests with the existing Python dependencies installed (Node.js
+22 or newer for the component tests):
+
+```sh
+pip install -r requirements-test.txt
+python -m unittest discover -s tests -p 'test_webresearch.py'
+cd solidportal
+npm ci
+npm run test:research
+```
+
 
 ## 🔥 Usecase
 - Talk to your codebase, save time hunting for the place to start a change or the right method to call.

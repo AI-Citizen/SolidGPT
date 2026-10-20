@@ -6,6 +6,7 @@ const endPoints = {
     NotionChatApI: '/notionchatapi',
     CleanHistory: '/clean/chat',
     InitCheck: '/test/getmsg',
+    WebResearch: '/webresearch',
 };
 
 export default endPoints;

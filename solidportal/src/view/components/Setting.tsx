@@ -14,8 +14,8 @@ const Settings = ({handleCodebaseSync, onBoardProgress, handleNotionSync, visibl
     const [AWSCred, setAWSCred] = useState(localStorage.getItem(Constants.settingConstants.AWSCred));
     const [fileNames, setFileNames] = useState([]);
     const [targetFilePath, setTargetFilePath] = useState([""]);
-    const [codebaseChecked, setCodebaseChecked] = useState(true);
-    const [notionChecked, setNotionChecked] = useState(false);
+    const [codebaseChecked, setCodebaseChecked] = useState(localStorage.getItem(Constants.settingConstants.CodebaseChecked) !== "false");
+    const [notionChecked, setNotionChecked] = useState(localStorage.getItem(Constants.settingConstants.NotionChecked) === "true");
 
     useEffect(() => {
         if (fileNames.length > 0) {
@@ -59,6 +59,7 @@ const Settings = ({handleCodebaseSync, onBoardProgress, handleNotionSync, visibl
                            addonBefore={<span className = "settings-addon-before-container">API Token</span>}
                            onChange={(e) => {
                                setAPIToken(e.target.value);
+                               localStorage.setItem(Constants.settingConstants.APIToken, e.target.value);
                            }}/>
                     <Input placeholder="Full path, 500 files max"
                            value={Path || ""}

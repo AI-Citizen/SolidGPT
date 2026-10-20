@@ -3,10 +3,11 @@ import config from "./config";
 
 
 export class ApiHelper {
-    static async postRequest(endPoint: any, requestBody: any) {
+    static async postRequest(endPoint: any, requestBody: any, signal?: AbortSignal) {
         try {
             return await axios.post(this.joinAndNormalizeUrl(config.ApiBaseUrl, endPoint), requestBody, {
                 headers: config.CustomHeaders,
+                signal,
             });
         } catch (error) {
             throw error;
